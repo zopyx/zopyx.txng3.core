@@ -1,0 +1,191 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/textindexng/!svn/ver/2377/zopyx.txng3.core/trunk/zopyx/txng3/core
+END
+ranking.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2228/zopyx.txng3.core/trunk/zopyx/txng3/core/ranking.py
+END
+resultset.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2238/zopyx.txng3.core/trunk/zopyx/txng3/core/resultset.py
+END
+grokindex.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/grokindex.py
+END
+ZPL.txt
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/ZPL.txt
+END
+configure.zcml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/textindexng/!svn/ver/2238/zopyx.txng3.core/trunk/zopyx/txng3/core/configure.zcml
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/__init__.py
+END
+evaluator.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2309/zopyx.txng3.core/trunk/zopyx/txng3/core/evaluator.py
+END
+storage.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2194/zopyx.txng3.core/trunk/zopyx/txng3/core/storage.py
+END
+stopwords.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2080/zopyx.txng3.core/trunk/zopyx/txng3/core/stopwords.py
+END
+config.py
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/textindexng/!svn/ver/2238/zopyx.txng3.core/trunk/zopyx/txng3/core/config.py
+END
+index.py
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/textindexng/!svn/ver/2260/zopyx.txng3.core/trunk/zopyx/txng3/core/index.py
+END
+wordlist.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/wordlist.py
+END
+content.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2167/zopyx.txng3.core/trunk/zopyx/txng3/core/content.py
+END
+nbest.py
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/nbest.py
+END
+util.py
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/util.py
+END
+docidlist.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/docidlist.py
+END
+widcode.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/widcode.py
+END
+logger.py
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/logger.py
+END
+thesaurus.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2293/zopyx.txng3.core/trunk/zopyx/txng3/core/thesaurus.py
+END
+normalization.py
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/textindexng/!svn/ver/2080/zopyx.txng3.core/trunk/zopyx/txng3/core/normalization.py
+END
+parsetree.py
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/textindexng/!svn/ver/2260/zopyx.txng3.core/trunk/zopyx/txng3/core/parsetree.py
+END
+lexicon.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2080/zopyx.txng3.core/trunk/zopyx/txng3/core/lexicon.py
+END
+baseconverter.py
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/textindexng/!svn/ver/2341/zopyx.txng3.core/trunk/zopyx/txng3/core/baseconverter.py
+END
+splitter.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/textindexng/!svn/ver/2080/zopyx.txng3.core/trunk/zopyx/txng3/core/splitter.py
+END
+shell.py
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/textindexng/!svn/ver/2336/zopyx.txng3.core/trunk/zopyx/txng3/core/shell.py
+END
+vocabulary.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/textindexng/!svn/ver/2336/zopyx.txng3.core/trunk/zopyx/txng3/core/vocabulary.py
+END
+LICENSE.txt
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/LICENSE.txt
+END
+stemmer.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2080/zopyx.txng3.core/trunk/zopyx/txng3/core/stemmer.py
+END
+searchrequest.py
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/searchrequest.py
+END
+compatible.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/compatible.py
+END
+exceptions.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/textindexng/!svn/ver/2054/zopyx.txng3.core/trunk/zopyx/txng3/core/exceptions.py
+END

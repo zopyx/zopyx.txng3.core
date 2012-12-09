@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/textindexng/!svn/ver/2377/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers
+END
+lex.py
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/lex.py
+END
+english.py
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/textindexng/!svn/ver/2377/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/english.py
+END
+german.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/german.py
+END
+configure.zcml
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/textindexng/!svn/ver/2127/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/configure.zcml
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/__init__.py
+END
+yacc.py
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/textindexng/!svn/ver/2295/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/yacc.py
+END
+french.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/french.py
+END
+dumb.py
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/parsers/dumb.py
+END

@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2127/zopyx.txng3.core/trunk/zopyx/txng3/core/converters
+END
+rtf.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/rtf.py
+END
+entities2uc.py
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/entities2uc.py
+END
+configure.zcml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/textindexng/!svn/ver/2127/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/configure.zcml
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/__init__.py
+END
+sgml.py
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/sgml.py
+END
+ppt.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/ppt.py
+END
+html.py
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/html.py
+END
+doc.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/doc.py
+END
+xls.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/xls.py
+END
+wvText.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/wvText.xml
+END
+pdf.py
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/pdf.py
+END
+ooffice.py
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/ooffice.py
+END
+null.py
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/null.py
+END
+StripTagParser.py
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/StripTagParser.py
+END
+ps.py
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/ps.py
+END
+entities.py
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/entities.py
+END

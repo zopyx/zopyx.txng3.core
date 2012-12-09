@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram
+END
+license.txt
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/license.txt
+END
+html2safehtml.py
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/html2safehtml.py
+END
+html2text.py
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/html2text.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/__init__.py
+END
+setup.py
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/setup.py
+END
+HTMLParser.py
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/HTMLParser.py
+END
+readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/converters/stripogram/readme.txt
+END

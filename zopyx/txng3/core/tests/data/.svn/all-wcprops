@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2289/zopyx.txng3.core/trunk/zopyx/txng3/core/tests/data
+END
+test.sxw
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/tests/data/test.sxw
+END
+test.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/tests/data/test.pdf
+END
+normalizer_de.txt
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/tests/data/normalizer_de.txt
+END
+thesaurus_de.txt
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/textindexng/!svn/ver/2289/zopyx.txng3.core/trunk/zopyx/txng3/core/tests/data/thesaurus_de.txt
+END
+stopwords_de.txt
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/tests/data/stopwords_de.txt
+END

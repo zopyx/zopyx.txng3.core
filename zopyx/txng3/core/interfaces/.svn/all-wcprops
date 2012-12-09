@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/textindexng/!svn/ver/2294/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces
+END
+ranking.py
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/textindexng/!svn/ver/2238/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/ranking.py
+END
+resultset.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/textindexng/!svn/ver/2238/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/resultset.py
+END
+parsetree.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/parsetree.py
+END
+indexable.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/indexable.py
+END
+parser.py
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/parser.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/textindexng/!svn/ver/2238/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/__init__.py
+END
+ting.py
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/textindexng/!svn/ver/2055/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/ting.py
+END
+lexicon.py
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/lexicon.py
+END
+storage.py
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/storage.py
+END
+stopwords.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/stopwords.py
+END
+splitter.py
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/splitter.py
+END
+index.py
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/index.py
+END
+converter.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/converter.py
+END
+normalizer.py
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/textindexng/!svn/ver/2049/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/normalizer.py
+END
+thesaurus.py
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/textindexng/!svn/ver/2294/zopyx.txng3.core/trunk/zopyx/txng3/core/interfaces/thesaurus.py
+END
