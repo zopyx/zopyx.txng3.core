@@ -17,14 +17,14 @@ description_txt = file('README.txt').read()
 description_txt += '\n\nChanges\n-------\n\n'
 description_txt += file('CHANGES.txt').read()
 
-version = '3.6.0'
+version = '3.6.1'
 
 setup(name="zopyx.txng3.core",
       version = version,
       packages=('zopyx', 'zopyx.txng3', 'zopyx.txng3.core', 'textindexng'),
-      maintainer= "Andreas Jung, ZOPYX Ltd. & Co. KG",
+      maintainer= "Andreas Jung, ZOPYX Ltd.",
       maintainer_email = "info@zopyx.com",
-      author = "Andreas Jung, ZOPYX Ltd. & Co. KG",
+      author = "Andreas Jung, ZOPYX Ltd.",
       author_email = "info@zopyx.com",
       description = 'TextIndexNG3 core implementation',
       long_description = description_txt,

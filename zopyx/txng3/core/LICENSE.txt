@@ -1,11 +1,12 @@
 
 TextIndexNG V 3
 
-(C) 2005-2007, ZOPYX Software-Development and Consulting Andreas Jung
+(C) 2005-2012, ZOPYX Ltd.
 
-Andreas Jung
-Charlottenstr. 37/1
-D-72070 Tübingen
+ZOPYX Ltd.
+c/o Andreas Jung
+Hundskapfklinge 33
+D-72074 Tübingen
 Germany
 Web: http://www.zopyx.com
 Mail: info@zopyx.com
