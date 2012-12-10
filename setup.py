@@ -17,7 +17,7 @@ description_txt = file('README.txt').read()
 description_txt += '\n\nChanges\n-------\n\n'
 description_txt += file('CHANGES.txt').read()
 
-version = '3.6.1'
+version = '3.6.1.1'
 
 setup(name="zopyx.txng3.core",
       version = version,
