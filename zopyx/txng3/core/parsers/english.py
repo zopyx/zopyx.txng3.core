@@ -25,7 +25,7 @@ import lex, yacc
 
 tempdir = tempfile.gettempdir()
 if os.name == 'posix':
-    tempdir = os.path.join(tempfile.tempdir, 'textindexng3-uid-%d' % os.getpid())
+    tempdir = os.path.join(tempfile.tempdir, 'textindexng3-uid-%d-pid-%d' % (os.getuid(), os.getpid())
     if not os.path.exists(tempdir):
         os.makedirs(tempdir, 0777)
 
