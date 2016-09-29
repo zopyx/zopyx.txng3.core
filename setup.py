@@ -13,9 +13,9 @@ import sys
 import os
 from setuptools import setup, find_packages, Extension
 
-description_txt = file('README.txt').read()
+description_txt = open('README.txt').read()
 description_txt += '\n\nChanges\n-------\n\n'
-description_txt += file('CHANGES.txt').read()
+description_txt += open('CHANGES.txt').read()
 
 version = '3.6.1.1'
 
