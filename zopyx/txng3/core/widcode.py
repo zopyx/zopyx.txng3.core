@@ -97,11 +97,11 @@ def _decode(s):
         # See comment in decode().  This is here to allow a trick to work.
         return 0
     if len(s) == 3:
-        a, b, c = map(ord, s)
+        a, b, c = list(map(ord, s))
         assert a & 0x80 == 0x80 and not b & 0x80 and not c & 0x80
         return ((a & 0x7F) << 14) | (b << 7) | c
-    assert len(s) == 4, `s`
-    a, b, c, d = map(ord, s)
+    assert len(s) == 4, repr(s)
+    a, b, c, d = list(map(ord, s))
     assert a & 0x80 == 0x80 and not b & 0x80 and not c & 0x80 and not d & 0x80
     return ((a & 0x7F) << 21) | (b << 14) | (c << 7) | d
 
@@ -122,7 +122,7 @@ _fill()
 
 def test():
     for i in range(2**20):
-        if i % 1000 == 0: print i
+        if i % 1000 == 0: print(i)
         wids = [i]
         code = encode(wids)
         assert decode(code) == wids, (wids, code, decode(code))

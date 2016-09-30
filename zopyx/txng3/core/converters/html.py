@@ -14,8 +14,8 @@ $Id: html.py 2055 2009-03-14 10:13:45Z ajung $
 
 import re
 from zopyx.txng3.core.baseconverter import BaseConverter
-from entities import convert_entities
-from stripogram import html2text
+from .entities import convert_entities
+from .stripogram import html2text
 
 charset_reg = re.compile('text/html.*?charset=(.*?)"', re.I|re.M)
 
@@ -28,14 +28,14 @@ class Converter(BaseConverter):
                 logError=False, raiseException=False):
 
         # convert to unicode
-        if not isinstance(doc, unicode):
+        if not isinstance(doc, str):
             if not encoding:
                 mo = charset_reg.search(doc)
                 if mo is not None:
                     encoding = mo.group(1)
                 else:
                     encoding = 'ascii' # guess
-            doc = unicode(doc, encoding, 'replace')
+            doc = str(doc, encoding, 'replace')
         doc = convert_entities(doc)
         result = html2text(doc)
 

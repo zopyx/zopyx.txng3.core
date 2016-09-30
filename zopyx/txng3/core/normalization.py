@@ -36,7 +36,7 @@ class Normalizer:
         return [os.path.splitext(f)[0] for f in files]
 
     def process(self, words, language): 
-        if not self._cache.has_key(language):
+        if language not in self._cache:
             table = readNormalizer(language)
             self._cache[language] = normalizer.Normalizer(table)
 
@@ -78,8 +78,8 @@ def readNormalizer(language):
         if len(fields) == 1:
             fields = (fields[0], '')  # replace XX with ''
 
-        k = unicode(fields[0], encoding) 
-        v = unicode(fields[1], encoding) 
+        k = str(fields[0], encoding) 
+        v = str(fields[1], encoding) 
 
         lst.append((k, v))
 

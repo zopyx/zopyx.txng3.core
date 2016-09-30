@@ -195,7 +195,7 @@ class HTMLParser:
                 else:
                     if i < n-1:
                         raise HTMLParseError(
-                            "invalid '<' construct: %s" % `rawdata[i:i+2]`,
+                            "invalid '<' construct: %s" % repr(rawdata[i:i+2]),
                             self.getpos())
                     k = -1
                 if k < 0:
@@ -279,7 +279,7 @@ class HTMLParser:
                 j = m.end()
             else:
                 raise HTMLParseError(
-                    "unexpected char in declaration: %s" % `rawdata[j]`,
+                    "unexpected char in declaration: %s" % repr(rawdata[j]),
                     self.getpos())
         return -1 # incomplete
 
@@ -335,7 +335,7 @@ class HTMLParser:
             else:
                 offset = offset + len(self.__starttag_text)
             raise HTMLParseError("junk characters in start tag: %s"
-                                 % `rawdata[k:endpos][:20]`,
+                                 % repr(rawdata[k:endpos][:20]),
                                  (lineno, offset))
         if end[-2:] == '/>':
             # XHTML-style empty tag: <span attr="value" />
@@ -389,7 +389,7 @@ class HTMLParser:
         j = match.end()
         match = endtagfind.match(rawdata, i) # </ + tag + >
         if not match:
-            raise HTMLParseError("bad end tag: %s" % `rawdata[i:j]`,
+            raise HTMLParseError("bad end tag: %s" % repr(rawdata[i:j]),
                                  self.getpos())
         tag = match.group(1)
         self.handle_endtag(string.lower(tag))

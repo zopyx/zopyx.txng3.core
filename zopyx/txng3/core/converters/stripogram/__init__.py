@@ -6,8 +6,8 @@
 #
 # $Id: __init__.py 1072 2005-05-01 12:05:51Z ajung $
 
-from html2text import HTML2Text
-from html2safehtml import HTML2SafeHTML
+from .html2text import HTML2Text
+from .html2safehtml import HTML2SafeHTML
 
 def html2text(s, ignore_tags=(), indent_width=4, page_width=80):
     ignore_tags = [t.lower() for t in ignore_tags]

@@ -6,8 +6,8 @@
 #
 # $Id: html2safehtml.py 1072 2005-05-01 12:05:51Z ajung $
 
-from HTMLParser import HTMLParser,HTMLParseError,piclose, charref, entityref
-from string import lower,find
+from .HTMLParser import HTMLParser,HTMLParseError,piclose, charref, entityref
+#from string import lower,find
 
 class HTML2SafeHTML(HTMLParser):
     
@@ -30,11 +30,11 @@ class HTML2SafeHTML(HTMLParser):
     def handle_charref(self, name):
         self.result = "%s&#%s;" % (self.result, name)
         
-    from htmlentitydefs import entitydefs # our entity defs list to use
+    from html.entities import entitydefs # our entity defs list to use
     
     def handle_entityref(self, name):
         # this quotes non-standard entities
-        if self.entitydefs.has_key(name): 
+        if name in self.entitydefs: 
             amp = '&'
         else:
             amp = '&amp;'

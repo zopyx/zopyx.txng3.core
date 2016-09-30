@@ -13,7 +13,7 @@ $Id: ooffice.py 2055 2009-03-14 10:13:45Z ajung $
 """
 
 import xml.sax
-import zipfile, cStringIO
+import zipfile, io
 from xml.sax.handler import ContentHandler
 
 from zopyx.txng3.core.baseconverter import BaseConverter
@@ -25,11 +25,11 @@ class ootextHandler(ContentHandler):
         self._data.write(ch.encode("utf-8") + ' ')
 
     def startDocument(self):
-        self._data = cStringIO.StringIO()
+        self._data = io.StringIO()
 
     def getxmlcontent(self, doc):
 
-        file = cStringIO.StringIO(doc)
+        file = io.StringIO(doc)
 
         doctype = """<!DOCTYPE office:document-content PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "office.dtd">"""
         xmlstr = zipfile.ZipFile(file).read('content.xml')

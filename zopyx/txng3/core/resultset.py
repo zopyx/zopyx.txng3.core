@@ -12,20 +12,20 @@ ResultList
 $Id: resultset.py 2238 2010-04-07 13:00:36Z zagy $
 """
 
-from zope.interface import implements
+from zope.interface import implementer
 from BTrees.IIBTree import IIBucket, intersection, union, difference
 
-from docidlist import DocidList
-from wordlist import WordList
+from .docidlist import DocidList
+from .wordlist import WordList
 from zopyx.txng3.core.interfaces import IResultSet
 
-from ranking import cosine_ranking
-from config import DEFAULT_LANGUAGE
+from .ranking import cosine_ranking
+from .config import DEFAULT_LANGUAGE
 
+@implementer(IResultSet)
 class ResultSet:
     """ A datastructure to store results from subqueries """
 
-    implements(IResultSet)
 
     def __init__(self, docids, words):
         self.docids = docids        # sequence of document ids
@@ -51,7 +51,7 @@ class ResultSet:
 
 
     def getRankedResults(self):
-        return self.items()
+        return list(self.items())
 
     def values(self):
         """ just implement the values() method to make the stupid

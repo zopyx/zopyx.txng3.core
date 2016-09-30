@@ -20,9 +20,10 @@ from zope.interface import implements
 
 from zopyx.txng3.core.interfaces import IConverter
 from zopyx.txng3.core.interfaces import IIndexContentCollector, IIndexableContent
-from config import DEFAULT_LANGUAGE, DEFAULT_ENCODING
-from compatible import callable
-from logger import LOG
+from .config import DEFAULT_LANGUAGE, DEFAULT_ENCODING
+from .compatible import callable
+from .logger import LOG
+import collections
 
 
 class IndexContentCollector:
@@ -33,7 +34,7 @@ class IndexContentCollector:
         self._d = {}
 
     def addContent(self, field, text, language=None):
-        if not isinstance(text, unicode):
+        if not isinstance(text, str):
             raise ValueError("Argument for 'text' must be of type unicode (got: %s)" % type(text))
     
         infos = self._d.get(field, ())
@@ -57,20 +58,20 @@ class IndexContentCollector:
         # content to unicode using the returned encoding. The converter is
         # in charge to handle encoding issues correctly.
 
-        assert isinstance(text, basestring)
+        assert isinstance(text, str)
         if isinstance(text, str):
-            text = unicode(text, encoding, 'ignore')
+            text = str(text, encoding, 'ignore')
 
         infos = self._d.get(field, ())
         self._d[field] = infos + ({'content': text, 'language': language},)
 
     def getFields(self):
-        return self._d.keys()
+        return list(self._d.keys())
 
     def getFieldData(self, field):
         return self._d[field]
 
-    def __nonzero__(self):
+    def __bool__(self):
         return len(self._d) > 0 
 
 
@@ -122,15 +123,15 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
             
             v = getattr(obj, f, None)
             if not v: continue
-            if callable(v):
+            if isinstance(v, collections.Callable):
                 v = v()
 
             # accept only a string/unicode string    
-            if not isinstance(v, basestring):
+            if not isinstance(v, str):
                 raise TypeError('Value returned for field "%s" must be string or unicode (got: %s, %s)' % (f, repr(v), type(v)))
 
             if isinstance(v, str):
-                v = unicode(v, default_encoding, 'ignore')
+                v = str(v, default_encoding, 'ignore')
         
             icc.addContent(f, v, default_language)
 

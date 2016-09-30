@@ -13,8 +13,8 @@ $Id: ranking.py 2228 2010-04-06 11:44:33Z zagy $
 """
 
 from math import log, sqrt
-from nbest import NBest
-from config import DEFAULT_LANGUAGE
+from .nbest import NBest
+from .config import DEFAULT_LANGUAGE
 
 
 def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
@@ -37,7 +37,7 @@ def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
         if not wid: continue
 
         wid_cache[word] = wid
-        if not storage_cache.has_key(field):
+        if field not in storage_cache:
             storage_cache[field] = index.getStorage(field)
             frequencies_cache[field] = storage_cache[field].getTermFrequency()
         docids = storage_cache[field].getDocumentsForWordId(wid)

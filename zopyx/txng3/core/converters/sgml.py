@@ -15,8 +15,8 @@ $Id: sgml.py 2055 2009-03-14 10:13:45Z ajung $
 import re
 import sys
 from zopyx.txng3.core.baseconverter import BaseConverter
-from StripTagParser import StripTagParser
-from entities import convert_entities
+from .StripTagParser import StripTagParser
+from .entities import convert_entities
 
 default_encoding = sys.getdefaultencoding()
 encoding_reg = re.compile('encoding="(.*?)"')
@@ -45,8 +45,8 @@ class Converter(BaseConverter):
         if not encoding:
             encoding = default_encoding
         
-        if not isinstance(doc, unicode):
-            doc = unicode(doc, encoding, 'replace')
+        if not isinstance(doc, str):
+            doc = str(doc, encoding, 'replace')
         doc = convert_entities(doc)
         doc = doc.encode('utf-8')
         p = StripTagParser()

@@ -21,7 +21,7 @@ ident = 'txng'
 def PyLogger():
     """ A standard Python logger """
 
-    from config import LOGGER_FILE
+    from .config import LOGGER_FILE
 
     logger = logging.getLogger('textindexng3')
     hdlr = logging.FileHandler(LOGGER_FILE)

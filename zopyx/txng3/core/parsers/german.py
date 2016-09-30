@@ -7,14 +7,14 @@
 ###########################################################################
 
 
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IParser 
 
-from english import EnglishParser
+from .english import EnglishParser
 
+@implementer(IParser)
 class GermanParser:
 
-    implements(IParser)
 
     def __init__(self, language='de'):
         self._parser = EnglishParser(language)
@@ -24,7 +24,7 @@ class GermanParser:
             'nahe' : 'NEAR',
             'nicht' : 'NOT',
             }
-        self.map_keys = self.map.keys()
+        self.map_keys = list(self.map.keys())
 
     def getLanguage(self):
         return self._parser.getLanguage()
@@ -48,7 +48,7 @@ class GermanParser:
                     w = self.map[w.lower()]
                 elif '::' in w:
 
-                    for  k,v in self.map.items():
+                    for  k,v in list(self.map.items()):
                         x = '::' + k
                         if x.lower() in w.lower():
                             w = w.replace(x, '::' + v)
@@ -63,10 +63,10 @@ class GermanParser:
 
 if __name__ == '__main__':
     parser = GermanParser()
-    print parser.parse('a und b')
-    print parser.parse('a und "foo und bar"')
-    print parser.parse('a und b oder (c and d)')
-    print parser.parse('somefield::UND(a b c)')
+    print(parser.parse('a und b'))
+    print(parser.parse('a und "foo und bar"'))
+    print(parser.parse('a und b oder (c and d)'))
+    print(parser.parse('somefield::UND(a b c)'))
 
 
 GermanQueryParser = GermanParser()

@@ -22,12 +22,12 @@ from BTrees.OIBTree import OIBTree
 from BTrees.IOBTree import IOBTree
 import BTrees.Length
 
-from compatible import Persistent
+from .compatible import Persistent
 from zope.component.interfaces import IFactory
-from zope.interface import implements, implementedBy
+from zope.interface import implementer, implementedBy
 from zopyx.txng3.core.interfaces import ILexicon
 from zopyx.txng3.core.exceptions import LexiconError
-from config import DEFAULT_LANGUAGE
+from .config import DEFAULT_LANGUAGE
 
 try:
     from zopyx.txng3.ext.levenshtein import ratio
@@ -36,10 +36,10 @@ except ImportError:
     have_lv = False
 
 
+@implementer(ILexicon)
 class Lexicon(Persistent):
     """Maps words to word ids """
 
-    implements(ILexicon)
 
     def __init__(self, languages=()):
         self._words = OOBTree()
@@ -49,7 +49,7 @@ class Lexicon(Persistent):
             self.addLanguage(l)
 
     def __len__(self):
-        return sum([len(tree) for tree in self._words.values()])
+        return sum([len(tree) for tree in list(self._words.values())])
 
     def addLanguage(self, language):
         """ prepare lexicon for a new language """
@@ -61,7 +61,7 @@ class Lexicon(Persistent):
 
     def hasLanguage(self, language):
         """ language handled by lexicon? """
-        return bool(self._words.has_key(language))
+        return bool(language in self._words)
 
     def _getTree(self, language):
         """ return tree for a given language """
@@ -84,7 +84,7 @@ class Lexicon(Persistent):
         wids = []
         for word in words:
 
-            if not isinstance(word, unicode):
+            if not isinstance(word, str):
                 raise LexiconError('Only unicode string can be indexed (%s)' % repr(word))
 
             try:
@@ -131,33 +131,33 @@ class Lexicon(Persistent):
     def getWordsForRightTruncation(self, prefix, language=DEFAULT_LANGUAGE):
         """ Return a sequence of words with a common prefix """
         
-        if not isinstance(prefix, unicode):
+        if not isinstance(prefix, str):
             raise LexiconError('Prefix must be unicode (%s)' % prefix)
         tree = self._getTree(language)            
-        return  tree.keys(prefix, prefix + u'\uffff') 
+        return  tree.keys(prefix, prefix + '\uffff') 
 
     def getWordsInRange(self, w1, w2, language=DEFAULT_LANGUAGE):
         """ return all words within w1...w2 """
-        if not isinstance(w1, unicode):
+        if not isinstance(w1, str):
             raise LexiconError('1. argument must be unicode (%s)' % w1)
-        if not isinstance(w2, unicode):
+        if not isinstance(w2, str):
             raise LexiconError('2. argument must be unicode (%s)' % w2)
         tree = self._getTree(language)
         return tree.keys(w1, w2)
 
     def getWordsForSubstring(self, sub, language=DEFAULT_LANGUAGE):
         """ return all words that match *sub* """
-        if not isinstance(sub, unicode):
+        if not isinstance(sub, str):
             raise LexiconError('Substring must be unicode (%s)' % sub)
         tree = self._getTree(language)
-        return [word for word in tree.keys() if sub in word]
+        return [word for word in list(tree.keys()) if sub in word]
 
     def getWordsForLeftTruncation(self, suffix, language=DEFAULT_LANGUAGE):
         """ return all words with a common suffix """
-        if not isinstance(suffix, unicode):
+        if not isinstance(suffix, str):
             raise LexiconError('Suffix must be unicode (%s)' % suffix)
         tree = self._getTree(language)
-        return [word for word in tree.keys() if word.endswith(suffix)]
+        return [word for word in list(tree.keys()) if word.endswith(suffix)]
 
     def _createRegex(self, pattern):
         """Translate a 'pattern into a regular expression """
@@ -170,9 +170,9 @@ class Lexicon(Persistent):
         tree = self._getTree(language)
         if common_length > -1:
             prefix = term[:common_length]
-            words = tree.keys(prefix, prefix + u'\uffff')
+            words = tree.keys(prefix, prefix + '\uffff')
         else:
-            words = tree.keys()                
+            words = list(tree.keys())                
         return [(w, ratio(w,term)) for w in words  if ratio(w, term) > threshold]
 
     def getWordsForPattern(self, pattern, language=DEFAULT_LANGUAGE):
@@ -189,15 +189,15 @@ class Lexicon(Persistent):
 
         prefix = pattern[:pos]
         tree = self._getTree(language)
-        words = tree.keys(prefix, prefix + u'\uffff')
+        words = tree.keys(prefix, prefix + '\uffff')
         regex = re.compile(self._createRegex(pattern), re.UNICODE)
         regex_match = regex.match
         return [word  for word in words if regex_match(word)] 
 
 
+@implementer(IFactory)
 class LexiconFactory:
     
-    implements(IFactory)
 
     def __call__(self, languages=()):
         return Lexicon(languages)

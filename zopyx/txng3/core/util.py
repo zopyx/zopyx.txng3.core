@@ -7,7 +7,7 @@
 ###########################################################################
 
 
-from logger import LOG 
+from .logger import LOG 
 
 def handle_exc(text, obj, exc_info):
     """ Handle an exception. Currently we log the exception through  our own

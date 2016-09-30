@@ -18,14 +18,14 @@ from zope.component import getUtility
 from zope.interface import implements
 from BTrees.OOBTree import OOBTree
 
-from evaluator import Evaluator
-from compatible import Persistent
-from content import extract_content
-from config import defaults
-from resultset import unionResultSets
-from util import handle_exc
-from searchrequest import SearchRequest
-from stemmer import getStemmer
+from .evaluator import Evaluator
+from .compatible import Persistent
+from .content import extract_content
+from .config import defaults
+from .resultset import unionResultSets
+from .util import handle_exc
+from .searchrequest import SearchRequest
+from .stemmer import getStemmer
 from zopyx.txng3.core.exceptions import StorageException
 from zopyx.txng3.core.interfaces import (
     IIndex, IParser, IStopwords, INormalizer, IStorageWithTermFrequency,
@@ -42,14 +42,14 @@ class Index(Persistent, object):
     def __init__(self, **kw):
 
         # perform argument check first
-        illegal_args = [k for k in kw.keys() if not k in defaults.keys()]
+        illegal_args = [k for k in list(kw.keys()) if not k in list(defaults.keys())]
         if illegal_args:
             raise ValueError('Unknown parameters: %s' % ', '.join(illegal_args))
 
         # setup preferences using default args (preferences are stored as
         # attributes of the index instance
 
-        for k,v in defaults.items():
+        for k,v in list(defaults.items()):
             v = kw.get(k, v)
             setattr(self, k, v)
 
@@ -97,7 +97,7 @@ class Index(Persistent, object):
         """ returns a mapping contains the indexes preferences """
         from copy import copy
         d = {}
-        for k in defaults.keys():
+        for k in list(defaults.keys()):
             d[k] = copy(getattr(self, k))
         return d
 
@@ -138,7 +138,7 @@ class Index(Persistent, object):
             for info in indexable_content.getFieldData(field):
                 content = info['content']
 
-                if not isinstance(content, unicode):
+                if not isinstance(content, str):
                     raise ValueError('Content must be unicode: %s' % repr(content))
 
                 # If a document has an unknown language (other than the ones configured
@@ -266,11 +266,11 @@ class Index(Persistent, object):
         """
 
         # queries must be unicode
-        if not isinstance(query, unicode):
+        if not isinstance(query, str):
             raise ValueError('Query must be unicode string')
 
         # First check query options
-        for k in kw.keys():
+        for k in list(kw.keys()):
             if not k in self.query_options:
                 raise ValueError('Unknown option: %s (supported query options: %s)' % (k, ', '.join(self.query_options)))
 
@@ -310,7 +310,7 @@ class Index(Persistent, object):
         ranking_maxhits = kw.get('ranking_maxhits', 50)
         if not isinstance(ranking_maxhits, int):
             raise ValueError('"ranking_maxhits" must be an integer')
-        if kw.has_key('ranking_maxhits') and not ranking:
+        if 'ranking_maxhits' in kw and not ranking:
             raise ValueError('Specify "ranking_maxhits" only with having set ranking=True')
 
         # autoexpansion of query terms
@@ -595,26 +595,26 @@ class Index(Persistent, object):
         print('Lexicon')
         for lang in self.getLexicon().getLanguages():
             print(lang)
-            for k,v in self.getLexicon()._words[lang].items():
-                print repr(k), v
+            for k,v in list(self.getLexicon()._words[lang].items()):
+                print(repr(k), v)
 
             print()
 
-        print('-'*80)
+        print(('-'*80))
 
         print('Storage')
         for field in self.fields:
             S = self.getStorage(field)
 
-            for k, v in S._wid2doc.items():
-                print(k, list(v))
+            for k, v in list(S._wid2doc.items()):
+                print((k, list(v)))
 
 
     def __repr__(self):
-        return '%s[%s]' % (self.__class__.__name__, ', '.join(['%s=%s' % (k, repr(getattr(self, k, None))) for k in defaults.keys()]))
+        return '%s[%s]' % (self.__class__.__name__, ', '.join(['%s=%s' % (k, repr(getattr(self, k, None))) for k in list(defaults.keys())]))
 
     def __len__(self):
         if self.dedicated_storage:
-            return sum([len(s) for s in self._storage.values()])
+            return sum([len(s) for s in list(self._storage.values())])
         else:
             return len(self._storage)

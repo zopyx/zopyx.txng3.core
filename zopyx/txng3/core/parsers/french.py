@@ -7,7 +7,7 @@
 ###########################################################################
 
 
-from german import GermanParser
+from .german import GermanParser
 
 class FrenchParser(GermanParser):
 
@@ -20,15 +20,15 @@ class FrenchParser(GermanParser):
                 'sauf' : 'NOT',
             }
 
-        self.map_keys = self.map.keys()
+        self.map_keys = list(self.map.keys())
 
 
 if __name__ == '__main__':
     parser = FrenchParser()
-    print parser.parse('a et b')
-    print parser.parse('a et "foo ou bar"')
-    print parser.parse('a et b ou (c et d)')
-    print parser.parse('somefield::ou(a b c)')
+    print(parser.parse('a et b'))
+    print(parser.parse('a et "foo ou bar"'))
+    print(parser.parse('a et b ou (c et d)'))
+    print(parser.parse('somefield::ou(a b c)'))
 
 
 FrenchQueryParser = FrenchParser()

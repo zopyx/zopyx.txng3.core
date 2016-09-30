@@ -20,10 +20,10 @@ from zope.component import provideUtility
 from zope.component.interfaces import IFactory
 from zope.component.testing import setUp
 
-from index import Index
-from parsers.english import EnglishParser
-from splitter import SplitterFactory
-from stopwords import Stopwords
+from .index import Index
+from .parsers.english import EnglishParser
+from .splitter import SplitterFactory
+from .stopwords import Stopwords
 from zopyx.txng3.core.interfaces import IParser, IStopwords, IThesaurus
 from zopyx.txng3.core.lexicon import LexiconFactory
 from zopyx.txng3.core.storage import StorageWithTermFrequencyFactory
@@ -76,7 +76,7 @@ def do_index(options, files):
     global count, bytes
 
     if not files:
-        print >>sys.stderr, 'Reading files from %s' % options.directory
+        print('Reading files from %s' % options.directory, file=sys.stderr)
         files = [] 
         for dirname, dirs, filenames in os.walk(options.directory):
             for f in filenames:
@@ -87,12 +87,12 @@ def do_index(options, files):
     for docid, fname in enumerate(files):
 
         text = open(fname).read()
-        I.index_object(Text(unicode(text, 'iso-8859-15')), docid)    
+        I.index_object(Text(str(text, 'iso-8859-15')), docid)    
         count += 1
         bytes += len(text)
         ID2FILES[docid] = fname
         if count % 100 ==0:
-            print count
+            print(count)
 
 
 
@@ -108,11 +108,11 @@ else:
     do_index(options, files)
 
 duration = time.time() - ts
-print '%d documents, duration: %5.3f seconds,total size: %d bytes, speed: %5.3f bytes/second' % (count, duration, bytes, float(bytes)/duration)
+print('%d documents, duration: %5.3f seconds,total size: %d bytes, speed: %5.3f bytes/second' % (count, duration, bytes, float(bytes)/duration))
     
 while 1:
-    query = raw_input('query> ')
-    query = unicode(query, 'iso-8859-15')
+    query = input('query> ')
+    query = str(query, 'iso-8859-15')
     try:
         kw = {'autoexpand' : 'off',
               'ranking' : True,
@@ -134,9 +134,9 @@ while 1:
         else:
             result = I.search(query, **kw)
         te = time.time()
-        for docid,score in result.getRankedResults().items():
-            print ID2FILES[docid], score
-        print '%2.5lf milli-seconds' % (1000.0*(te-ts))
+        for docid,score in list(result.getRankedResults().items()):
+            print(ID2FILES[docid], score)
+        print('%2.5lf milli-seconds' % (1000.0*(te-ts)))
     except:
         import traceback
         traceback.print_exc()

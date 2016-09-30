@@ -7,11 +7,11 @@
 # $Id: html2text.py 1072 2005-05-01 12:05:51Z ajung $
 
 import sgmllib
-from string import lower, replace, split, join
+#from string import lower, replace, split, join
 
 class HTML2Text(sgmllib.SGMLParser):
     
-    from htmlentitydefs import entitydefs # replace entitydefs from sgmllib
+    from html.entities import entitydefs # replace entitydefs from sgmllib
     
     def __init__(self, ignore_tags=(), indent_width=4, page_width=80):
         sgmllib.SGMLParser.__init__(self)

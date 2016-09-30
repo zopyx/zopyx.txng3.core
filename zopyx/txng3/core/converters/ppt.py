@@ -17,7 +17,7 @@ from zopyx.txng3.core.exceptions import ConversionError
 from zopyx.txng3.core.baseconverter import BaseConverter
 from zopyx.txng3.core.baseconverter import TmpFile
 from zopyx.txng3.core.logger import LOG
-from stripogram import html2text
+from .stripogram import html2text
 
 
 class Converter(BaseConverter):

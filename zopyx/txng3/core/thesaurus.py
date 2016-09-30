@@ -41,14 +41,14 @@ def readThesaurus(language, casefolding=True, filename=None):
 
         term, words = l.split(' ', 1)
         if encoding:
-            term = unicode(term.strip(), encoding)
-            words = [unicode(w.strip(), encoding) for w in words.split(',')]
+            term = str(term.strip(), encoding)
+            words = [str(w.strip(), encoding) for w in words.split(',')]
             if casefolding:
                 term = term.lower()
                 words = [w.lower() for w in words]
             synonyms[idx] = [term] + words
             for t in synonyms[idx]:
-                if terms.has_key(t):
+                if t in terms:
                     terms[t].append(idx)
                 else:
                     terms[t]=[idx]

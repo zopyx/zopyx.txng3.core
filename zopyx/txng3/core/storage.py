@@ -15,7 +15,7 @@ $Id: storage.py 2194 2009-12-08 06:06:24Z ajung $
 from persistent import Persistent
 from zope.interface import implements, implementedBy
 from zope.component.interfaces import IFactory
-from compatible import Persistent
+from .compatible import Persistent
 from BTrees.IOBTree import IOBTree
 from BTrees.IIBTree import IITreeSet, IIBTree, union, IISet, difference
 import BTrees.Length 
@@ -23,8 +23,8 @@ import BTrees.Length
 
 from zopyx.txng3.core.interfaces import IStorage, IStorageWithTermFrequency
 from zopyx.txng3.core.exceptions import StorageException
-from widcode import encode , decode
-from docidlist import DocidList
+from .widcode import encode , decode
+from .docidlist import DocidList
 
 class _PS(Persistent):
     """ ZODB-aware wrapper for strings """
@@ -58,7 +58,7 @@ class Storage(Persistent):
 
     def insertDocument(self, docid, widlist):
 
-        if not self._doc2wid.has_key(docid):
+        if docid not in self._doc2wid:
             self._length.change(1)
 
         enc_widlist = encode(widlist)
@@ -120,7 +120,7 @@ class Storage(Persistent):
         self._length.change(-1)
 
     def getDocIds(self):
-        return self._doc2wid.keys()
+        return list(self._doc2wid.keys())
 
     def getDocumentsForWordId(self, wordid):
         try:
@@ -228,14 +228,14 @@ class StorageWithTermFrequency(Storage):
         occurences = {}   # wid -> #(occurences)
         num_wids = float(len(widlist))
         for wid in widlist:
-            if not occurences.has_key(wid):
+            if wid not in occurences:
                 occurences[wid] = 1
             else:
                 occurences[wid] += 1
 
         self._frequencies[docid] = IIBTree()
         tree = self._frequencies[docid]
-        for wid,num in occurences.items():
+        for wid,num in list(occurences.items()):
             tree[wid] = num
 
 

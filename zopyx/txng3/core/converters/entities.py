@@ -7,7 +7,7 @@
 ###########################################################################
 
 import re
-from entities2uc import entitydefs
+from .entities2uc import entitydefs
 
 # Matches entities
 entity_reg = re.compile('&(.*?);')
@@ -19,7 +19,7 @@ def handler(x):
 
 def convert_entities(text):
     """ replace all entities inside a unicode string """
-    assert isinstance(text, unicode)
+    assert isinstance(text, str)
     text = entity_reg.sub(handler, text)
     return text
 

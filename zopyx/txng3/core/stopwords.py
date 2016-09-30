@@ -29,13 +29,13 @@ class Stopwords:
         self._cache = {}
 
     def stopwordsForLanguage(self, language):
-        if not self._cache.has_key(language):
+        if language not in self._cache:
             self._cache[language] = readStopwords(language)
-        return self._cache[language].keys()
+        return list(self._cache[language].keys())
 
     def process(self, words, language): 
         cache = self._cache
-        if not cache.has_key(language):
+        if language not in cache:
             cache[language] = readStopwords(language)
         return stopwordfilter(words, cache[language])
 
@@ -69,7 +69,7 @@ def readStopwords(language):
 
         if l.startswith('#'): continue
 
-        word = unicode(l.strip(), encoding).lower()
+        word = str(l.strip(), encoding).lower()
         words[word] = None
 
     return words

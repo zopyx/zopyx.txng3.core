@@ -16,7 +16,7 @@ $Id: rtf.py 2055 2009-03-14 10:13:45Z ajung $
 import os
 import sys
 import xml.sax
-import cStringIO
+import io
 import tempfile
 from xml.sax.handler import ContentHandler
 
@@ -28,7 +28,7 @@ class RTFtextHandler(ContentHandler):
         self._data.write(ch.encode("UTF-8") + ' ')
 
     def startDocument(self):
-        self._data = cStringIO.StringIO()
+        self._data = io.StringIO()
 
     def getData(self):
         return self._data.getvalue()

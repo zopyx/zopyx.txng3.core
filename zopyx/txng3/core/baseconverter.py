@@ -10,7 +10,7 @@ import os
 import subprocess
 import tempfile
 
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IConverter
 from zopyx.txng3.core.exceptions import BaseConverterError
 
@@ -52,13 +52,13 @@ def findOnWin32Path(fname):
     return False
 
 
+@implementer(IConverter)
 class BaseConverter(object):
     """ Base class for all converters """
 
     content_type = None
     content_description = None
 
-    implements(IConverter)
 
     def __init__(self):
         if not self.content_type:

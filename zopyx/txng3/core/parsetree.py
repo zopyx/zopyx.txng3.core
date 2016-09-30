@@ -12,13 +12,12 @@ ParseTree
 $Id: parsetree.py 2260 2010-06-23 06:11:24Z zagy $
 """
 
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IParseTreeNode
 
+@implementer(IParseTreeNode)
 class BaseNode:
     """ base class for all nodes """
-
-    implements(IParseTreeNode)
 
     def __init__(self, v, field=None):
         if isinstance(self.__class__, BaseNode):
@@ -97,7 +96,7 @@ def node_splitter(node, splitter):
             node_splitter(child, splitter)
     elif isinstance(v, BaseNode):
         node_splitter(v, splitter)
-    elif isinstance(v, unicode):
+    elif isinstance(v, str):
         split = splitter.split(v)
         if len(split) == 1:
             node.setValue(split[0])

@@ -12,18 +12,18 @@ Dumb query parsers
 $Id: dumb.py 2055 2009-03-14 10:13:45Z ajung $
 """
 
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IParser 
 from zopyx.txng3.core.parsetree import WordNode, OrNode, AndNode 
 
 
+@implementer(IParser)
 class DumbOrParser:
     """ A dumb query parser that take a whitespace separated list of 
         words and creates an Or query. No support for wildcards etc...
         just plain words.
     """
 
-    implements(IParser)
 
     def getLanguage(self):
         return None
@@ -41,9 +41,8 @@ class DumbOrParser:
 
 
 
+@implementer(IParser)
 class DumbAndParser(DumbOrParser):
-
-    implements(IParser)
 
     def parse(self, query):
         res = self._parse(query)

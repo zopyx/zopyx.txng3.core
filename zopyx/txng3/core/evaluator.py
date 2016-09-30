@@ -13,10 +13,10 @@ $Id: evaluator.py 2309 2011-03-20 19:48:27Z ajung $
 """
 
 from zopyx.txng3.core.parsetree import *
-from docidlist import DocidList
-from resultset import ResultSet, unionResultSets, intersectionResultSets, inverseResultSet
-from stemmer import getStemmer
-from logger import LOG
+from .docidlist import DocidList
+from .resultset import ResultSet, unionResultSets, intersectionResultSets, inverseResultSet
+from .stemmer import getStemmer
+from .logger import LOG
 
 class Evaluator:
     """ evaluator for ParseTree instances """

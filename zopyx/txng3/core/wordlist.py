@@ -12,13 +12,12 @@ WordList
 $Id: wordlist.py 1572 2006-06-03 10:53:57Z ajung $
 """
 
-from sets import Set
 
-class WordList(Set):
+class WordList(set):
     """ handles a list of words """
 
     def __repr__(self):
-        return '%s(%s), %s' % (self.__class__.__name__, Set.__repr__(self))
+        return '%s(%s), %s' % (self.__class__.__name__, set.__repr__(self))
 
     def extend(self, words):
         self.update(words)
