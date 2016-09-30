@@ -1,4 +1,4 @@
-#-*- coding: iso-8859-1 -*-
+#-*- coding: utf-8 -*-
 
 ###########################################################################
 # TextIndexNG V 3
@@ -17,9 +17,8 @@ from zopyx.txng3.core.interfaces import ILexicon
 from zopyx.txng3.core.exceptions import LexiconError
 from zopyx.txng3.core.lexicon import Lexicon
 
-text_en = u'the quick brown fox jumps over the lazy dog'
-text_de = unicode('Bei den dreitägigen Angriffen seien auch bis auf einen alle '
-                  'the Flugplätze der Taliban zerstört worden', 'iso-8859-1')
+text_en = 'the quick brown fox jumps over the lazy dog'
+text_de = 'Bei den dreitÃ¤gigen Angriffen seien auch bis auf einen alle the FlugplÃ¤tze der Taliban zerstÃ¶rt worden'
 
 
 class LexiconTests(unittest.TestCase):
@@ -191,9 +190,9 @@ class LexiconTests(unittest.TestCase):
         _check(u'fux', ['fox'])
         _check(u'Angriffe', ['Angriffen'], 'de')
         _check(u'Angriffen', ['Angriffen'], 'de')
-        _check(u'Angrüff', ['Angriffen'], 'de')
-        _check(u'Angrüven', ['Angriffen'], 'de')
-        _check(u'Angrüvvven', ['Angriffen'], 'de')
+        _check(u'AngrÃ¼ff', ['Angriffen'], 'de')
+        _check(u'AngrÃ¼ven', ['Angriffen'], 'de')
+        _check(u'AngrÃ¼vvven', ['Angriffen'], 'de')
         _check(u'Ankreivven', ['Angriffen', 'einen', 'seien'], 'de')
 
 
