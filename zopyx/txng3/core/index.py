@@ -592,22 +592,22 @@ class Index(Persistent, object):
     def _dump(self):
         """ perform low-level dump of the index """
 
-        print 'Lexicon'
+        print('Lexicon')
         for lang in self.getLexicon().getLanguages():
-            print lang
+            print(lang)
             for k,v in self.getLexicon()._words[lang].items():
                 print repr(k), v
 
-            print
+            print()
 
-        print '-'*80
+        print('-'*80)
 
-        print 'Storage'
+        print('Storage')
         for field in self.fields:
             S = self.getStorage(field)
 
             for k, v in S._wid2doc.items():
-                print k, list(v)
+                print(k, list(v))
 
 
     def __repr__(self):
