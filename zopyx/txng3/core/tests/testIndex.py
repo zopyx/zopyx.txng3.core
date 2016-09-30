@@ -461,12 +461,6 @@ class FunctionalTest(TextIndexNGTestCase):
             self.assertEqual(result, True)
 
 
-class LegacyTests(TextIndexNGTestCase):
-
-    def testLegacyImports(self):
-        from textindexng import index
-        from textindexng import parsers
-
 
 class RankingTest(TextIndexNGTestCase):
 
@@ -507,7 +501,6 @@ def test_suite():
     s.addTest(unittest.makeSuite(StemmerTests))
     s.addTest(unittest.makeSuite(MultilingualTests))
     s.addTest(unittest.makeSuite(FunctionalTest))
-    s.addTest(unittest.makeSuite(LegacyTests))
     s.addTest(unittest.makeSuite(RankingTest))
     return s
 
