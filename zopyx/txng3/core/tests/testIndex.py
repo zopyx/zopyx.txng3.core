@@ -216,7 +216,7 @@ class StemmerTests(TextIndexNGTestCase):
 
     def setupIndex(self, index):
         TextIndexNGTestCase.setUp(self)
-        index.index_object(Mock('de', text=unicode(de1, 'iso-8859-15')), 1)
+        index.index_object(Mock('de', text=de1), 1)
 
     def _test(self, index, query, language, expected, field='text'):
         res = index.search(query, language=language, field=field)
@@ -249,15 +249,15 @@ class MultilingualTests(TextIndexNGTestCase):
 
     def setupIndex(self, index):
         TextIndexNGTestCase.setUp(self)
-        index.index_object(Mock('de', text=unicode(de1, 'iso-8859-15')), 1)
-        index.index_object(Mock('de', text=unicode(de2, 'iso-8859-15')), 2)
-        index.index_object(Mock('de', text=unicode(de3, 'iso-8859-15')), 3)
-        index.index_object(Mock('fr', text=unicode(fr1, 'iso-8859-15')), 4)
-        index.index_object(Mock('fr', text=unicode(fr2, 'iso-8859-15')), 5)
-        index.index_object(Mock('fr', text=unicode(fr3, 'iso-8859-15')), 6)
-        index.index_object(Mock('en', text=unicode(en1, 'iso-8859-15')), 7)
-        index.index_object(Mock('en', text=unicode(en2, 'iso-8859-15')), 8)
-        index.index_object(Mock('en', text=unicode(en3, 'iso-8859-15')), 9)
+        index.index_object(Mock('de', text=de1), 1)
+        index.index_object(Mock('de', text=de2), 2)
+        index.index_object(Mock('de', text=de3), 3)
+        index.index_object(Mock('fr', text=fr1), 4)
+        index.index_object(Mock('fr', text=fr2), 5)
+        index.index_object(Mock('fr', text=fr3), 6)
+        index.index_object(Mock('en', text=en1), 7)
+        index.index_object(Mock('en', text=en2), 8)
+        index.index_object(Mock('en', text=en3), 9)
 
     def _test(self, index, query, language, expected, field='text'):
         res = index.search(query, language=language, field=field)
@@ -276,13 +276,13 @@ class MultilingualTests(TextIndexNGTestCase):
     def testDE(self):
         I = Index(fields=('text',), languages=(
             'de', ), index_unknown_languages=False)
-        I.index_object(Mock('de', text=unicode(de1, 'iso-8859-15')), 1)
+        I.index_object(Mock('de', text=de1), 1)
         # this raises an exception because the index does not know about 'fr'
         # or 'en'
         self.assertRaises(ValueError, I.index_object, Mock(
-            'fr', text=unicode(fr1, 'iso-8859-15')), 4)
+            'fr', text=fr1), 4)
         self.assertRaises(ValueError, I.index_object, Mock(
-            'en', text=unicode(en1, 'iso-8859-15')), 5)
+            'en', text=en1), 5)
 
     def testSingleLanguageDependentSearches(self):
         I = Index(fields=('text',), languages=('de', 'fr', 'en'))
@@ -306,12 +306,9 @@ class MultilingualTests(TextIndexNGTestCase):
 
     def testMultipleFieldsMultipleLanguages(self):
         I = Index(fields=('text', 'author'), languages=('de', 'fr', 'en'))
-        I.index_object(Mock('de', text=unicode(
-            de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
-        I.index_object(Mock('de', text=unicode(
-            de2, 'iso-8859-15'), author=u'Andrea Jung'), 2)
-        I.index_object(Mock('de', text=unicode(
-            de3, 'iso-8859-15'), author=u'der Nasbär'), 3)
+        I.index_object(Mock('de', text=de1, author=u'Andreas Jung'), 1)
+        I.index_object(Mock('de', text=de2, author=u'Andrea Jung'), 2)
+        I.index_object(Mock('de', text=de3, author=u'der Nasbär'), 3)
         self._test(I, u'andreas jung', 'en', ())
         self._test(I, u'andreas jung', 'de', ())
         self._test(I, u'andreas jung', 'de', (1,), 'author')
@@ -339,25 +336,20 @@ class MultilingualTests(TextIndexNGTestCase):
 
     def testIndexAndUnindex(self):
         I = Index(fields=('text', 'author'), languages=('de', 'fr', 'en'))
-        I.index_object(Mock('de', text=unicode(
-            de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
-        I.index_object(Mock('de', text=unicode(
-            de2, 'iso-8859-15'), author=u'Andrea Jung'), 2)
-        I.index_object(Mock('de', text=unicode(
-            de3, 'iso-8859-15'), author=u'der Nasbär'), 3)
+        I.index_object(Mock('de', text=de1,  author=u'Andreas Jung'), 1)
+        I.index_object(Mock('de', text=de2,  author=u'Andrea Jung'), 2)
+        I.index_object(Mock('de', text=de3, author=u'der Nasbär'), 3)
         self._test(I, u'andreas jung', 'de', (1,), 'author')
         I.unindex_object(1)
         I.unindex_object(2)
         I.unindex_object(3)
         I.unindex_object(9999)
         self._test(I, u'andreas jung', 'de', (), 'author')
-        I.index_object(Mock('de', text=unicode(
-            de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
+        I.index_object(Mock('de', text=de1, author=u'Andreas Jung'), 1)
         self._test(I, u'andreas jung', 'de', (1,), 'author')
         self._test(I, u'andreas jung', 'de', (), 'text')
         self._test(I, u'das opfer wird', 'de', (1,), 'text')
-        I.index_object(Mock('de', text=unicode(
-            de2, 'iso-8859-15'), author=u'Andrea Jung'), 1)
+        I.index_object(Mock('de', text=de2, author=u'Andrea Jung'), 1)
         self._test(I, u'andrea jung', 'de', (1,), 'author')
 
     def testReindex2(self):
@@ -425,7 +417,7 @@ class FunctionalTest(TextIndexNGTestCase):
 
         dirname = os.path.join(os.path.dirname(__file__), 'data', 'texts')
         fullname = os.path.join(dirname, '%04d.txt' % num)
-        text = unicode(open(fullname).read(), 'iso-8859-15')
+        text = open(fullname, encoding='iso-8859-15').read()
         index.index_object(Mock('de', text=text), num)
 
     def testUnindex(self):

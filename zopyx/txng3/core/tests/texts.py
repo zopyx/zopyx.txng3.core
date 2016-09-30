@@ -1,4 +1,4 @@
-#-*- coding: iso-8859-15 -*-
+#-*- coding: utf-8 -*-
 
 ###########################################################################
 # TextIndexNG V 3
@@ -12,30 +12,30 @@
 
 de1 = """
 Gleich ihr ist er Reflexionsbestimmung. Das Opfer wird uns frei machen, was
-historisch den Sprachen ohnehin widerfuhr. (6) Heideggers Lehre läuft ungewollt
-auf eine Exegese des schnöden Witzes "Umsonst ist der Tod", so hat bei den
+historisch den Sprachen ohnehin widerfuhr. (6) Heideggers Lehre lÃ¤uft ungewollt
+auf eine Exegese des schnÃ¶den Witzes "Umsonst ist der Tod", so hat bei den
 existentiellen Eigentlichen selbst der Existentialismus nichts zu lachen: Je
-weniger das für sich seiende Subjekt vermag; tiefinnerstes Anliegen sein
-müssen, bei denen Verwaltungsmänner, als Ganzes. (7)(8) Aber die falsche Würde
+weniger das fÃ¼r sich seiende Subjekt vermag; tiefinnerstes Anliegen sein
+mÃ¼ssen, bei denen VerwaltungsmÃ¤nner, als Ganzes. (7)(8) Aber die falsche WÃ¼rde
 hat nicht immer Unrecht, weil man tief sein will, die seiner Sprache folgten,
 was er im gleichen Augenblick tut: 
 """
 
 de2 = """
-Auch Heidegger begegnete dem Nichts nur zur höheren Propädeutik des Seins.
-Spätbürgerliches Denken bildet sich zurück zur nackten Selbsterhaltung, was
-bloß jenem Vorteil dient. (5)(6)(7) Das sichtbar zu machen, echtes Gespräch,
+Auch Heidegger begegnete dem Nichts nur zur hÃ¶heren PropÃ¤deutik des Seins.
+SpÃ¤tbÃ¼rgerliches Denken bildet sich zurÃ¼ck zur nackten Selbsterhaltung, was
+bloÃŸ jenem Vorteil dient. (5)(6)(7) Das sichtbar zu machen, echtes GesprÃ¤ch,
 welche einst dem Denken zur Emanzipation verhalf. Sie sucht das Neue nur,
 daseiend, die ihrerseits wieder durch Erinnerung an Theologie mehr sein wollen,
 was seinem Sinn nach daraus folgen sollte. 
 """
 
 de3 = """
-Deshalb besteht der formale Schluß von dem überdies ontologisch unangemessen
+Deshalb besteht der formale SchluÃŸ von dem Ã¼berdies ontologisch unangemessen
 als Ausstand interpretierten Noch-nicht des Daseins auf seine Unganzheit nicht
 zurecht. Wer die Warenwelt als das "An sich" akzeptiert, versteift die
 triebfeindlichen Tabus der Innerlichen. (1) Unterschlagen ist, worin sie
-geheimes Einverständnis erwartet, mit welchen er das Wort Mensch Emanzipation registriert,
+geheimes EinverstÃ¤ndnis erwartet, mit welchen er das Wort Mensch Emanzipation registriert,
 richtiges Leben definiert durch Entscheidung schlechthin. 
 """
 
@@ -64,21 +64,21 @@ textual objectivism.
 """
 
 fr1 = """
-Benoît XVI a inauguré aujourd'hui son pontificat avec une messe solennelle de
-près de trois heures célébrée place Saint Pierre devant 350.000 fidèles, habité
-par le souvenir de son prédécesseur Jean Paul II, et par la volonté d'agir pour
-l'unité de tous les chrétiens. ...
+BenoÃ®t XVI a inaugurÃ© aujourd'hui son pontificat avec une messe solennelle de
+prÃ¨s de trois heures cÃ©lÃ©brÃ©e place Saint Pierre devant 350.000 fidÃ¨les, habitÃ©
+par le souvenir de son prÃ©dÃ©cesseur Jean Paul II, et par la volontÃ© d'agir pour
+l'unitÃ© de tous les chrÃ©tiens. ...
 """
 
 fr2 = """
-Pour les autres pièces d'habillement, la hausse des importations varie de 63%
-pour les soutiens-gorge à 413% sur les pantalons pour homme.
+Pour les autres piÃ¨ces d'habillement, la hausse des importations varie de 63%
+pour les soutiens-gorge Ã  413% sur les pantalons pour homme.
 """
 
 fr3 = """
-Sur les neuf catégories, sept répondent aux demandes du groupe de pression
-textile européen Euratex qui avait mis en cause un "tsunami" d'importations
+Sur les neuf catÃ©gories, sept rÃ©pondent aux demandes du groupe de pression
+textile europÃ©en Euratex qui avait mis en cause un "tsunami" d'importations
 chinoises pour douze produits. Les autres demandent "une poursuite de
 l'analyse", a dit le commissaire. En revanche, les T-shirts et un type de fil,
-non mentionnés par Euratex appellent également une action, selon Bruxelles.
+non mentionnÃ©s par Euratex appellent Ã©galement une action, selon Bruxelles.
 """
