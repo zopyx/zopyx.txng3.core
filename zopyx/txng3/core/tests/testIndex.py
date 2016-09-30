@@ -32,9 +32,9 @@ from zopyx.txng3.core.interfaces import (
     IIndex, IIndexContentCollector, IIndexableContent, IRanking)
 import zopyx.txng3.core.storage
 
-from TextIndexNGTestCase import TextIndexNGTestCase
-from mock import Mock, MockPDF, MockOld, StupidMock, StupidMockAdapter, IStupidMock
-from texts import de1, de2, de3, en1, en2, en3, fr1, fr2, fr3
+from .TextIndexNGTestCase import TextIndexNGTestCase
+from .mock import Mock, MockPDF, MockOld, StupidMock, StupidMockAdapter, IStupidMock
+from .texts import de1, de2, de3, en1, en2, en3, fr1, fr2, fr3
 
 
 class ContentCollectorTests(TextIndexNGTestCase):

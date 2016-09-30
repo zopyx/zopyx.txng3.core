@@ -15,7 +15,7 @@ $Id: mock.py 2054 2009-03-14 10:11:29Z ajung $
 """
 
 import os
-from zope.interface import implements, Interface
+from zope.interface import implementer, Interface
 from zopyx.txng3.core.interfaces import IIndexableContent
 from zopyx.txng3.core.content import IndexContentCollector as ICC
 
@@ -27,10 +27,10 @@ class IStupidMock(Interface):
         """ bla bla """
 
 
+@implementer(IStupidMock)
 class StupidMock:
     """ Mockup class to check content extraction """
 
-    implements(IStupidMock)
 
     def __init__(self, language, **kw):
         self.language = language
@@ -40,9 +40,9 @@ class StupidMock:
         return None
 
 
+@implementer(IIndexableContent)
 class StupidMockAdapter:
 
-    implements(IIndexableContent)
 
     def __init__(self, context):
         self.context = context
@@ -53,10 +53,10 @@ class StupidMockAdapter:
         return icc
 
 
+@implementer(IIndexableContent)
 class Mock:
     """ Mockup class to check content extraction """
 
-    implements(IIndexableContent)
 
     def __init__(self, language, **kw):
         self.language = language
@@ -70,10 +70,9 @@ class Mock:
         return icc
 
 
+@implementer(IIndexableContent)
 class MockPDF:
     """ Mockup class to check content extraction """
-
-    implements(IIndexableContent)
 
     def __init__(self, filename):
         self.filename = filename
