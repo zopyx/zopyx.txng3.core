@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15
+# -*- coding: utf-8
 
 ###########################################################################
 # TextIndexNG V 3
@@ -21,11 +21,6 @@ from zopyx.txng3.core.interfaces import ISplitter
 class SimpleSplitterTests(unittest.TestCase):
 
     def _test(self, S, text, expected):
-        if not isinstance(text, unicode):
-            text = unicode(text, 'iso-8859-15')
-
-        expected = [unicode(w, 'iso-8859-15') for w in expected]
-
         got = S.split(text)
         if list(got) != list(expected):
             raise AssertionError(
@@ -69,31 +64,31 @@ class SimpleSplitterTests(unittest.TestCase):
     def testGerman(self):
 
         SP = SimpleSplitter()
-        self._test(SP, 'der bäcker Ging über die Brücke',
-                       ['der', 'bäcker', 'ging', 'über', 'die', 'brücke'])
+        self._test(SP, 'der bÃ¤cker Ging Ã¼ber die BrÃ¼cke',
+                       ['der', 'bÃ¤cker', 'ging', 'Ã¼ber', 'die', 'brÃ¼cke'])
 
-        self._test(SP, 'der äücker Ging über die Brücke',
-                       ['der', 'äücker', 'ging', 'über', 'die', 'brücke'])
+        self._test(SP, 'der Ã¤Ã¼cker Ging Ã¼ber die BrÃ¼cke',
+                       ['der', 'Ã¤Ã¼cker', 'ging', 'Ã¼ber', 'die', 'brÃ¼cke'])
 
     def testPunctuation(self):
         SP = SimpleSplitter()
-        self._test(SP, 'der mann, der über die Brücke ging.',
-                       ['der', 'mann', 'der', 'über', 'die', 'brücke', 'ging'])
+        self._test(SP, 'der mann, der Ã¼ber die BrÃ¼cke ging.',
+                       ['der', 'mann', 'der', 'Ã¼ber', 'die', 'brÃ¼cke', 'ging'])
         SP = SimpleSplitter(punctuation='\.')
-        self._test(SP, 'der mann, der über die Brücke ging.',
-                       ['der', 'mann,', 'der', 'über', 'die', 'brücke', 'ging'])
+        self._test(SP, 'der mann, der Ã¼ber die BrÃ¼cke ging.',
+                       ['der', 'mann,', 'der', 'Ã¼ber', 'die', 'brÃ¼cke', 'ging'])
 
     def testSwedish(self):
 
         SP = SimpleSplitter()
-        self._test(SP, 'åke  vill ju inte alls leka med mig.',
-                       ['åke', 'vill', 'ju', 'inte', 'alls', 'leka', 'med', 'mig'])
+        self._test(SP, 'Ã¥ke  vill ju inte alls leka med mig.',
+                       ['Ã¥ke', 'vill', 'ju', 'inte', 'alls', 'leka', 'med', 'mig'])
 
     def testSpanish(self):
 
         SP = SimpleSplitter()
-        self._test(SP, u'Fernando: «¡Hola! ¿Qué tal?»',
-                       ['fernando', 'hola', 'qué', 'tal'])
+        self._test(SP, u'Fernando: Â«Â¡Hola! Â¿QuÃ© tal?Â»',
+                       ['fernando', 'hola', 'quÃ©', 'tal'])
 
     def testPunctuation(self):
         SP = SimpleSplitter(additional_chars='\-+.')
