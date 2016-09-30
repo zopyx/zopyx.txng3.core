@@ -62,7 +62,7 @@ def readStopwords(language):
     if not os.path.exists(fname):
         return {}
 
-    for l in open(fname):
+    for l in open(fname, encoding='iso-8859-15'):
         if not l.strip():
             continue
 
@@ -74,7 +74,7 @@ def readStopwords(language):
         if l.startswith('#'):
             continue
 
-        word = str(l.strip(), encoding).lower()
+        word = l.lower()
         words[word] = None
 
     return words

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 ###########################################################################
 # TextIndexNG V 3
@@ -27,19 +27,18 @@ class StopwordTests(unittest.TestCase):
         SW = Stopwords()
         en_words = SW.stopwordsForLanguage('en')
         for w in en_words:
-            self.assertEqual(type(w), unicode)
+            self.assertEqual(type(w), str)
         de_words = SW.stopwordsForLanguage('de')
         for w in de_words:
-            self.assertEqual(type(w), unicode)
+            self.assertEqual(type(w), str)
         self.assertEqual(len(SW.stopwordsForLanguage('xx')), 0)
 
     def testProcess(self):
         SW = Stopwords()
-        s = unicode(
-            'der die das mondauto foobar gehen gut und überhaupt', 'iso-8859-15')
+        s = 'der die das mondauto foobar gehen gut und Ã¼berhaupt'
         res = SW.process(s.split(' '), 'de')
         self.assertEqual(res, [u'mondauto', u'foobar', u'gehen',
-                               u'gut', unicode('überhaupt', 'iso-8859-15')])
+                               u'gut', 'Ã¼berhaupt'])
         res = SW.process(s.split(' '), 'en')
         self.assertEqual(res, list(s.split(' ')))
 
