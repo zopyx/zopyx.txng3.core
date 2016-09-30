@@ -15,10 +15,11 @@ $Id: english.py 2377 2012-11-21 14:00:46Z ajung $
 import sys, re, os, tempfile
 from threading import Lock
 
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IParser 
 from zopyx.txng3.core.parsetree import * 
-import lex, yacc
+from ply import lex 
+from ply import yacc
 
 # For UNIX: create a directory /tmp/textindexng3-uid-<uid>
 # For Windows: use the default tmp directory
@@ -27,7 +28,7 @@ tempdir = tempfile.gettempdir()
 if os.name == 'posix':
     tempdir = os.path.join(tempfile.tempdir, 'textindexng3-uid-%d-pid-%d' % (os.getuid(), os.getpid()))
     if not os.path.exists(tempdir):
-        os.makedirs(tempdir, 0777)
+        os.makedirs(tempdir, 0o777)
 
 outputdir = tempfile.mkdtemp(dir=tempdir)
 if not outputdir in sys.path:
@@ -35,6 +36,7 @@ if not outputdir in sys.path:
 
 class QueryParserError(Exception): pass
 
+@implementer(IParser)
 class ParserBase:
     """ Base class for all parsers """
 
@@ -42,7 +44,6 @@ class ParserBase:
     precedence = ()
     names = {}
 
-    implements(IParser)
 
     def __init__(self, language='en'):
         self.language = language
@@ -231,7 +232,7 @@ class EnglishParser(ParserBase):
         if t.value[0] in [' ']:
             t.skip(1)
         else:
-            raise QueryParserError,"Illegal character '%s'" % t.value[0]
+            raise QueryParserError("Illegal character '%s'" % t.value[0])
 
     def p_expr_expr_factor3(self, t):
         """expr :  NOT expr"""
@@ -391,15 +392,15 @@ if __name__== '__main__':
                   '(a b)',
                   'somefield::AND(a b)',
                   ):
-        print '-'*80
-        print '>>',query
+        print('-'*80)
+        print('>>',query)
 
-        print EnglishQueryParser.lexer(query)
-        print EnglishQueryParser.parse(query)
+        print(EnglishQueryParser.lexer(query))
+        print(EnglishQueryParser.parse(query))
 
     if len(sys.argv) > 1:
-        print '-'*80
-        print '>>',sys.argv[1]
-        print EnglishQueryParser.lexer(sys.argv[1])
-        print EnglishQueryParser.parse(sys.argv[1])
+        print('-'*80)
+        print('>>',sys.argv[1])
+        print(EnglishQueryParser.lexer(sys.argv[1]))
+        print(EnglishQueryParser.parse(sys.argv[1]))
 

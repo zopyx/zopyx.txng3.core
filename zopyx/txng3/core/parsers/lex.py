@@ -172,7 +172,7 @@ class Lexer:
     # readtab() - Read lexer information from a tab file
     # ------------------------------------------------------------
     def readtab(self,tabfile,fdict):
-        exec "import %s as lextab" % tabfile
+        exec("import %s as lextab" % tabfile)
         self.lextokens      = lextab._lextokens
         self.lexreflags     = lextab._lexreflags
         self.lexliterals    = lextab._lexliterals
@@ -198,7 +198,7 @@ class Lexer:
     # ------------------------------------------------------------
     def input(self,s):
         if not (isinstance(s,types.StringType) or isinstance(s,types.UnicodeType)):
-            raise ValueError, "Expected a string"
+            raise ValueError( "Expected a string")
         self.lexdata = s
         self.lexpos = 0
         self.lexlen = len(s)
@@ -208,7 +208,7 @@ class Lexer:
     # ------------------------------------------------------------
     def begin(self,state):
         if not self.lexstatere.has_key(state):
-            raise ValueError, "Undefined state"
+            raise ValueError("Undefined state")
         self.lexre = self.lexstatere[state]
         self.lexretext = self.lexstateretext[state]
         self.lexignore = self.lexstateignore.get(state,"")
@@ -300,7 +300,7 @@ class Lexer:
                 # Verify type of the token.  If not in the token map, raise an error
                 if not self.lexoptimize:
                     if not self.lextokens.has_key(newtok.type):
-                        raise LexError, ("%s:%d: Rule '%s' returned an unknown token type '%s'" % (
+                        raise LexError ("%s:%d: Rule '%s' returned an unknown token type '%s'" % (
                             func.func_code.co_filename, func.func_code.co_firstlineno,
                             func.__name__, newtok.type),lexdata[lexpos:])
 
@@ -329,17 +329,17 @@ class Lexer:
                     newtok = self.lexerrorf(tok)
                     if lexpos == self.lexpos:
                         # Error method didn't change text position at all. This is an error.
-                        raise LexError, ("Scanning error. Illegal character '%s'" % (lexdata[lexpos]), lexdata[lexpos:])
+                        raise LexError("Scanning error. Illegal character '%s'" % (lexdata[lexpos]), lexdata[lexpos:])
                     lexpos = self.lexpos
                     if not newtok: continue
                     return newtok
 
                 self.lexpos = lexpos
-                raise LexError, ("Illegal character '%s' at index %d" % (lexdata[lexpos],lexpos), lexdata[lexpos:])
+                raise LexError("Illegal character '%s' at index %d" % (lexdata[lexpos],lexpos), lexdata[lexpos:])
 
         self.lexpos = lexpos + 1
         if self.lexdata is None:
-             raise RuntimeError, "No input string given with input()"
+             raise RuntimeError( "No input string given with input()")
         return None
         
 # -----------------------------------------------------------------------------
@@ -443,7 +443,7 @@ def _form_master_re(relist,reflags,ldict,toknames):
                     lexindexfunc[i] = (None, toknames[f])
          
         return [(lexre,lexindexfunc)],[regex]
-    except Exception,e:
+    except Exception as e:
         m = int(len(relist)/2)
         if m == 0: m = 1
         llist, lre = _form_master_re(relist[:m],reflags,ldict,toknames)
@@ -506,13 +506,13 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
             for (i,v) in _items:
                 ldict[i] = v
         else:
-            raise ValueError,"Expected a module or instance"
+            raise ValueError("Expected a module or instance")
         lexobj.lexmodule = module
         
     else:
         # No module given.  We might be able to get information from the caller.
         try:
-            raise RuntimeError
+            raise RuntimeError()
         except RuntimeError:
             e,b,t = sys.exc_info()
             f = t.tb_frame
@@ -541,9 +541,9 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
         literals = ldict.get("literals","")
         
     if not tokens:
-        raise SyntaxError,"lex: module does not define 'tokens'"
+        raise SyntaxError("lex: module does not define 'tokens'")
     if not (isinstance(tokens,types.ListType) or isinstance(tokens,types.TupleType)):
-        raise SyntaxError,"lex: tokens must be a list or tuple."
+        raise SyntaxError("lex: tokens must be a list or tuple.")
 
     # Build a dictionary of valid token names
     lexobj.lextokens = { }
@@ -559,7 +559,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
         for n in tokens: lexobj.lextokens[n] = None
 
     if debug:
-        print "lex: tokens = '%s'" % lexobj.lextokens.keys()
+        print("lex: tokens = '%s'" % lexobj.lextokens.keys())
 
     try:
          for c in literals:
@@ -617,7 +617,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
     errorf   = { }        # Error functions by state
 
     if len(tsymbols) == 0:
-        raise SyntaxError,"lex: no rules of the form t_rulename are defined."
+        raise SyntaxError("lex: no rules of the form t_rulename are defined.")
 
     for f in tsymbols:
         t = ldict[f]
@@ -688,7 +688,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
                              print >>sys.stderr, "%s:%d: Regular expression for rule '%s' matches empty string." % (file,line,f.__name__)
                              error = 1
                              continue
-                    except re.error,e:
+                    except re.error as e:
                         print >>sys.stderr, "%s:%d: Invalid regular expression for rule '%s'. %s" % (file,line,f.__name__,e)
                         if '#' in f.__doc__:
                              print >>sys.stderr, "%s:%d. Make sure '#' in rule '%s' is escaped with '\\#'." % (file,line, f.__name__)                 
@@ -696,7 +696,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
                         continue
 
                     if debug:
-                        print "lex: Adding rule %s -> '%s' (state '%s')" % (f.__name__,f.__doc__, state)
+                        print("lex: Adding rule %s -> '%s' (state '%s')" % (f.__name__,f.__doc__, state))
 
                 # Okay. The regular expression seemed okay.  Let's append it to the master regular
                 # expression we're building
@@ -717,7 +717,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
 
             if not optimize:
                 if tokname == 'error':
-                    raise SyntaxError,"lex: Rule '%s' must be defined as a function" % name
+                    raise SyntaxError("lex: Rule '%s' must be defined as a function" % name)
                     error = 1
                     continue
         
@@ -731,7 +731,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
                          print >>sys.stderr, "lex: Regular expression for rule '%s' matches empty string." % name
                          error = 1
                          continue
-                except re.error,e:
+                except re.error as e:
                     print >>sys.stderr, "lex: Invalid regular expression for rule '%s'. %s" % (name,e)
                     if '#' in r:
                          print >>sys.stderr, "lex: Make sure '#' in rule '%s' is escaped with '\\#'." % name
@@ -739,7 +739,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
                     error = 1
                     continue
                 if debug:
-                    print "lex: Adding rule %s -> '%s' (state '%s')" % (name,r,state)
+                    print("lex: Adding rule %s -> '%s' (state '%s')" % (name,r,state))
                 
             regex_list.append("(?P<%s>%s)" % (name,r))
 
@@ -756,7 +756,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
                 error = 1
 
     if error:
-        raise SyntaxError,"lex: Unable to build lexer."
+        raise SyntaxError("lex: Unable to build lexer.")
 
     # From this point forward, we're reasonably confident that we can build the lexer.
     # No more errors will be generated, but there might be some warning messages.
@@ -769,7 +769,7 @@ def lex(module=None,object=None,debug=0,optimize=0,lextab="lextab",reflags=0,now
         lexobj.lexstateretext[state] = re_text
         if debug:
             for i in range(len(re_text)):
-                 print "lex: state '%s'. regex[%d] = '%s'" % (state, i, re_text[i])
+                 print("lex: state '%s'. regex[%d] = '%s'" % (state, i, re_text[i]))
 
     # For inclusive states, we need to add the INITIAL state
     for state,type in stateinfo.items():
@@ -830,7 +830,7 @@ def runmain(lexer=None,data=None):
             data = f.read()
             f.close()
         except IndexError:
-            print "Reading from standard input (type EOF to end):"
+            print("Reading from standard input (type EOF to end):")
             data = sys.stdin.read()
 
     if lexer:
@@ -846,7 +846,7 @@ def runmain(lexer=None,data=None):
     while 1:
         tok = _token()
         if not tok: break
-        print "(%s,%r,%d,%d)" % (tok.type, tok.value, tok.lineno,tok.lexpos)
+        print ("(%s,%r,%d,%d)" % (tok.type, tok.value, tok.lineno,tok.lexpos))
         
 
 # -----------------------------------------------------------------------------
