@@ -66,7 +66,7 @@ def readNormalizer(language):
         return []
 
     lst = []
-    for l in open(fname):
+    for l in open(fname, encoding='iso-8859-15'):
         if not l.strip():
             continue
 
@@ -82,8 +82,8 @@ def readNormalizer(language):
         if len(fields) == 1:
             fields = (fields[0], '')  # replace XX with ''
 
-        k = str(fields[0], encoding)
-        v = str(fields[1], encoding)
+        k = fields[0]
+        v = fields[1]
 
         lst.append((k, v))
 
