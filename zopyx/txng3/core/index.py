@@ -15,7 +15,7 @@ import sys
 
 from zope.component import createObject
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from BTrees.OOBTree import OOBTree
 
 from .evaluator import Evaluator
@@ -33,9 +33,9 @@ from zopyx.txng3.core.interfaces import (
 from zopyx.txng3.core.parsetree import node_splitter, stopword_remover
 
 
+@implementer(IIndex)
 class Index(Persistent, object):
 
-    implements(IIndex)
 
     ranking_method = defaults['ranking_method']
 

@@ -17,15 +17,15 @@ import re
 
 from zopyx.txng3.core.interfaces import IStopwords
 from zopyx.txng3.ext.support import stopwordfilter
-from zope.interface import implements
+from zope.interface import implementer
 
 sw_dir = os.path.join(os.path.dirname(__file__), 'data', 'stopwords')
 
 
+@implementer(IStopwords)
 class Stopwords:
     """  class for handling stopwords """
 
-    implements(IStopwords)
 
     def __init__(self):
         self._cache = {}

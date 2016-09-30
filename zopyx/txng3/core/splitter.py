@@ -10,16 +10,16 @@
 import re
 
 from zope.component.interfaces import IFactory
-from zope.interface import implements, implementedBy
+from zope.interface import implementer, implementedBy
 
 from zopyx.txng3.core.interfaces import ISplitter
 from zopyx.txng3.ext.splitter import Splitter as _Splitter
 
 
+@implementer(ISplitter)
 class Splitter:
     """ A wrapper for TXNGSplitter """
 
-    implements(ISplitter)
 
     def __init__(self, *args, **kw):
         self._splitter = _Splitter(**kw)
@@ -28,9 +28,9 @@ class Splitter:
         return self._splitter.split(content)
 
 
+@implementer(IFactory)
 class SplitterFactory:
 
-    implements(IFactory)
 
     def __call__(self, maxlen=64, singlechar=True, casefolding=True, separator='+'):
         splitter = Splitter(maxlen=maxlen, singlechar=singlechar,
@@ -50,10 +50,10 @@ ADDITIONAL_CHARS = '\-'
 RE_FLAGS = re.I | re.M | re.UNICODE
 
 
+@implementer(ISplitter)
 class SimpleSplitter:
     """ A simple unicode-aware splitter """
 
-    implements(ISplitter)
 
     def __init__(self,
                  casefolding=1,
@@ -84,9 +84,9 @@ class SimpleSplitter:
         return terms
 
 
+@implementer(IFactory)
 class SimpleSplitterFactory:
 
-    implements(IFactory)
 
     def __call__(self, split_at=SPLIT_AT, punctuation=PUNCTUATION, *args, **kw):
         return SimpleSplitter(split_at=split_at, punctuation=punctuation, *args, **kw)

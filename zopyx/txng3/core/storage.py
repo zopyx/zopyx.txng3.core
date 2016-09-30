@@ -13,7 +13,7 @@ $Id: storage.py 2194 2009-12-08 06:06:24Z ajung $
 """
 
 from persistent import Persistent
-from zope.interface import implements, implementedBy
+from zope.interface import implementer, implementedBy
 from zope.component.interfaces import IFactory
 from .compatible import Persistent
 from BTrees.IOBTree import IOBTree
@@ -37,12 +37,12 @@ class _PS(Persistent):
         return self.s
 
 
+@implementer(IStorage)
 class Storage(Persistent):
     """ storage to keep the mapping wordId to sequence
         of document ids and vis-versa.
     """
 
-    implements(IStorage)
 
     def __init__(self):
         self.clear()
@@ -211,9 +211,9 @@ class Storage(Persistent):
         return positions
 
 
+@implementer(IStorageWithTermFrequency)
 class StorageWithTermFrequency(Storage):
 
-    implements(IStorageWithTermFrequency)
 
     def clear(self):
         Storage.clear(self)
@@ -250,9 +250,9 @@ class StorageWithTermFrequency(Storage):
         return self._frequencies
 
 
+@implementer(IFactory)
 class _StorageFactory:
 
-    implements(IFactory)
 
     def __init__(self, klass):
         self._klass = klass

@@ -16,7 +16,7 @@ import os
 import re
 
 from zopyx.txng3.ext import normalizer
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import INormalizer
 
 _dir = os.path.dirname(__file__)
@@ -24,10 +24,10 @@ _dir = os.path.dirname(__file__)
 nm_dir = os.path.join(os.path.dirname(__file__), 'data', 'normalizers')
 
 
+@implementer(INormalizer)
 class Normalizer:
     """ normalizes content based on a replacement table """
 
-    implements(INormalizer)
 
     def __init__(self):
         self._cache = {}  # language -> replacement table

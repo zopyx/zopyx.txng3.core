@@ -16,7 +16,7 @@ import warnings
 
 from zope.component import getUtility
 from zope.component.interfaces import ComponentLookupError
-from zope.interface import implements
+from zope.interface import implementer
 
 from zopyx.txng3.core.interfaces import IConverter
 from zopyx.txng3.core.interfaces import IIndexContentCollector, IIndexableContent
@@ -26,9 +26,9 @@ from .logger import LOG
 import collections
 
 
+@implementer(IIndexContentCollector)
 class IndexContentCollector:
 
-    implements(IIndexContentCollector)
 
     def __init__(self):
         self._d = {}

@@ -8,7 +8,7 @@
 
 import os
 import re
-from zope.interface import implements
+from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IThesaurus
 
 th_dir = os.path.join(os.path.dirname(__file__), 'data', 'thesaurus')
@@ -63,9 +63,9 @@ def readThesaurus(language, casefolding=True, filename=None):
     return synonyms, terms
 
 
+@implementer(IThesaurus)
 class Thesaurus:
 
-    implements(IThesaurus)
 
     def __init__(self, language, casefolding=True, filename=None):
         self._language = language
