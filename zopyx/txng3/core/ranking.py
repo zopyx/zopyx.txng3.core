@@ -19,22 +19,29 @@ from .config import DEFAULT_LANGUAGE
 
 def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
 
-    N = len(index)                                      # collection size, number of indexed documents
-    nbest = NBest(max)                                  # storage for the 'max' best hits
-    word_field_sequence = resultset.getWords()          # sequence of (word, field) tuples
+    # collection size, number of indexed documents
+    N = len(index)
+    # storage for the 'max' best hits
+    nbest = NBest(max)
+    # sequence of (word, field) tuples
+    word_field_sequence = resultset.getWords()
     lexicon_getWordId = index.getLexicon().getWordId    # shortcut
 
     IDF = {}                                            # inverse document frequency
-    wid_cache = {}                                      # maps word -> wid for performance reasons
-    storage_cache = {}                                  # cache for field -> index.getStorage(field)
-    frequencies_cache = {}                              # cache for field -> index.getStorage().getTermFrequency()
+    # maps word -> wid for performance reasons
+    wid_cache = {}
+    # cache for field -> index.getStorage(field)
+    storage_cache = {}
+    # cache for field -> index.getStorage().getTermFrequency()
+    frequencies_cache = {}
 
     # first calculate the inverse document frequency for all found words
     for word, field in word_field_sequence:
 
         # might be replaced with getWordIds()
         wid = lexicon_getWordId(word, language)
-        if not wid: continue
+        if not wid:
+            continue
 
         wid_cache[word] = wid
         if field not in storage_cache:
@@ -49,7 +56,6 @@ def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
         else:
             IDF[word] = log(1.0 + N / TF)
 
-
     # now rank all documents
     for docid in resultset.getDocids():
 
@@ -58,7 +64,8 @@ def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
 
         for word, field in word_field_sequence:
             wid = wid_cache.get(word)
-            if not wid: continue
+            if not wid:
+                continue
 
             # document term frequency
             try:
@@ -87,7 +94,6 @@ def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
         # normalize rank
         if rank != 0.0:
             rank = rank / DWT
-
 
         # add to NBest instance - we are only interesed in the
         # documents with the best score (rank)

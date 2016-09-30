@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -18,5 +18,4 @@ class SearchRequest:
         return self.index
 
     def __repr__(self):
-        return '%s (%s)' % (self.__class__.__name__, ', '.join(['%s=%s' % (k,v) for k,v in list(self.__dict__.items())]))
-
+        return '%s (%s)' % (self.__class__.__name__, ', '.join(['%s=%s' % (k, v) for k, v in list(self.__dict__.items())]))

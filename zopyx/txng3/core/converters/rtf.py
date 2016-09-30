@@ -22,6 +22,7 @@ from xml.sax.handler import ContentHandler
 
 from zopyx.txng3.core.baseconverter import BaseConverter, findOnWin32Path
 
+
 class RTFtextHandler(ContentHandler):
 
     def characters(self, ch):
@@ -36,13 +37,13 @@ class RTFtextHandler(ContentHandler):
 
 class Converter(BaseConverter):
 
-    content_type = ('application/rtf','text/rtf')
+    content_type = ('application/rtf', 'text/rtf')
     content_description = "RTF"
     depends_on = 'rtf2xml'
-    
+
     def __init__(self):
         BaseConverter.__init__(self)
-        
+
         if sys.platform == 'win32':
             self._rtf2xml = findOnWin32Path(self.depends_on)
 
@@ -54,17 +55,18 @@ class Converter(BaseConverter):
         if sys.platform == 'win32':
             tempdir = os.getenv("TEMP", os.getenv("TMP", ''))
             tempbat = tempfile.mktemp(suffix='.bat', prefix='temp_converter_')
-            
-            open(tempbat,'w+').write('cd /d "%s"\n%s "%s" --no-dtd "%s"' % (
+
+            open(tempbat, 'w+').write('cd /d "%s"\n%s "%s" --no-dtd "%s"' % (
                 tempdir, sys.executable, self._rtf2xml, tmp_name))
-            
+
             try:
                 xmlstr = self.execute(tempbat)
             finally:
                 os.remove(tempbat)
         else:
-            xmlstr = self.execute('cd /tmp && rtf2xml --no-dtd "%s"' % tmp_name)
-        
+            xmlstr = self.execute(
+                'cd /tmp && rtf2xml --no-dtd "%s"' % tmp_name)
+
         handler = RTFtextHandler()
         xml.sax.parseString(xmlstr, handler)
         return handler.getData(), 'utf-8'

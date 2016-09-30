@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -12,7 +12,8 @@ WinWord converter
 $Id: doc.py 2055 2009-03-14 10:13:45Z ajung $
 """
 
-import os, sys
+import os
+import sys
 
 from zopyx.txng3.core.exceptions import ConversionError
 from zopyx.txng3.core.baseconverter import BaseConverter
@@ -37,7 +38,7 @@ class Converter(BaseConverter):
     def convert(self, doc, encoding, mimetype,
                 logError=False, raiseException=False):
         """Convert WinWord document to raw text"""
-        
+
         tmp_name = self.saveFile(doc)
         err = TmpFile('')
         if sys.platform == 'win32':
@@ -48,7 +49,7 @@ class Converter(BaseConverter):
             result = (self.execute(
                 '%s -c utf-8 --nographics -x "%s" "%s" 2> "%s"' % (
                     self.depends_on, wvConf_file, tmp_name, str(err))), 'utf-8')
-        
+
         try:
             errors = open(str(err), 'r+').read()
         except OSError:
@@ -58,10 +59,10 @@ class Converter(BaseConverter):
                 LOG.warn('Converter %s experienced an error %s' % (
                     self.content_description, errors)
                 )
-            
+
             if raiseException:
                 raise ConversionError(errors)
-        
+
         return result
 
 DocConverter = Converter()

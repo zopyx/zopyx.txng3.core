@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -8,8 +8,8 @@
 
 from .converter import IConverter
 from .index import IIndex
-from .indexable import  IIndexContentCollector
-from .indexable import  IIndexableContent
+from .indexable import IIndexContentCollector
+from .indexable import IIndexableContent
 from .lexicon import ILexicon
 from .normalizer import INormalizer
 from .parser import IParser

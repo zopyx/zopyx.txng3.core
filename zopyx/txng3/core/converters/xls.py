@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -17,6 +17,7 @@ from zopyx.txng3.core.exceptions import ConversionError
 from zopyx.txng3.core.baseconverter import BaseConverter
 from zopyx.txng3.core.baseconverter import TmpFile
 from zopyx.txng3.core.logger import LOG
+
 
 class Converter(BaseConverter):
 
@@ -39,7 +40,7 @@ class Converter(BaseConverter):
         else:
             result = (self.execute('xls2csv -d 8859-1 -q 0 "%s" 2> %s' % (
                 tmp_name, str(err))), 'iso-8859-15')
-        
+
         try:
             errors = open(str(err), 'r+').read()
         except OSError:
@@ -51,7 +52,7 @@ class Converter(BaseConverter):
                 )
             if raiseException:
                 raise ConversionError(errors)
-        
+
         return result
 
 XLSConverter = Converter()

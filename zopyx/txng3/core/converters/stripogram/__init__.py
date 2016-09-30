@@ -9,6 +9,7 @@
 from .html2text import HTML2Text
 from .html2safehtml import HTML2SafeHTML
 
+
 def html2text(s, ignore_tags=(), indent_width=4, page_width=80):
     ignore_tags = [t.lower() for t in ignore_tags]
     parser = HTML2Text(ignore_tags, indent_width, page_width)
@@ -16,6 +17,7 @@ def html2text(s, ignore_tags=(), indent_width=4, page_width=80):
     parser.close()
     parser.generate()
     return parser.result
+
 
 def html2safehtml(s, valid_tags=('b', 'a', 'i', 'br', 'p')):
     valid_tags = [t.lower() for t in valid_tags]
@@ -32,4 +34,5 @@ except ImportError:
     pass
 else:
     ModuleSecurityInfo('Products.stripogram').declareObjectPublic()
-    ModuleSecurityInfo('Products.stripogram').declarePublic('html2text', 'html2safehtml')
+    ModuleSecurityInfo('Products.stripogram').declarePublic(
+        'html2text', 'html2safehtml')

@@ -22,10 +22,10 @@ from zopyx.txng3.core.interfaces import IResultSet
 from .ranking import cosine_ranking
 from .config import DEFAULT_LANGUAGE
 
+
 @implementer(IResultSet)
 class ResultSet:
     """ A datastructure to store results from subqueries """
-
 
     def __init__(self, docids, words):
         self.docids = docids        # sequence of document ids
@@ -33,7 +33,7 @@ class ResultSet:
         self.ranked_results = None
 
     def __repr__(self):
-        return '%s(%s), %s' % (self.__class__.__name__, self.docids, [ (w,f) for w,f in self.words])
+        return '%s(%s), %s' % (self.__class__.__name__, self.docids, [(w, f) for w, f in self.words])
 
     def getWords(self):
         return self.words
@@ -49,7 +49,6 @@ class ResultSet:
         # BBB, fall back to cosine ranking
         self.ranking(cosine_ranking, index, language, nbest)
 
-
     def getRankedResults(self):
         return list(self.items())
 
@@ -64,7 +63,7 @@ class ResultSet:
         d = IIBucket()
         if self.ranked_results:
             max = self.ranked_results[0][1]
-            for k,v in self.ranked_results:
+            for k, v in self.ranked_results:
                 if max == 0:
                     d[k] = 0
                 else:

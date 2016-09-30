@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -12,7 +12,8 @@ Normalizer
 $Id: normalization.py 2080 2009-03-14 11:23:05Z ajung $
 """
 
-import os, re
+import os
+import re
 
 from zopyx.txng3.ext import normalizer
 from zope.interface import implements
@@ -29,13 +30,13 @@ class Normalizer:
     implements(INormalizer)
 
     def __init__(self):
-        self._cache = {}  # language -> replacement table 
+        self._cache = {}  # language -> replacement table
 
     def availableLanguages(self):
         files = [f for f in os.listdir(nm_dir) if f.endswith('.txt')]
         return [os.path.splitext(f)[0] for f in files]
 
-    def process(self, words, language): 
+    def process(self, words, language):
         if language not in self._cache:
             table = readNormalizer(language)
             self._cache[language] = normalizer.Normalizer(table)
@@ -46,10 +47,11 @@ class Normalizer:
         return readNormalizer(language)
 
     def __repr__(self):
-        return "%s (%s)" % (self.__class__.__name__, self.availableLanguages()) 
+        return "%s (%s)" % (self.__class__.__name__, self.availableLanguages())
 
 
 enc_reg = re.compile('#\s*encoding\s*=\s*([\w\-]+)')
+
 
 def readNormalizer(language):
     """ read a stopword file (line-by-line) from disk.
@@ -59,27 +61,29 @@ def readNormalizer(language):
 
     encoding = None
 
-    fname = os.path.join(nm_dir, '%s.txt' % language) 
+    fname = os.path.join(nm_dir, '%s.txt' % language)
     if not os.path.exists(fname):
         return []
 
     lst = []
-    for l in open(fname): 
-        if not l.strip(): continue
+    for l in open(fname):
+        if not l.strip():
+            continue
 
         mo = enc_reg.match(l)
         if mo:
-            encoding= mo.group(1)
+            encoding = mo.group(1)
             continue
 
-        if l.startswith('#'): continue
+        if l.startswith('#'):
+            continue
 
         fields = l.split()
         if len(fields) == 1:
             fields = (fields[0], '')  # replace XX with ''
 
-        k = str(fields[0], encoding) 
-        v = str(fields[1], encoding) 
+        k = str(fields[0], encoding)
+        v = str(fields[1], encoding)
 
         lst.append((k, v))
 

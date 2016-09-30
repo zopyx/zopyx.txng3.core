@@ -8,7 +8,8 @@
 # LICENSE.txt for the terms of this license.
 ###########################################################################
 
-import sys, unittest
+import sys
+import unittest
 
 from zope.interface.verify import verifyClass
 
@@ -39,92 +40,92 @@ class ResultSetTests(unittest.TestCase):
         self.assertEqual(rs_words, words)
 
     def testUnion(self):
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         rs = unionResultSets((r1,))
-        self._check(rs, (2,3,4) , ('foo', 'bar'))
+        self._check(rs, (2, 3, 4), ('foo', 'bar'))
 
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
-        r2 = ResultSet(DocidList((3,4,5)), ('dummy', 'bar'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
+        r2 = ResultSet(DocidList((3, 4, 5)), ('dummy', 'bar'))
         rs = unionResultSets((r1, r2))
         rs2 = unionResultSets((r2, r1))
-        self._check(rs, (2,3,4,5) , ('foo', 'bar', 'dummy'))
-        self._check(rs2, (2,3,4,5) , ('foo', 'bar', 'dummy'))
+        self._check(rs, (2, 3, 4, 5), ('foo', 'bar', 'dummy'))
+        self._check(rs2, (2, 3, 4, 5), ('foo', 'bar', 'dummy'))
 
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         r2 = ResultSet(DocidList(), ())
         rs = unionResultSets((r1, r2))
         rs2 = unionResultSets((r2, r1))
-        self._check(rs, (2,3,4) , ('foo', 'bar'))
-        self._check(rs2, (2,3,4) , ('foo', 'bar'))
+        self._check(rs, (2, 3, 4), ('foo', 'bar'))
+        self._check(rs2, (2, 3, 4), ('foo', 'bar'))
 
         r1 = ResultSet(DocidList(), ())
-        r2 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r2 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         rs = unionResultSets((r1, r2))
         rs2 = unionResultSets((r2, r1))
-        self._check(rs, (2,3,4) , ('foo', 'bar'))
-        self._check(rs2, (2,3,4) , ('foo', 'bar'))
+        self._check(rs, (2, 3, 4), ('foo', 'bar'))
+        self._check(rs2, (2, 3, 4), ('foo', 'bar'))
 
         r1 = ResultSet(DocidList(), ())
-        r2 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
-        r3 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r2 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
+        r3 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         rs = unionResultSets((r1, r2, r3))
         rs2 = unionResultSets((r3, r1, r2))
-        self._check(rs, (2,3,4) , ('foo', 'bar'))
-        self._check(rs2, (2,3,4) , ('foo', 'bar'))
+        self._check(rs, (2, 3, 4), ('foo', 'bar'))
+        self._check(rs2, (2, 3, 4), ('foo', 'bar'))
 
     def testIntersection(self):
         rs = intersectionResultSets(())
-        self._check(rs, () , ())
+        self._check(rs, (), ())
 
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         rs = intersectionResultSets((r1, ))
-        self._check(rs, (2,3,4) , ('foo', 'bar'))
+        self._check(rs, (2, 3, 4), ('foo', 'bar'))
 
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
-        r2 = ResultSet(DocidList((4,5,6)), ('foo', 'buzz'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
+        r2 = ResultSet(DocidList((4, 5, 6)), ('foo', 'buzz'))
         rs = intersectionResultSets((r1, r2))
         rs2 = intersectionResultSets((r2, r1))
-        self._check(rs, (4,) , ('foo', 'bar', 'buzz'))
-        self._check(rs2, (4,) , ('foo', 'bar', 'buzz'))
+        self._check(rs, (4,), ('foo', 'bar', 'buzz'))
+        self._check(rs2, (4,), ('foo', 'bar', 'buzz'))
 
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         r2 = ResultSet(DocidList(), ())
         rs = intersectionResultSets((r1, r2))
         rs2 = intersectionResultSets((r2, r1))
-        self._check(rs, () , ('foo', 'bar'))
-        self._check(rs2, () , ('foo', 'bar'))
+        self._check(rs, (), ('foo', 'bar'))
+        self._check(rs2, (), ('foo', 'bar'))
 
         r2 = ResultSet(DocidList(), ())
-        r1 = ResultSet(DocidList((2,3,4)), ('foo', 'bar'))
+        r1 = ResultSet(DocidList((2, 3, 4)), ('foo', 'bar'))
         rs = intersectionResultSets((r1, r2))
         rs2 = intersectionResultSets((r2, r1))
-        self._check(rs, () , ('foo', 'bar'))
-        self._check(rs2, () , ('foo', 'bar'))
+        self._check(rs, (), ('foo', 'bar'))
+        self._check(rs2, (), ('foo', 'bar'))
 
-        r1 = ResultSet(DocidList((2,3,4,5)), ('foo', 'bar'))
-        r2 = ResultSet(DocidList((4,5,6)), ('foo', 'buzz'))
-        r3 = ResultSet(DocidList((1,3,4,5)), ('a1', 'a2'))
+        r1 = ResultSet(DocidList((2, 3, 4, 5)), ('foo', 'bar'))
+        r2 = ResultSet(DocidList((4, 5, 6)), ('foo', 'buzz'))
+        r3 = ResultSet(DocidList((1, 3, 4, 5)), ('a1', 'a2'))
         rs = intersectionResultSets((r1, r2, r3))
         rs2 = intersectionResultSets((r3, r2, r1))
         rs3 = intersectionResultSets((r3, r1, r2))
-        self._check(rs, (4,5) , ('foo', 'bar', 'buzz', 'a1', 'a2'))
-        self._check(rs2, (4,5) , ('foo', 'bar', 'buzz', 'a1', 'a2'))
-        self._check(rs3, (4,5) , ('foo', 'bar', 'buzz', 'a1', 'a2'))
+        self._check(rs, (4, 5), ('foo', 'bar', 'buzz', 'a1', 'a2'))
+        self._check(rs2, (4, 5), ('foo', 'bar', 'buzz', 'a1', 'a2'))
+        self._check(rs3, (4, 5), ('foo', 'bar', 'buzz', 'a1', 'a2'))
 
     def testInverse(self):
         all_docids = range(10)
 
-        r = ResultSet(DocidList((2,3)), ('foo',))
+        r = ResultSet(DocidList((2, 3)), ('foo',))
         rs = inverseResultSet(all_docids, r)
-        self._check(rs, (0,1,4,5,6,7,8,9) , ('foo',))
+        self._check(rs, (0, 1, 4, 5, 6, 7, 8, 9), ('foo',))
 
-        r = ResultSet(DocidList((4,3,2)), ('foo',))
+        r = ResultSet(DocidList((4, 3, 2)), ('foo',))
         rs = inverseResultSet(all_docids, r)
-        self._check(rs, (0,1,5,6,7,8,9) , ('foo',))
+        self._check(rs, (0, 1, 5, 6, 7, 8, 9), ('foo',))
 
         r = ResultSet(DocidList(), ('foo',))
         rs = inverseResultSet(all_docids, r)
-        self._check(rs, all_docids , ('foo',))
+        self._check(rs, all_docids, ('foo',))
 
         r = ResultSet(DocidList(all_docids), ('foo',))
         rs = inverseResultSet(all_docids, r)
@@ -134,10 +135,11 @@ class ResultSetTests(unittest.TestCase):
 class RankingTest(TextIndexNGTestCase):
 
     def testRanking(self):
-        r = ResultSet(DocidList((2,3)), (('foo', 5),))
+        r = ResultSet(DocidList((2, 3)), (('foo', 5),))
 
         called = []
         result = object()
+
         def ranking_function(*args):
             called.append(args)
             return result
@@ -150,7 +152,7 @@ class RankingTest(TextIndexNGTestCase):
         self.assertEquals(result, r.ranked_results)
 
     def testBBBCosineRanking(self):
-        r = ResultSet(DocidList((2,3)), (('foo', 5),))
+        r = ResultSet(DocidList((2, 3)), (('foo', 5),))
         index = Index()
         r.cosine_ranking(index)
 
@@ -161,19 +163,21 @@ def test_suite():
     s.addTest(unittest.makeSuite(RankingTest))
     return s
 
+
 def main():
-   unittest.TextTestRunner().run(test_suite())
+    unittest.TextTestRunner().run(test_suite())
+
 
 def debug():
-   test_suite().debug()
+    test_suite().debug()
+
 
 def pdebug():
     import pdb
     pdb.run('debug()')
 
-if __name__=='__main__':
-   if len(sys.argv) > 1:
-      globals()[sys.argv[1]]()
-   else:
-      main()
-
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        globals()[sys.argv[1]]()
+    else:
+        main()

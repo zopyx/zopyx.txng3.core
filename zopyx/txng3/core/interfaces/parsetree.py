@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -10,10 +10,11 @@
 
 from zope.interface import Interface
 
+
 class IParseTreeNode(Interface):
     """ interface class for ParseTreeNode """
 
-    def getType():  
+    def getType():
         """ return type of node """
 
     def getValue():
@@ -23,4 +24,4 @@ class IParseTreeNode(Interface):
         """ set the value of a node """
 
     def getField():
-        """ return the field value for the node """            
+        """ return the field value for the node """

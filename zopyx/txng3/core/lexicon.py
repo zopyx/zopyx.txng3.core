@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V3                
+# TextIndexNG V3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -40,12 +40,11 @@ except ImportError:
 class Lexicon(Persistent):
     """Maps words to word ids """
 
-
     def __init__(self, languages=()):
         self._words = OOBTree()
         self._wids = IOBTree()   # wid -> word
         self._nextid = BTrees.Length.Length()
-        for l in languages: 
+        for l in languages:
             self.addLanguage(l)
 
     def __len__(self):
@@ -54,7 +53,7 @@ class Lexicon(Persistent):
     def addLanguage(self, language):
         """ prepare lexicon for a new language """
         self._words[language] = OIBTree()
-    
+
     def getLanguages(self):
         """ return sequence of languages """
         return tuple(self._words.keys())
@@ -79,13 +78,14 @@ class Lexicon(Persistent):
         """ insert a sequence of words and return a sequence of 
             corresponding wordids.
         """
-        tree = self._getTree(language)            
+        tree = self._getTree(language)
 
         wids = []
         for word in words:
 
             if not isinstance(word, str):
-                raise LexiconError('Only unicode string can be indexed (%s)' % repr(word))
+                raise LexiconError(
+                    'Only unicode string can be indexed (%s)' % repr(word))
 
             try:
                 wids.append(tree[word])
@@ -95,21 +95,21 @@ class Lexicon(Persistent):
                 tree[word] = wid
                 self._wids[wid] = (word, language)
                 wids.append(wid)
-        
+
         return wids
 
     def getWordId(self, word, language=DEFAULT_LANGUAGE):
         """ Return the wordid for a given word in a given language or None if 
             the word is not available.
         """
-        tree = self._getTree(language)            
+        tree = self._getTree(language)
         return tree.get(word, None)
 
     def getWordIds(self, words, language=DEFAULT_LANGUAGE):
         """ Return sequence of wordids for a sequence of words in a given language """
-        tree = self._getTree(language)            
+        tree = self._getTree(language)
         get = tree.get
-        return [get(word, None) for word in words]        
+        return [get(word, None) for word in words]
 
     def getWord(self, wid):
         """ Return the word for a given wordid or None if not available """
@@ -130,11 +130,11 @@ class Lexicon(Persistent):
 
     def getWordsForRightTruncation(self, prefix, language=DEFAULT_LANGUAGE):
         """ Return a sequence of words with a common prefix """
-        
+
         if not isinstance(prefix, str):
             raise LexiconError('Prefix must be unicode (%s)' % prefix)
-        tree = self._getTree(language)            
-        return  tree.keys(prefix, prefix + '\uffff') 
+        tree = self._getTree(language)
+        return tree.keys(prefix, prefix + '\uffff')
 
     def getWordsInRange(self, w1, w2, language=DEFAULT_LANGUAGE):
         """ return all words within w1...w2 """
@@ -161,19 +161,20 @@ class Lexicon(Persistent):
 
     def _createRegex(self, pattern):
         """Translate a 'pattern into a regular expression """
-        return '%s$' % pattern.replace( '*', '.*').replace( '?', '.')
+        return '%s$' % pattern.replace('*', '.*').replace('?', '.')
 
-    def getSimiliarWords(self, term, threshold=0.75, language=DEFAULT_LANGUAGE, common_length=-1): 
+    def getSimiliarWords(self, term, threshold=0.75, language=DEFAULT_LANGUAGE, common_length=-1):
         """ return a list of similar words based on the levenshtein distance """
         if not have_lv:
-            raise LexiconError('Method not allowed. Please install the Levenshtein extension properly')
+            raise LexiconError(
+                'Method not allowed. Please install the Levenshtein extension properly')
         tree = self._getTree(language)
         if common_length > -1:
             prefix = term[:common_length]
             words = tree.keys(prefix, prefix + '\uffff')
         else:
-            words = list(tree.keys())                
-        return [(w, ratio(w,term)) for w in words  if ratio(w, term) > threshold]
+            words = list(tree.keys())
+        return [(w, ratio(w, term)) for w in words if ratio(w, term) > threshold]
 
     def getWordsForPattern(self, pattern, language=DEFAULT_LANGUAGE):
         """ perform full pattern matching """
@@ -181,23 +182,23 @@ class Lexicon(Persistent):
         # search for prefix in word
         mo = re.search('([\?\*])', pattern)
         if mo is None:
-            return [] 
+            return []
 
         pos = mo.start(1)
-        if pos==0: 
-            raise LexiconError('pattern "%s" should not start with a globbing character' % pattern)
+        if pos == 0:
+            raise LexiconError(
+                'pattern "%s" should not start with a globbing character' % pattern)
 
         prefix = pattern[:pos]
         tree = self._getTree(language)
         words = tree.keys(prefix, prefix + '\uffff')
         regex = re.compile(self._createRegex(pattern), re.UNICODE)
         regex_match = regex.match
-        return [word  for word in words if regex_match(word)] 
+        return [word for word in words if regex_match(word)]
 
 
 @implementer(IFactory)
 class LexiconFactory:
-    
 
     def __call__(self, languages=()):
         return Lexicon(languages)

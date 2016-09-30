@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -8,7 +8,8 @@
 
 """ interface for Index"""
 
-from zope.interface import Interface 
+from zope.interface import Interface
+
 
 class IIndex(Interface):
     """ interface class for Index"""
@@ -19,7 +20,7 @@ class IIndex(Interface):
     def unindex_object(docid):
         """ remove the object from the index """
 
-    def search(query, **kw): 
+    def search(query, **kw):
         """ Perform a search 'query' is the query string and **kw are optional 
             parameters specific to the index.
         """

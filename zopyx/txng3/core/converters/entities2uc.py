@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -7,12 +7,17 @@
 ###########################################################################
 
 entitydefs = {
-    'AElig':    '\u00c6',         # latin capital letter AE = latin capital ligature AE, U+00C6 ISOlat1
+    # latin capital letter AE = latin capital ligature AE, U+00C6 ISOlat1
+    'AElig':    '\u00c6',
     'Aacute':   '\u00c1',         # latin capital letter A with acute, U+00C1 ISOlat1
     'Acirc':    '\u00c2',         # latin capital letter A with circumflex, U+00C2 ISOlat1
-    'Agrave':   '\u00c0',         # latin capital letter A with grave = latin capital letter A grave, U+00C0 ISOlat1
+    # latin capital letter A with grave = latin capital letter A grave, U+00C0
+    # ISOlat1
+    'Agrave':   '\u00c0',
     'Alpha':    '\u0391',         # greek capital letter alpha, U+0391
-    'Aring':    '\u00c5',         # latin capital letter A with ring above = latin capital letter A ring, U+00C5 ISOlat1
+    # latin capital letter A with ring above = latin capital letter A ring,
+    # U+00C5 ISOlat1
+    'Aring':    '\u00c5',
     'Atilde':   '\u00c3',         # latin capital letter A with tilde, U+00C3 ISOlat1
     'Auml':     '\u00c4',         # latin capital letter A with diaeresis, U+00C4 ISOlat1
     'Beta':     '\u0392',         # greek capital letter beta, U+0392
@@ -45,7 +50,9 @@ entitydefs = {
     'Ograve':   '\u00d2',         # latin capital letter O with grave, U+00D2 ISOlat1
     'Omega':    '\u03a9',         # greek capital letter omega, U+03A9 ISOgrk3
     'Omicron':  '\u039f',         # greek capital letter omicron, U+039F
-    'Oslash':   '\u00d8',         # latin capital letter O with stroke = latin capital letter O slash, U+00D8 ISOlat1
+    # latin capital letter O with stroke = latin capital letter O slash,
+    # U+00D8 ISOlat1
+    'Oslash':   '\u00d8',
     'Otilde':   '\u00d5',         # latin capital letter O with tilde, U+00D5 ISOlat1
     'Ouml':     '\u00d6',         # latin capital letter O with diaeresis, U+00D6 ISOlat1
     'Phi':      '\u03a6',         # greek capital letter phi, U+03A6 ISOgrk3
@@ -71,8 +78,11 @@ entitydefs = {
     'aacute':   '\u00e1',         # latin small letter a with acute, U+00E1 ISOlat1
     'acirc':    '\u00e2',         # latin small letter a with circumflex, U+00E2 ISOlat1
     'acute':    '\u00b4',         # acute accent = spacing acute, U+00B4 ISOdia
-    'aelig':    '\u00e6',         # latin small letter ae = latin small ligature ae, U+00E6 ISOlat1
-    'agrave':   '\u00e0',         # latin small letter a with grave = latin small letter a grave, U+00E0 ISOlat1
+    # latin small letter ae = latin small ligature ae, U+00E6 ISOlat1
+    'aelig':    '\u00e6',
+    # latin small letter a with grave = latin small letter a grave, U+00E0
+    # ISOlat1
+    'agrave':   '\u00e0',
     'alefsym':  '\u2135',         # alef symbol = first transfinite cardinal, U+2135 NEW
     'alpha':    '\u03b1',         # greek small letter alpha, U+03B1 ISOgrk3
     #'amp':      u'\u0026',        # ampersand, U+0026 ISOnum
@@ -80,8 +90,10 @@ entitydefs = {
     'ang':      '\u2220',         # angle, U+2220 ISOamso
     'ap':      '\u2245',          # approximate,
     'apos':      '\u0027',        # apostrophe
-    'ast':       '\00D7',          #star
-    'aring':    '\u00e5',         # latin small letter a with ring above = latin small letter a ring, U+00E5 ISOlat1
+    'ast':       '\00D7',  # star
+    # latin small letter a with ring above = latin small letter a ring, U+00E5
+    # ISOlat1
+    'aring':    '\u00e5',
     'asymp':    '\u2248',         # almost equal to = asymptotic to, U+2248 ISOamsr
     'atilde':   '\u00e3',         # latin small letter a with tilde, U+00E3 ISOlat1
     'auml':     '\u00e4',         # latin small letter a with diaeresis, U+00E4 ISOlat1
@@ -98,7 +110,8 @@ entitydefs = {
     'clubs':    '\u2663',         # black club suit = shamrock, U+2663 ISOpub
     'cong':     '\u2245',         # approximately equal to, U+2245 ISOtech
     'copy':     '\u00a9',         # copyright sign, U+00A9 ISOnum
-    'crarr':    '\u21b5',         # downwards arrow with corner leftwards = carriage return, U+21B5 NEW
+    # downwards arrow with corner leftwards = carriage return, U+21B5 NEW
+    'crarr':    '\u21b5',
     'cup':      '\u222a',         # union = cup, U+222A ISOtech
     'curren':   '\u00a4',         # currency sign, U+00A4 ISOnum
     'dArr':     '\u21d3',         # downwards double arrow, U+21D3 ISOamsa
@@ -121,11 +134,15 @@ entitydefs = {
     'euml':     '\u00eb',         # latin small letter e with diaeresis, U+00EB ISOlat1
     'euro':     '\u20ac',         # euro sign, U+20AC NEW
     'exist':    '\u2203',         # there exists, U+2203 ISOtech
-    'fnof':     '\u0192',         # latin small f with hook = function = florin, U+0192 ISOtech
+    # latin small f with hook = function = florin, U+0192 ISOtech
+    'fnof':     '\u0192',
     'forall':   '\u2200',         # for all, U+2200 ISOtech
-    'frac12':   '\u00bd',         # vulgar fraction one half = fraction one half, U+00BD ISOnum
-    'frac14':   '\u00bc',         # vulgar fraction one quarter = fraction one quarter, U+00BC ISOnum
-    'frac34':   '\u00be',         # vulgar fraction three quarters = fraction three quarters, U+00BE ISOnum
+    # vulgar fraction one half = fraction one half, U+00BD ISOnum
+    'frac12':   '\u00bd',
+    # vulgar fraction one quarter = fraction one quarter, U+00BC ISOnum
+    'frac14':   '\u00bc',
+    # vulgar fraction three quarters = fraction three quarters, U+00BE ISOnum
+    'frac34':   '\u00be',
     'frasl':    '\u2044',         # fraction slash, U+2044 NEW
     'gamma':    '\u03b3',         # greek small letter gamma, U+03B3 ISOgrk3
     'ge':       '\u2265',         # greater-than or equal to, U+2265 ISOtech
@@ -142,14 +159,17 @@ entitydefs = {
     'infin':    '\u221e',         # infinity, U+221E ISOtech
     'int':      '\u222b',         # integral, U+222B ISOtech
     'iota':     '\u03b9',         # greek small letter iota, U+03B9 ISOgrk3
-    'iquest':   '\u00bf',         # inverted question mark = turned question mark, U+00BF ISOnum
+    # inverted question mark = turned question mark, U+00BF ISOnum
+    'iquest':   '\u00bf',
     'isin':     '\u2208',         # element of, U+2208 ISOtech
     'iuml':     '\u00ef',         # latin small letter i with diaeresis, U+00EF ISOlat1
     'kappa':    '\u03ba',         # greek small letter kappa, U+03BA ISOgrk3
     'lArr':     '\u21d0',         # leftwards double arrow, U+21D0 ISOtech
     'lambda':   '\u03bb',         # greek small letter lambda, U+03BB ISOgrk3
     'lang':     '\u2329',         # left-pointing angle bracket = bra, U+2329 ISOtech
-    'laquo':    '\u00ab',         # left-pointing double angle quotation mark = left pointing guillemet, U+00AB ISOnum
+    # left-pointing double angle quotation mark = left pointing guillemet,
+    # U+00AB ISOnum
+    'laquo':    '\u00ab',
     'larr':     '\u2190',         # leftwards arrow, U+2190 ISOnum
     'lceil':    '\u2308',         # left ceiling = apl upstile, U+2308 ISOamsc
     'ldquo':    '\u201c',         # left double quotation mark, U+201C ISOnum
@@ -158,13 +178,16 @@ entitydefs = {
     'lowast':   '\u2217',         # asterisk operator, U+2217 ISOtech
     'loz':      '\u25ca',         # lozenge, U+25CA ISOpub
     'lrm':      '\u200e',         # left-to-right mark, U+200E NEW RFC 2070
-    'lsaquo':   '\u2039',         # single left-pointing angle quotation mark, U+2039 ISO proposed
+    # single left-pointing angle quotation mark, U+2039 ISO proposed
+    'lsaquo':   '\u2039',
     'lsquo':    '\u2018',         # left single quotation mark, U+2018 ISOnum
     #'lt':       u'\u003c',        # less-than sign, U+003C ISOnum
-    'macr':     '\u00af',         # macron = spacing macron = overline = APL overbar, U+00AF ISOdia
+    # macron = spacing macron = overline = APL overbar, U+00AF ISOdia
+    'macr':     '\u00af',
     'mdash':    '\u2014',         # em dash, U+2014 ISOpub
     'micro':    '\u00b5',         # micro sign, U+00B5 ISOnum
-    'middot':   '\u00b7',         # middle dot = Georgian comma = Greek middle dot, U+00B7 ISOnum
+    # middle dot = Georgian comma = Greek middle dot, U+00B7 ISOnum
+    'middot':   '\u00b7',
     'minus':    '\u2212',         # minus sign, U+2212 ISOtech
     'mu':       '\u03bc',         # greek small letter mu, U+03BC ISOgrk3
     'nabla':    '\u2207',         # nabla = backward difference, U+2207 ISOtech
@@ -188,7 +211,9 @@ entitydefs = {
     'or':       '\u2228',         # logical or = vee, U+2228 ISOtech
     'ordf':     '\u00aa',         # feminine ordinal indicator, U+00AA ISOnum
     'ordm':     '\u00ba',         # masculine ordinal indicator, U+00BA ISOnum
-    'oslash':   '\u00f8',         # latin small letter o with stroke, = latin small letter o slash, U+00F8 ISOlat1
+    # latin small letter o with stroke, = latin small letter o slash, U+00F8
+    # ISOlat1
+    'oslash':   '\u00f8',
     'otilde':   '\u00f5',         # latin small letter o with tilde, U+00F5 ISOlat1
     'otimes':   '\u2297',         # circled times = vector product, U+2297 ISOamsb
     'ouml':     '\u00f6',         # latin small letter o with diaeresis, U+00F6 ISOlat1
@@ -210,16 +235,20 @@ entitydefs = {
     'rArr':     '\u21d2',         # rightwards double arrow, U+21D2 ISOtech
     'radic':    '\u221a',         # square root = radical sign, U+221A ISOtech
     'rang':     '\u232a',         # right-pointing angle bracket = ket, U+232A ISOtech
-    'raquo':    '\u00bb',         # right-pointing double angle quotation mark = right pointing guillemet, U+00BB ISOnum
+    # right-pointing double angle quotation mark = right pointing guillemet,
+    # U+00BB ISOnum
+    'raquo':    '\u00bb',
     'rarr':     '\u2192',         # rightwards arrow, U+2192 ISOnum
     'rceil':    '\u2309',         # right ceiling, U+2309 ISOamsc
     'rdquo':    '\u201d',         # right double quotation mark, U+201D ISOnum
     'real':     '\u211c',         # blackletter capital R = real part symbol, U+211C ISOamso
-    'reg':      '\u00ae',         # registered sign = registered trade mark sign, U+00AE ISOnum
+    # registered sign = registered trade mark sign, U+00AE ISOnum
+    'reg':      '\u00ae',
     'rfloor':   '\u230b',         # right floor, U+230B ISOamsc
     'rho':      '\u03c1',         # greek small letter rho, U+03C1 ISOgrk3
     'rlm':      '\u200f',         # right-to-left mark, U+200F NEW RFC 2070
-    'rsaquo':   '\u203a',         # single right-pointing angle quotation mark, U+203A ISO proposed
+    # single right-pointing angle quotation mark, U+203A ISO proposed
+    'rsaquo':   '\u203a',
     'rsquo':    '\u2019',         # right single quotation mark, U+2019 ISOnum
     'sbquo':    '\u201a',         # single low-9 quotation mark, U+201A NEW
     'scaron':   '\u0161',         # latin small letter s with caron, U+0161 ISOlat2
@@ -228,15 +257,18 @@ entitydefs = {
     'shy':      '\u00ad',         # soft hyphen = discretionary hyphen, U+00AD ISOnum
     'sigma':    '\u03c3',         # greek small letter sigma, U+03C3 ISOgrk3
     'sigmaf':   '\u03c2',         # greek small letter final sigma, U+03C2 ISOgrk3
-    'sim':      '\u223c',         # tilde operator = varies with = similar to, U+223C ISOtech
+    # tilde operator = varies with = similar to, U+223C ISOtech
+    'sim':      '\u223c',
     'spades':   '\u2660',         # black spade suit, U+2660 ISOpub
     'sub':      '\u2282',         # subset of, U+2282 ISOtech
     'sube':     '\u2286',         # subset of or equal to, U+2286 ISOtech
     'sum':      '\u2211',         # n-ary sumation, U+2211 ISOamsb
     'sup':      '\u2283',         # superset of, U+2283 ISOtech
     'sup1':     '\u00b9',         # superscript one = superscript digit one, U+00B9 ISOnum
-    'sup2':     '\u00b2',         # superscript two = superscript digit two = squared, U+00B2 ISOnum
-    'sup3':     '\u00b3',         # superscript three = superscript digit three = cubed, U+00B3 ISOnum
+    # superscript two = superscript digit two = squared, U+00B2 ISOnum
+    'sup2':     '\u00b2',
+    # superscript three = superscript digit three = cubed, U+00B3 ISOnum
+    'sup3':     '\u00b3',
     'supe':     '\u2287',         # superset of or equal to, U+2287 ISOtech
     'szlig':    '\u00df',         # latin small letter sharp s = ess-zed, U+00DF ISOlat1
     'tau':      '\u03c4',         # greek small letter tau, U+03C4 ISOgrk3
@@ -257,7 +289,8 @@ entitydefs = {
     'upsih':    '\u03d2',         # greek upsilon with hook symbol, U+03D2 NEW
     'upsilon':  '\u03c5',         # greek small letter upsilon, U+03C5 ISOgrk3
     'uuml':     '\u00fc',         # latin small letter u with diaeresis, U+00FC ISOlat1
-    'weierp':   '\u2118',         # script capital P = power set = Weierstrass p, U+2118 ISOamso
+    # script capital P = power set = Weierstrass p, U+2118 ISOamso
+    'weierp':   '\u2118',
     'xi':       '\u03be',         # greek small letter xi, U+03BE ISOgrk3
     'yacute':   '\u00fd',         # latin small letter y with acute, U+00FD ISOlat1
     'yen':      '\u00a5',         # yen sign = yuan sign, U+00A5 ISOnum

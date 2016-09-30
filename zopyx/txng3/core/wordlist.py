@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -21,4 +21,3 @@ class WordList(set):
 
     def extend(self, words):
         self.update(words)
-

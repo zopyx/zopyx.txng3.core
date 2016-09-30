@@ -1,7 +1,7 @@
 #-*- coding: iso-8859-15 -*-
 
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -82,4 +82,3 @@ chinoises pour douze produits. Les autres demandent "une poursuite de
 l'analyse", a dit le commissaire. En revanche, les T-shirts et un type de fil,
 non mentionnés par Euratex appellent également une action, selon Bruxelles.
 """
-

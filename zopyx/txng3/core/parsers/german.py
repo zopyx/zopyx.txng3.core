@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -8,27 +8,26 @@
 
 
 from zope.interface import implementer
-from zopyx.txng3.core.interfaces import IParser 
+from zopyx.txng3.core.interfaces import IParser
 
 from .english import EnglishParser
+
 
 @implementer(IParser)
 class GermanParser:
 
-
     def __init__(self, language='de'):
         self._parser = EnglishParser(language)
         self.map = {
-            'und' : 'AND',
-            'oder' : 'OR',
-            'nahe' : 'NEAR',
-            'nicht' : 'NOT',
-            }
+            'und': 'AND',
+            'oder': 'OR',
+            'nahe': 'NEAR',
+            'nicht': 'NOT',
+        }
         self.map_keys = list(self.map.keys())
 
     def getLanguage(self):
         return self._parser.getLanguage()
-
 
     def parse(self, query):
         words = query.split(' ')
@@ -48,7 +47,7 @@ class GermanParser:
                     w = self.map[w.lower()]
                 elif '::' in w:
 
-                    for  k,v in list(self.map.items()):
+                    for k, v in list(self.map.items()):
                         x = '::' + k
                         if x.lower() in w.lower():
                             w = w.replace(x, '::' + v)
@@ -59,7 +58,7 @@ class GermanParser:
 
         query = ' '.join(lst)
         return self._parser.parse(query)
-        
+
 
 if __name__ == '__main__':
     parser = GermanParser()

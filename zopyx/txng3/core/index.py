@@ -42,19 +42,20 @@ class Index(Persistent, object):
     def __init__(self, **kw):
 
         # perform argument check first
-        illegal_args = [k for k in list(kw.keys()) if not k in list(defaults.keys())]
+        illegal_args = [k for k in list(
+            kw.keys()) if not k in list(defaults.keys())]
         if illegal_args:
-            raise ValueError('Unknown parameters: %s' % ', '.join(illegal_args))
+            raise ValueError('Unknown parameters: %s' %
+                             ', '.join(illegal_args))
 
         # setup preferences using default args (preferences are stored as
         # attributes of the index instance
 
-        for k,v in list(defaults.items()):
+        for k, v in list(defaults.items()):
             v = kw.get(k, v)
             setattr(self, k, v)
 
         self.clear()
-
 
     def clear(self):
 
@@ -70,16 +71,16 @@ class Index(Persistent, object):
             self._storage = OOBTree()
             for f in self.fields:
                 self._storage[f] = createObject(self.storage)
-                self._feature_ranking = IStorageWithTermFrequency.providedBy(self._storage[f])
+                self._feature_ranking = IStorageWithTermFrequency.providedBy(self._storage[
+                                                                             f])
         else:
             self._storage = createObject(self.storage)
-            self._feature_ranking = IStorageWithTermFrequency.providedBy(self._storage)
-
+            self._feature_ranking = IStorageWithTermFrequency.providedBy(
+                self._storage)
 
     def getLexicon(self):
         """ return the lexicon """
         return self._lexicon
-
 
     def getStorage(self, field):
         """ return the storage """
@@ -92,7 +93,6 @@ class Index(Persistent, object):
         else:
             return self._storage
 
-
     def getSettings(self):
         """ returns a mapping contains the indexes preferences """
         from copy import copy
@@ -100,7 +100,6 @@ class Index(Persistent, object):
         for k in list(defaults.keys()):
             d[k] = copy(getattr(self, k))
         return d
-
 
     def index_object(self, obj, docid):
         """ index a given object under a given document id """
@@ -139,7 +138,8 @@ class Index(Persistent, object):
                 content = info['content']
 
                 if not isinstance(content, str):
-                    raise ValueError('Content must be unicode: %s' % repr(content))
+                    raise ValueError(
+                        'Content must be unicode: %s' % repr(content))
 
                 # If a document has an unknown language (other than the ones configured
                 # for the index), an exception will be raised or the content is
@@ -151,9 +151,11 @@ class Index(Persistent, object):
                     if self.index_unknown_languages:
                         language = self.languages[0]
                     else:
-                        raise ValueError('Unsupported language: %s (allowed: %s)' % (language, ', '.join(self.languages)))
+                        raise ValueError('Unsupported language: %s (allowed: %s)' % (
+                            language, ', '.join(self.languages)))
 
-                # run content through the pipline (splitter, stopword remover, normalizer etc)
+                # run content through the pipline (splitter, stopword remover,
+                # normalizer etc)
                 words = self._process_words(content, language)
 
                 # now obtain wordids from the lexicon for all words
@@ -189,7 +191,6 @@ class Index(Persistent, object):
 
         return True
 
-
     def _process_words(self, content, language):
         """ implements the processing pipeline """
 
@@ -203,7 +204,7 @@ class Index(Persistent, object):
                                 casefolding=self.splitter_casefolding,
                                 separator=self.splitter_additional_chars,
                                 maxlen=self.splitter_max_length,
-                               )
+                                )
 
         # and split unicode content into list of unicode strings
         words = splitter.split(content)
@@ -222,7 +223,6 @@ class Index(Persistent, object):
 
         return words
 
-
     def unindex_object(self, docid):
         """ remove a document given its document id from the index """
 
@@ -231,7 +231,6 @@ class Index(Persistent, object):
                 self._storage[field].removeDocument(docid)
         else:
             self._storage.removeDocument(docid)
-
 
     def _prepare_query(self, query, language):
         """ performs similar transformations as _process_words() but
@@ -248,7 +247,6 @@ class Index(Persistent, object):
             query = normalizer.process(query, language)
 
         return query
-
 
     query_options = ('parser', 'language',
                      'field', 'search_all_fields',
@@ -272,15 +270,18 @@ class Index(Persistent, object):
         # First check query options
         for k in list(kw.keys()):
             if not k in self.query_options:
-                raise ValueError('Unknown option: %s (supported query options: %s)' % (k, ', '.join(self.query_options)))
+                raise ValueError('Unknown option: %s (supported query options: %s)' % (
+                    k, ', '.join(self.query_options)))
 
-        # obtain parser ID (which is the name of named utility implementing IParser)
+        # obtain parser ID (which is the name of named utility implementing
+        # IParser)
         parser_id = kw.get('parser', self.query_parser)
 
         # determine query language
         language = kw.get('language', self.languages[0])
         if not language in self.languages:
-            raise ValueError('Unsupported language: %s (supported languages: %s)' % (language, ', '.join(self.languages)))
+            raise ValueError('Unsupported language: %s (supported languages: %s)' % (
+                language, ', '.join(self.languages)))
 
         # check if field is known to the index
         field = kw.get('field')
@@ -304,14 +305,16 @@ class Index(Persistent, object):
         # perform optional cosine ranking after searching
         ranking = bool(kw.get('ranking', self.ranking))
         if ranking and not self._feature_ranking:
-            raise ValueError("The storage used for this index does not support relevance ranking")
+            raise ValueError(
+                "The storage used for this index does not support relevance ranking")
 
         # Limit *ranked* result set to at most XXX hits
         ranking_maxhits = kw.get('ranking_maxhits', 50)
         if not isinstance(ranking_maxhits, int):
             raise ValueError('"ranking_maxhits" must be an integer')
         if 'ranking_maxhits' in kw and not ranking:
-            raise ValueError('Specify "ranking_maxhits" only with having set ranking=True')
+            raise ValueError(
+                'Specify "ranking_maxhits" only with having set ranking=True')
 
         # autoexpansion of query terms
         # 'off' -- expand never
@@ -319,7 +322,8 @@ class Index(Persistent, object):
         # 'on_miss' -- expand only for not-found terms in the query string
         autoexpand = kw.get('autoexpand', self.autoexpand)
         if not autoexpand in ('off', 'always', 'on_miss'):
-            raise ValueError('"autoexpand" must either be "off", "always" or "on_miss"')
+            raise ValueError(
+                '"autoexpand" must either be "off", "always" or "on_miss"')
 
         # Use a sequence of configured thesauri (identified by their configured name)
         # for additional lookup of terms
@@ -327,12 +331,14 @@ class Index(Persistent, object):
         if isinstance(thesaurus, str):
             thesaurus = (thesaurus,)
         if not isinstance(thesaurus, (list, tuple)):
-            raise ValueError('"thesaurus" must be list or tuple of configured thesaurus ids')
+            raise ValueError(
+                '"thesaurus" must be list or tuple of configured thesaurus ids')
 
         # Similarity ratio (measured as Levenshtein distance)
         similarity_ratio = float(kw.get('similarity_ratio', 0.75))
         if similarity_ratio < 0.0 or similarity_ratio > 1.0:
-            raise ValueError('similarity_ratio must been 0.0 and 1.0 (value %f)' % similarity_ratio)
+            raise ValueError(
+                'similarity_ratio must been 0.0 and 1.0 (value %f)' % similarity_ratio)
 
         # obtain a parser (registered  as named utility)
         parser = getUtility(IParser, parser_id)
@@ -365,9 +371,8 @@ class Index(Persistent, object):
                                 casefolding=self.splitter_casefolding,
                                 separator=self.splitter_additional_chars,
                                 maxlen=self.splitter_max_length,
-                               )
+                                )
         parsed_query = node_splitter(parsed_query, splitter)
-
 
         # build an instance for the search
         resultsets = []
@@ -396,7 +401,6 @@ class Index(Persistent, object):
 
         return resultset
 
-
     ############################################################
     # index attributes defined as properties
     ############################################################
@@ -404,13 +408,12 @@ class Index(Persistent, object):
     def _setUse_stemmer(self, value):
         if not value in (True, False, 0, 1):
             raise ValueError('"use_stemmer" must be either True or False')
-        self._use_stemmer= bool(value)
+        self._use_stemmer = bool(value)
 
     def _getUse_stemmer(self):
         return self._use_stemmer
 
     use_stemmer = property(_getUse_stemmer, _setUse_stemmer)
-
 
     def _setSplitter(self, value):
         self._splitter = value
@@ -420,9 +423,10 @@ class Index(Persistent, object):
 
     splitter = property(_getSplitter, _setSplitter)
 
-
     def _setLexicon(self, value):
-        self.__lexicon = value  # using __lexicon instead of __lexicon to avoid a name clash                                   # (_lexicon is the lexicon object)
+        # using __lexicon instead of __lexicon to avoid a name clash
+        # # (_lexicon is the lexicon object)
+        self.__lexicon = value
 
     def _getLexicon(self):
         return self.__lexicon
@@ -439,15 +443,14 @@ class Index(Persistent, object):
 
     dedicated_storage = property(_getDedicated_storage, _setDedicated_storage)
 
-
     def _setSplitter_max_length(self, value):
         self._splitter_max_length = value
 
     def _getSplitter_max_length(self):
         return self._splitter_max_length
 
-    splitter_max_length = property(_getSplitter_max_length, _setSplitter_max_length)
-
+    splitter_max_length = property(
+        _getSplitter_max_length, _setSplitter_max_length)
 
     def _setFields(self, value):
         self._fields = value
@@ -456,7 +459,6 @@ class Index(Persistent, object):
         return self._fields
 
     fields = property(_getFields, _setFields)
-
 
     def _setUse_normalizer(self, value):
 
@@ -468,7 +470,6 @@ class Index(Persistent, object):
         return self._use_normalizer
 
     use_normalizer = property(_getUse_normalizer, _setUse_normalizer)
-
 
     def _setstorage(self, value):
         self.__storage = value
@@ -486,11 +487,11 @@ class Index(Persistent, object):
 
     default_encoding = property(_getDefault_encoding, _setDefault_encoding)
 
-
     def _setLanguages(self, value):
 
         if not isinstance(value, (list, tuple)):
-            raise ValueError('"languages" must be list or tuple of country codes')
+            raise ValueError(
+                '"languages" must be list or tuple of country codes')
         if not value:
             raise ValueError('No languages given')
 
@@ -501,7 +502,6 @@ class Index(Persistent, object):
 
     languages = property(_getLanguages, _setLanguages)
 
-
     def _setSplitter_additional_chars(self, value):
         self._splitter_additional_chars = value
 
@@ -511,8 +511,8 @@ class Index(Persistent, object):
             return self._splitter_separators
         return value
 
-    splitter_additional_chars = property(_getSplitter_additional_chars, _setSplitter_additional_chars)
-
+    splitter_additional_chars = property(
+        _getSplitter_additional_chars, _setSplitter_additional_chars)
 
     def _setQuery_parser(self, value):
         self._query_parser = value
@@ -521,7 +521,6 @@ class Index(Persistent, object):
         return self._query_parser
 
     query_parser = property(_getQuery_parser, _setQuery_parser)
-
 
     def _setSplitter_casefolding(self, value):
 
@@ -533,8 +532,8 @@ class Index(Persistent, object):
     def _getSplitter_casefolding(self):
         return self._splitter_casefolding
 
-    splitter_casefolding = property(_getSplitter_casefolding, _setSplitter_casefolding)
-
+    splitter_casefolding = property(
+        _getSplitter_casefolding, _setSplitter_casefolding)
 
     def _setIndex_unknown_languages(self, value):
         self._index_unknown_languages = value
@@ -542,8 +541,8 @@ class Index(Persistent, object):
     def _getIndex_unknown_languages(self):
         return self._index_unknown_languages
 
-    index_unknown_languages = property(_getIndex_unknown_languages, _setIndex_unknown_languages)
-
+    index_unknown_languages = property(
+        _getIndex_unknown_languages, _setIndex_unknown_languages)
 
     def _setAutoexpand(self, value):
         self._autoexpand = value
@@ -553,7 +552,6 @@ class Index(Persistent, object):
 
     autoexpand = property(_getAutoexpand, _setAutoexpand)
 
-
     def _setAutoexpand_limit(self, value):
         self._autoexpand_limit = value
 
@@ -562,7 +560,6 @@ class Index(Persistent, object):
 
     autoexpand_limit = property(_getAutoexpand_limit, _setAutoexpand_limit)
 
-
     def _setRanking(self, value):
         self._ranking = value
 
@@ -570,7 +567,6 @@ class Index(Persistent, object):
         return self._ranking
 
     ranking = property(_getRanking, _setRanking)
-
 
     def _setUse_stopwords(self, value):
 
@@ -584,7 +580,6 @@ class Index(Persistent, object):
 
     use_stopwords = property(_getUse_stopwords, _setUse_stopwords)
 
-
     ############################################################
     # Some helper methods
     ############################################################
@@ -595,12 +590,12 @@ class Index(Persistent, object):
         print('Lexicon')
         for lang in self.getLexicon().getLanguages():
             print(lang)
-            for k,v in list(self.getLexicon()._words[lang].items()):
+            for k, v in list(self.getLexicon()._words[lang].items()):
                 print(repr(k), v)
 
             print()
 
-        print(('-'*80))
+        print(('-' * 80))
 
         print('Storage')
         for field in self.fields:
@@ -608,7 +603,6 @@ class Index(Persistent, object):
 
             for k, v in list(S._wid2doc.items()):
                 print((k, list(v)))
-
 
     def __repr__(self):
         return '%s[%s]' % (self.__class__.__name__, ', '.join(['%s=%s' % (k, repr(getattr(self, k, None))) for k in list(defaults.keys())]))

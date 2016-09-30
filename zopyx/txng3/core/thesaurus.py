@@ -1,12 +1,13 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
 # LICENSE.txt for the terms of this license.
 ###########################################################################
 
-import os, re
+import os
+import re
 from zope.interface import implements
 from zopyx.txng3.core.interfaces import IThesaurus
 
@@ -25,19 +26,21 @@ def readThesaurus(language, casefolding=True, filename=None):
 
     if filename is None:
         filename = os.path.join(th_dir, '%s.txt' % language)
-         
-    if not os.path.exists(filename):
-        raise ValueError('No thesaurus file for "%s" found'% language)
 
-    for idx,l in enumerate(open(filename)):
-        if not l.strip(): continue
+    if not os.path.exists(filename):
+        raise ValueError('No thesaurus file for "%s" found' % language)
+
+    for idx, l in enumerate(open(filename)):
+        if not l.strip():
+            continue
 
         mo = enc_reg.match(l)
         if mo:
-            encoding= mo.group(1)
+            encoding = mo.group(1)
             continue
 
-        if l.startswith('#'): continue
+        if l.startswith('#'):
+            continue
 
         term, words = l.split(' ', 1)
         if encoding:
@@ -51,42 +54,45 @@ def readThesaurus(language, casefolding=True, filename=None):
                 if t in terms:
                     terms[t].append(idx)
                 else:
-                    terms[t]=[idx]
-              
+                    terms[t] = [idx]
+
         else:
-            raise ValueError("Thesaurus file %s has no 'encoding' parameter specified" % filename)
+            raise ValueError(
+                "Thesaurus file %s has no 'encoding' parameter specified" % filename)
 
     return synonyms, terms
 
 
 class Thesaurus:
-        
+
     implements(IThesaurus)
 
     def __init__(self, language, casefolding=True, filename=None):
         self._language = language
         self._filename = filename
-        self._synonyms = {} # 1: [word1, word2]
-        self._terms = {} # word1: [1]
+        self._synonyms = {}  # 1: [word1, word2]
+        self._terms = {}  # word1: [1]
         self._casefolding = casefolding
         self._loaded = False
 
     def _load(self):
-        self._synonyms, self._terms = readThesaurus(self._language, self._casefolding, self._filename)
+        self._synonyms, self._terms = readThesaurus(
+            self._language, self._casefolding, self._filename)
         self._loaded = True
 
     def getTermsFor(self, word):
         """ return a list of similiar terms for a the given word in a given language"""
-        if not self._loaded: self._load()
+        if not self._loaded:
+            self._load()
         if self._casefolding:
             word = word.lower()
         result = set()
-        for synonymIdx in self._terms.get(word,[]):
-            result.update(self._synonyms.get(synonymIdx,[]))
-        
+        for synonymIdx in self._terms.get(word, []):
+            result.update(self._synonyms.get(synonymIdx, []))
+
         if result:
             result.remove(word)
-            
+
         return result and list(result) or None
 
     def getLanguage(self):
@@ -94,7 +100,8 @@ class Thesaurus:
         return self._language
 
     def getSize(self):
-        if not self._loaded: self._load()
+        if not self._loaded:
+            self._load()
         return len(self._terms)
 
 

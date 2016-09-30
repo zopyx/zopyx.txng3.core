@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -12,14 +12,15 @@ from .entities2uc import entitydefs
 # Matches entities
 entity_reg = re.compile('&(.*?);')
 
+
 def handler(x):
     """ Callback to convert entity to UC """
     v = x.group(1)
     return entitydefs.get(v, '')
+
 
 def convert_entities(text):
     """ replace all entities inside a unicode string """
     assert isinstance(text, str)
     text = entity_reg.sub(handler, text)
     return text
-

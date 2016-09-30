@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -8,16 +8,17 @@
 
 from zope.interface import Interface
 
+
 class IConverter(Interface):
     """ interface for converters """
 
-    def getDescription():   
+    def getDescription():
         """ return a string describing what the converter is for """
 
-    def getType():          
+    def getType():
         """ returns a list of supported mime-types """
 
-    def getDependency():   
+    def getDependency():
         """ return a string or a sequence of strings with external
             dependencies (external programs) for the converter
         """
@@ -36,6 +37,7 @@ class IConverter(Interface):
             'converted_text'. It must be set to 'unicode' if the 
             converted_text is a Python unicode string.
         """
+
 
 class IConversionError(Interface):
     """ Marker interface for conversion errors """

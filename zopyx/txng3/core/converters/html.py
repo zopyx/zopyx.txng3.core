@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -17,7 +17,8 @@ from zopyx.txng3.core.baseconverter import BaseConverter
 from .entities import convert_entities
 from .stripogram import html2text
 
-charset_reg = re.compile('text/html.*?charset=(.*?)"', re.I|re.M)
+charset_reg = re.compile('text/html.*?charset=(.*?)"', re.I | re.M)
+
 
 class Converter(BaseConverter):
 
@@ -34,7 +35,7 @@ class Converter(BaseConverter):
                 if mo is not None:
                     encoding = mo.group(1)
                 else:
-                    encoding = 'ascii' # guess
+                    encoding = 'ascii'  # guess
             doc = str(doc, encoding, 'replace')
         doc = convert_entities(doc)
         result = html2text(doc)

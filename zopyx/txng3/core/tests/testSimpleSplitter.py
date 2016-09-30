@@ -9,12 +9,14 @@
 ###########################################################################
 
 
-import unittest, sys
+import unittest
+import sys
 
 from zope.interface.verify import verifyClass
 
 from zopyx.txng3.core.splitter import SimpleSplitter
 from zopyx.txng3.core.interfaces import ISplitter
+
 
 class SimpleSplitterTests(unittest.TestCase):
 
@@ -26,21 +28,22 @@ class SimpleSplitterTests(unittest.TestCase):
 
         got = S.split(text)
         if list(got) != list(expected):
-            raise AssertionError('\nText: %s\nGot:      %r\nExpected: %r' % (text, got, expected))
+            raise AssertionError(
+                '\nText: %s\nGot:      %r\nExpected: %r' % (text, got, expected))
 
     def testInterface(self):
         verifyClass(ISplitter, SimpleSplitter)
 
     def testSimple(self):
-        
+
         SP = SimpleSplitter()
         self._test(SP, '',  [])
         self._test(SP, 'foo',  ['foo'])
         self._test(SP, 'foo',  ['foo'])
         self._test(SP, ' foo ', ['foo'])
-        self._test(SP, ' foo bar', ['foo','bar'])
-        self._test(SP, ' foo bar ', ['foo','bar'])
-        self._test(SP, ' foo 23 25 bar ', ['foo','23','25','bar'])
+        self._test(SP, ' foo bar', ['foo', 'bar'])
+        self._test(SP, ' foo bar ', ['foo', 'bar'])
+        self._test(SP, ' foo 23 25 bar ', ['foo', '23', '25', 'bar'])
 
     def testDisabledCaseFolding(self):
 
@@ -49,9 +52,8 @@ class SimpleSplitterTests(unittest.TestCase):
         self._test(SP, 'foo',  ['foo'])
         self._test(SP, 'foo',  ['foo'])
         self._test(SP, ' Foo ',  ['Foo'])
-        self._test(SP, ' Foo Bar', ['Foo','Bar'])
-        self._test(SP, ' foo Bar ', ['foo','Bar'])
-
+        self._test(SP, ' Foo Bar', ['Foo', 'Bar'])
+        self._test(SP, ' foo Bar ', ['foo', 'Bar'])
 
     def testEnabledCaseFolding(self):
 
@@ -61,32 +63,31 @@ class SimpleSplitterTests(unittest.TestCase):
         self._test(SP, 'foo',  ['foo'])
         self._test(SP, 'foo',  ['foo'])
         self._test(SP, ' Foo ',  ['foo'])
-        self._test(SP, ' Foo Bar', ['foo','bar'])
-        self._test(SP, ' foo Bar ', ['foo','bar'])
+        self._test(SP, ' Foo Bar', ['foo', 'bar'])
+        self._test(SP, ' foo Bar ', ['foo', 'bar'])
 
     def testGerman(self):
 
         SP = SimpleSplitter()
         self._test(SP, 'der bäcker Ging über die Brücke',
-                       ['der','bäcker','ging','über','die','brücke'])
+                       ['der', 'bäcker', 'ging', 'über', 'die', 'brücke'])
 
         self._test(SP, 'der äücker Ging über die Brücke',
-                       ['der','äücker','ging','über','die','brücke'])
+                       ['der', 'äücker', 'ging', 'über', 'die', 'brücke'])
 
     def testPunctuation(self):
         SP = SimpleSplitter()
         self._test(SP, 'der mann, der über die Brücke ging.',
-                       ['der','mann','der','über','die','brücke', 'ging'])
+                       ['der', 'mann', 'der', 'über', 'die', 'brücke', 'ging'])
         SP = SimpleSplitter(punctuation='\.')
         self._test(SP, 'der mann, der über die Brücke ging.',
-                       ['der','mann,','der','über','die','brücke', 'ging'])
-
+                       ['der', 'mann,', 'der', 'über', 'die', 'brücke', 'ging'])
 
     def testSwedish(self):
 
         SP = SimpleSplitter()
         self._test(SP, 'åke  vill ju inte alls leka med mig.',
-                       ['åke','vill','ju','inte','alls','leka','med','mig'])
+                       ['åke', 'vill', 'ju', 'inte', 'alls', 'leka', 'med', 'mig'])
 
     def testSpanish(self):
 
@@ -120,17 +121,20 @@ def test_suite():
     s.addTest(unittest.makeSuite(SimpleSplitterTests))
     return s
 
+
 def main():
     unittest.TextTestRunner().run(test_suite())
 
+
 def debug():
     test_suite().debug()
+
 
 def pdebug():
     import pdb
     pdb.run('debug()')
 
-if __name__=='__main__':
+if __name__ == '__main__':
     if len(sys.argv) > 1:
         globals()[sys.argv[1]]()
     else:

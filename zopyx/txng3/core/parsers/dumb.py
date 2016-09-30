@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -13,8 +13,8 @@ $Id: dumb.py 2055 2009-03-14 10:13:45Z ajung $
 """
 
 from zope.interface import implementer
-from zopyx.txng3.core.interfaces import IParser 
-from zopyx.txng3.core.parsetree import WordNode, OrNode, AndNode 
+from zopyx.txng3.core.interfaces import IParser
+from zopyx.txng3.core.parsetree import WordNode, OrNode, AndNode
 
 
 @implementer(IParser)
@@ -24,10 +24,9 @@ class DumbOrParser:
         just plain words.
     """
 
-
     def getLanguage(self):
         return None
-    
+
     def _parse(self, query):
         words = [w.strip() for w in query.split(' ')]
         return tuple([WordNode(w) for w in words if w])
@@ -38,7 +37,6 @@ class DumbOrParser:
             return OrNode(res)
         else:
             return None
-
 
 
 @implementer(IParser)
@@ -53,6 +51,5 @@ class DumbAndParser(DumbOrParser):
         return AndNode(self._parse(query))
 
 
-DumbAndQueryParser = DumbAndParser()    
+DumbAndQueryParser = DumbAndParser()
 DumbOrQueryParser = DumbOrParser()
-

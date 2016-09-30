@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -20,6 +20,7 @@ from .entities import convert_entities
 
 default_encoding = sys.getdefaultencoding()
 encoding_reg = re.compile('encoding="(.*?)"')
+
 
 class Converter(BaseConverter):
 
@@ -44,7 +45,7 @@ class Converter(BaseConverter):
 
         if not encoding:
             encoding = default_encoding
-        
+
         if not isinstance(doc, str):
             doc = str(doc, encoding, 'replace')
         doc = convert_entities(doc)

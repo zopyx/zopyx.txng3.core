@@ -15,6 +15,7 @@ $Id: parsetree.py 2260 2010-06-23 06:11:24Z zagy $
 from zope.interface import implementer
 from zopyx.txng3.core.interfaces import IParseTreeNode
 
+
 @implementer(IParseTreeNode)
 class BaseNode:
     """ base class for all nodes """
@@ -47,7 +48,7 @@ class BaseNode:
         self._value = value
 
     def sameAs(self, node):
-        return bool(self.getType()==node.getType() and  self.getValue()==node.getValue())
+        return bool(self.getType() == node.getType() and self.getValue() == node.getValue())
 
     def __repr__(self):
         if self._field:
@@ -56,19 +57,52 @@ class BaseNode:
             return "%s(%r)" % (self.__class__.__name__, self.getValue())
 
 
-class WordNode(BaseNode): pass
-class GlobNode(BaseNode): pass
-class TruncNode(BaseNode): pass
-class SubstringNode(BaseNode): pass
-class LTruncNode(BaseNode): pass
-class SimNode(BaseNode): pass
-class NotNode(BaseNode): pass
-class AndNode(BaseNode): pass
-class OrNode(BaseNode): pass
-class NearNode(BaseNode): pass
-class PhraseNode(BaseNode): pass
-class RangeNode(BaseNode): pass
+class WordNode(BaseNode):
+    pass
 
+
+class GlobNode(BaseNode):
+    pass
+
+
+class TruncNode(BaseNode):
+    pass
+
+
+class SubstringNode(BaseNode):
+    pass
+
+
+class LTruncNode(BaseNode):
+    pass
+
+
+class SimNode(BaseNode):
+    pass
+
+
+class NotNode(BaseNode):
+    pass
+
+
+class AndNode(BaseNode):
+    pass
+
+
+class OrNode(BaseNode):
+    pass
+
+
+class NearNode(BaseNode):
+    pass
+
+
+class PhraseNode(BaseNode):
+    pass
+
+
+class RangeNode(BaseNode):
+    pass
 
 
 def stopword_remover(node, stopwords):

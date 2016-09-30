@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -18,23 +18,23 @@ from zope.component.interfaces import IFactory
 from .compatible import Persistent
 from BTrees.IOBTree import IOBTree
 from BTrees.IIBTree import IITreeSet, IIBTree, union, IISet, difference
-import BTrees.Length 
+import BTrees.Length
 
 
 from zopyx.txng3.core.interfaces import IStorage, IStorageWithTermFrequency
 from zopyx.txng3.core.exceptions import StorageException
-from .widcode import encode , decode
+from .widcode import encode, decode
 from .docidlist import DocidList
+
 
 class _PS(Persistent):
     """ ZODB-aware wrapper for strings """
 
     def __init__(self, s):
         self.s = s
- 
+
     def get(self):
         return self.s
-
 
 
 class Storage(Persistent):
@@ -44,15 +44,15 @@ class Storage(Persistent):
 
     implements(IStorage)
 
-    def __init__(self): 
+    def __init__(self):
         self.clear()
 
     def clear(self):
         self._doc2wid = IOBTree()   # docid -> [wordids]
         self._wid2doc = IOBTree()   # wordid -> [docids]
-        self._docweight = IIBTree() # docid -> (# terms in document)
+        self._docweight = IIBTree()  # docid -> (# terms in document)
         self._length = BTrees.Length.Length()
-    
+
     def __len__(self): return self._length()
     numberDocuments = __len__
 
@@ -64,10 +64,10 @@ class Storage(Persistent):
         enc_widlist = encode(widlist)
         old_enc_widlist = self._doc2wid.get(docid)
         if old_enc_widlist is not None:
-            old_enc_widlist = old_enc_widlist.get() # unwrap _PS instance
+            old_enc_widlist = old_enc_widlist.get()  # unwrap _PS instance
 
         removed_wordids = []
-        if old_enc_widlist != enc_widlist :
+        if old_enc_widlist != enc_widlist:
             self._doc2wid[docid] = _PS(enc_widlist)
             if old_enc_widlist is not None:
                 old_widlist = IISet(decode(old_enc_widlist))
@@ -81,7 +81,7 @@ class Storage(Persistent):
             if not tree_has(wid):
                 tree[wid] = DocidList([docid])
             else:
-                if not docid in tree[wid]:   
+                if not docid in tree[wid]:
                     tree[wid].insert(docid)
 
         for wid in removed_wordids:
@@ -98,9 +98,9 @@ class Storage(Persistent):
         try:
             wordids = self._doc2wid[docid]
         except KeyError:
-            return # silently ignore 
+            return  # silently ignore
 
-        wordids = wordids.get() # unwrap _PS instance
+        wordids = wordids.get()  # unwrap _PS instance
 
         tree = self._wid2doc
         tree_has = tree.has_key
@@ -153,7 +153,6 @@ class Storage(Persistent):
         except KeyError:
             raise StorageException('No such docid: %d' % docid)
 
-
     def hasContigousWordids(self, docid, wordids):
         # *The trick* to perform a phrase search is to use the feature
         # that the string encoded wids can be searched through string.find().
@@ -172,22 +171,22 @@ class Storage(Persistent):
 
         while 1:
             pos = encoded_document[offset:].find(encoded_wids)
-            
-            if pos == -1: # end of string?
+
+            if pos == -1:  # end of string?
                 break
 
-            if pos != -1: # found something
+            if pos != -1:  # found something
 
-                if offset+pos+encoded_wids_len < encoded_document_len:
+                if offset + pos + encoded_wids_len < encoded_document_len:
                     # check if the next token represents a new word (with
                     # 7th bit set)
-                    next_c = encoded_document[offset+pos+encoded_wids_len]
+                    next_c = encoded_document[offset + pos + encoded_wids_len]
                     if ord(next_c) > 127:
                         # start of a new word -> we *really* found a word
                         found = True
                         break
                 else:
-                    # we found a word and we are the end of the complete string                    
+                    # we found a word and we are the end of the complete string
                     found = True
                     break
 
@@ -195,8 +194,8 @@ class Storage(Persistent):
 
         return found
 
-
         return encoded_wids in encoded_document
+
     def getPositions(self, docid, wordid):
         """ return a sequence of positions of occurrences of wordid within
             a document given by its docid.
@@ -212,7 +211,6 @@ class Storage(Persistent):
         return positions
 
 
-
 class StorageWithTermFrequency(Storage):
 
     implements(IStorageWithTermFrequency)
@@ -221,10 +219,9 @@ class StorageWithTermFrequency(Storage):
         Storage.clear(self)
         self._frequencies = IOBTree()   # docid -> (wordid -> #occurences)
 
-            
     def insertDocument(self, docid, widlist):
         Storage.insertDocument(self, docid, widlist)
-                   
+
         occurences = {}   # wid -> #(occurences)
         num_wids = float(len(widlist))
         for wid in widlist:
@@ -235,9 +232,8 @@ class StorageWithTermFrequency(Storage):
 
         self._frequencies[docid] = IIBTree()
         tree = self._frequencies[docid]
-        for wid,num in list(occurences.items()):
+        for wid, num in list(occurences.items()):
             tree[wid] = num
-
 
     def removeDocument(self, docid):
 
@@ -250,13 +246,12 @@ class StorageWithTermFrequency(Storage):
         except KeyError:
             pass
 
-
     def getTermFrequency(self):
         return self._frequencies
-            
-        
+
+
 class _StorageFactory:
-    
+
     implements(IFactory)
 
     def __init__(self, klass):

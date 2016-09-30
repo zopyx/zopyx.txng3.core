@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -16,16 +16,18 @@ $Id: StripTagParser.py 1072 2005-05-01 12:05:51Z ajung $
 
 from sgmllib import SGMLParser
 
+
 class StripTagParser(SGMLParser):
-  '''SGML Parser removing any tags and translating HTML entities.'''
+    '''SGML Parser removing any tags and translating HTML entities.'''
 
-  data= None
+    data = None
 
-  def handle_data(self,data):
-    if self.data is None: self.data=[]
-    self.data.append(data)
+    def handle_data(self, data):
+        if self.data is None:
+            self.data = []
+        self.data.append(data)
 
-  def __str__(self):
-    if self.data is None: return ''
-    return ' '.join(self.data)
-
+    def __str__(self):
+        if self.data is None:
+            return ''
+        return ' '.join(self.data)

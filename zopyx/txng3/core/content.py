@@ -35,21 +35,20 @@ class IndexContentCollector:
 
     def addContent(self, field, text, language=None):
         if not isinstance(text, str):
-            raise ValueError("Argument for 'text' must be of type unicode (got: %s)" % type(text))
-    
+            raise ValueError(
+                "Argument for 'text' must be of type unicode (got: %s)" % type(text))
+
         infos = self._d.get(field, ())
         self._d[field] = infos + ({'content': text, 'language': language},)
 
     def addBinary(self, field, data, mimetype, encoding=None, language=None,
                   logError=False, raiseException=False):
-        
+
         try:
             converter = getUtility(IConverter, mimetype)
         except ComponentLookupError:
             LOG.warn('No converter registered for %s' % mimetype)
             return
-
-        
 
         text, encoding = converter.convert(data, encoding, mimetype,
                                            logError, raiseException)
@@ -72,10 +71,10 @@ class IndexContentCollector:
         return self._d[field]
 
     def __bool__(self):
-        return len(self._d) > 0 
+        return len(self._d) > 0
 
 
-def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_language=DEFAULT_LANGUAGE):   
+def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_language=DEFAULT_LANGUAGE):
     """ This helper methods tries to extract indexable content from a content 
         object in different ways. First we try to check for ITextIndexable
         interface or ITextIndexableRaw interfaces which are the preferred 
@@ -97,10 +96,10 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
 
         # old Zope behaviour for objects providing the txng_get() hook
         warnings.warn('Using the txng_get() hook for class %s is deprecated.'
-                      ' Use IndexContentCollector implementation instead' % obj.__class__.__name__, 
-                       DeprecationWarning, 
-                       stacklevel=2)
-          
+                      ' Use IndexContentCollector implementation instead' % obj.__class__.__name__,
+                      DeprecationWarning,
+                      stacklevel=2)
+
         result = obj.txng_get(fields)
         if result is None:
             return None
@@ -120,19 +119,21 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
         icc = IndexContentCollector()
 
         for f in fields:
-            
+
             v = getattr(obj, f, None)
-            if not v: continue
+            if not v:
+                continue
             if isinstance(v, collections.Callable):
                 v = v()
 
-            # accept only a string/unicode string    
+            # accept only a string/unicode string
             if not isinstance(v, str):
-                raise TypeError('Value returned for field "%s" must be string or unicode (got: %s, %s)' % (f, repr(v), type(v)))
+                raise TypeError('Value returned for field "%s" must be string or unicode (got: %s, %s)' % (
+                    f, repr(v), type(v)))
 
             if isinstance(v, str):
                 v = str(v, default_encoding, 'ignore')
-        
+
             icc.addContent(f, v, default_language)
 
     return icc or None

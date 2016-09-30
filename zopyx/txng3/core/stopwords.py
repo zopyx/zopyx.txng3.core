@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -12,13 +12,15 @@ Stopwords
 $Id: stopwords.py 2080 2009-03-14 11:23:05Z ajung $
 """
 
-import os, re
+import os
+import re
 
 from zopyx.txng3.core.interfaces import IStopwords
 from zopyx.txng3.ext.support import stopwordfilter
 from zope.interface import implements
 
 sw_dir = os.path.join(os.path.dirname(__file__), 'data', 'stopwords')
+
 
 class Stopwords:
     """  class for handling stopwords """
@@ -33,7 +35,7 @@ class Stopwords:
             self._cache[language] = readStopwords(language)
         return list(self._cache[language].keys())
 
-    def process(self, words, language): 
+    def process(self, words, language):
         cache = self._cache
         if language not in cache:
             cache[language] = readStopwords(language)
@@ -42,32 +44,35 @@ class Stopwords:
     def availableLanguages(self):
         files = [f for f in os.listdir(sw_dir) if f.endswith('.txt')]
         return [os.path.splitext(f)[0] for f in files]
-        
+
     def __repr__(self):
-        return self.__class__.__name__ 
+        return self.__class__.__name__
 
 
 enc_reg = re.compile('#\s*encoding\s*=\s*([\w\-]+)')
 
+
 def readStopwords(language):
     """ read a stopword file from the filesystem """
-    
-    words = {}    # words -> None 
+
+    words = {}    # words -> None
     encoding = None
 
-    fname = os.path.join(sw_dir, '%s.txt' % language) 
+    fname = os.path.join(sw_dir, '%s.txt' % language)
     if not os.path.exists(fname):
         return {}
 
-    for l in open(fname): 
-        if not l.strip(): continue
+    for l in open(fname):
+        if not l.strip():
+            continue
 
         mo = enc_reg.match(l)
         if mo:
-            encoding= mo.group(1)
+            encoding = mo.group(1)
             continue
 
-        if l.startswith('#'): continue
+        if l.startswith('#'):
+            continue
 
         word = str(l.strip(), encoding).lower()
         words[word] = None
@@ -75,4 +80,3 @@ def readStopwords(language):
     return words
 
 StopwordUtility = Stopwords()
-

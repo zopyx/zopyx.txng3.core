@@ -50,12 +50,15 @@ class ContentExtractionTests(TextIndexNGTestCase):
         verifyClass(IIndexableContent, MockPDF)
 
     def testObjectsImplementingITextIndexable(self):
-        o = Mock(SearchableText=u'The quick brown fox jumps over the lazy dog', language='en')
+        o = Mock(
+            SearchableText=u'The quick brown fox jumps over the lazy dog', language='en')
         d = extract_content(('SearchableText',), o)
         data = d.getFieldData('SearchableText')[0]
-        self.assertEqual(data['content'], u'The quick brown fox jumps over the lazy dog')
-        self.assertEqual(data['language'],'en')
-        o = Mock(SearchableText=u'The quick brown fox jumps over the lazy dog', language='en')
+        self.assertEqual(
+            data['content'], u'The quick brown fox jumps over the lazy dog')
+        self.assertEqual(data['language'], 'en')
+        o = Mock(
+            SearchableText=u'The quick brown fox jumps over the lazy dog', language='en')
         d = extract_content(('searchabletext',), o)
         self.assertEqual(d, None)
 
@@ -67,7 +70,8 @@ class ContentExtractionTests(TextIndexNGTestCase):
         self.assertEqual(data['content'], u'Die Vögel')
         self.assertEqual(data['language'], 'de')
         data = d.getFieldData('SearchableText')[1]
-        self.assertEqual(data['content'].strip(), u'Viel Vögel sprangen artig in den Tüpel und über Feld und Wüste')
+        self.assertEqual(data['content'].strip(
+        ), u'Viel Vögel sprangen artig in den Tüpel und über Feld und Wüste')
         self.assertEqual(data['language'], None)
 
         d = extract_content(('searchabletext',), o, True)
@@ -77,11 +81,13 @@ class ContentExtractionTests(TextIndexNGTestCase):
         o = MockOld()
         icc = extract_content(('SearchableText',), o)
         d = icc.getFieldData('SearchableText')[0]
-        self.assertEqual(d['content'], u'The quick brown fox jumps over the lazy dog')
+        self.assertEqual(
+            d['content'], u'The quick brown fox jumps over the lazy dog')
         self.assertEqual(d['language'], DEFAULT_LANGUAGE)
-        icc  = extract_content(('text',), o)
+        icc = extract_content(('text',), o)
         d = icc.getFieldData('text')[0]
-        self.assertEqual(d['content'], u'The quick brown fox jumps over the lazy dog')
+        self.assertEqual(
+            d['content'], u'The quick brown fox jumps over the lazy dog')
         self.assertEqual(d['language'], DEFAULT_LANGUAGE)
         icc = extract_content(('searchabletext',), o)
         self.assertEqual(icc, None)
@@ -90,9 +96,11 @@ class ContentExtractionTests(TextIndexNGTestCase):
         # this test checks if we can extract content from stupid objects not implementing
         # the TXNG interfaces through adapters
         provideAdapter(StupidMockAdapter, (IStupidMock,), IIndexableContent)
-        o = StupidMock(SearchableText='god save the queen komma acht komma eins', language='en')
+        o = StupidMock(
+            SearchableText='god save the queen komma acht komma eins', language='en')
         d = extract_content(('SearchableText',), o, True)
-        self.assertEqual(d.getFieldData('SearchableText')[0]['content'], 'i am so stupid')
+        self.assertEqual(d.getFieldData('SearchableText')
+                         [0]['content'], 'i am so stupid')
 
 
 class ProcessingPipelineTests(TextIndexNGTestCase):
@@ -100,7 +108,9 @@ class ProcessingPipelineTests(TextIndexNGTestCase):
     def _test(self, index, input, expected, language='en'):
         result = index._process_words(input, language)
         if list(result) != list(expected):
-            raise AssertionError('\nProcessing: %s\nIndex: %s\nGot:      %s\nExpected: %s' % (repr(input), repr(index), repr(result), repr(expected)))
+            raise AssertionError('\nProcessing: %s\nIndex: %s\nGot:      %s\nExpected: %s' % (
+                repr(input), repr(index), repr(result), repr(expected)))
+
     def testEmpty(self):
         I = Index(fields=('oo',))
         self._test(I, u'', ())
@@ -114,19 +124,27 @@ class ProcessingPipelineTests(TextIndexNGTestCase):
 #        self._test(I, u'foo bAR', ('foo', 'bar'))
 
     def testStopWords(self):
-        I = Index(splitter_casefolding=True, use_stopwords=False, fields=('foo',))
+        I = Index(splitter_casefolding=True,
+                  use_stopwords=False, fields=('foo',))
         self._test(I, u'the black blue fox', ('the', 'black', 'blue', 'fox'))
-        I = Index(splitter_casefolding=True, use_stopwords=True, fields=('foo',))
+        I = Index(splitter_casefolding=True,
+                  use_stopwords=True, fields=('foo',))
         self._test(I, u'the black blue fox', ('black', 'blue', 'fox'), 'en')
-        self._test(I, u'das Auto auf dem garten', ('das', 'auto', 'auf', 'dem', 'garten'), 'en')
-        self._test(I, u'das Auto auf dem garten', ('das', 'auto', 'auf', 'dem', 'garten'), 'xx')
+        self._test(I, u'das Auto auf dem garten',
+                   ('das', 'auto', 'auf', 'dem', 'garten'), 'en')
+        self._test(I, u'das Auto auf dem garten',
+                   ('das', 'auto', 'auf', 'dem', 'garten'), 'xx')
         self._test(I, u'das Auto auf dem garten', ('auto', 'garten'), 'de')
 
     def testNormalizer(self):
-        I = Index(splitter_casefolding=True, use_stopwords=False, use_normalizer=True, fields=('foo',))
-        self._test(I, u'für und über drüben gehen Wir', (u'fuer', u'und', u'ueber', u'drueben', u'gehen', u'wir'), 'de')
-        self._test(I, u'fÜr und über drÜben gehen Wir', (u'fuer', u'und', u'ueber', u'drueben', u'gehen', u'wir'), 'de')
-        self._test(I, u'für und über drüben gehen Wir', (u'für', u'und', u'über', u'drüben', u'gehen', u'wir'), 'en')
+        I = Index(splitter_casefolding=True, use_stopwords=False,
+                  use_normalizer=True, fields=('foo',))
+        self._test(I, u'für und über drüben gehen Wir', (u'fuer',
+                                                         u'und', u'ueber', u'drueben', u'gehen', u'wir'), 'de')
+        self._test(I, u'fÜr und über drÜben gehen Wir', (u'fuer',
+                                                         u'und', u'ueber', u'drueben', u'gehen', u'wir'), 'de')
+        self._test(I, u'für und über drüben gehen Wir', (u'für',
+                                                         u'und', u'über', u'drüben', u'gehen', u'wir'), 'en')
 
 
 class IndexTests(TextIndexNGTestCase):
@@ -146,7 +164,8 @@ class IndexTests(TextIndexNGTestCase):
         o1 = Mock(text=u'The quick brown fox', language='en')
         o2 = Mock(text=u'der schnelle braune fuchs', language='de')
         o3 = Mock(text=u'je ne sais pas', language='fr')
-        I = Index(fields=('text',), dedicated_storage=True, languages=('de', 'en'), index_unknown_languages=False)
+        I = Index(fields=('text',), dedicated_storage=True,
+                  languages=('de', 'en'), index_unknown_languages=False)
         I.index_object(o1, 1)
         I.index_object(o2, 2)
         self.assertRaises(ValueError, I.index_object, o3, 3)
@@ -161,7 +180,8 @@ class IndexTests(TextIndexNGTestCase):
         o1 = Mock(text=u'The quick brown fox', language='en')
         o2 = Mock(text=u'der schnelle braune fuchs', language='de')
         o3 = Mock(text=u'je ne sais pas', language='fr')
-        I = Index(fields=('text',), dedicated_storage=True, languages=('en',), index_unknown_languages=False)
+        I = Index(fields=('text',), dedicated_storage=True,
+                  languages=('en',), index_unknown_languages=False)
         I.index_object(o1, 1)
         self.assertRaises(ValueError, I.index_object, o2, 2)
         self.assertRaises(ValueError, I.index_object, o2, 3)
@@ -205,10 +225,12 @@ class StemmerTests(TextIndexNGTestCase):
         expected = list(expected)
         expected.sort()
         if docids != expected:
-            raise AssertionError('Query failed (%s/%s): %s\nGot:     %s\nExpected: %s' % (field, language, query, docids, expected))
+            raise AssertionError('Query failed (%s/%s): %s\nGot:     %s\nExpected: %s' %
+                                 (field, language, query, docids, expected))
 
     def testGermanStemmer(self):
-        I = Index(fields=('text',), languages=('de', 'fr', 'en'), use_stemmer=True)
+        I = Index(fields=('text',), languages=(
+            'de', 'fr', 'en'), use_stemmer=True)
         self.setupIndex(I)
         self._test(I, u'Gleich ihr', 'de', (1,))
         self._test(I, u'Gleiche ihren', 'de', (1,))
@@ -244,18 +266,23 @@ class MultilingualTests(TextIndexNGTestCase):
         expected = list(expected)
         expected.sort()
         if docids != expected:
-            raise AssertionError('Query failed (%s/%s): %s\nGot:     %s\nExpected: %s' % (field, language, query, docids, expected))
+            raise AssertionError('Query failed (%s/%s): %s\nGot:     %s\nExpected: %s' %
+                                 (field, language, query, docids, expected))
 
     def testSetup(self):
         I = Index(fields=('text',), languages=('de', 'fr', 'en'))
         self.setupIndex(I)
 
     def testDE(self):
-        I = Index(fields=('text',), languages=('de', ), index_unknown_languages=False)
+        I = Index(fields=('text',), languages=(
+            'de', ), index_unknown_languages=False)
         I.index_object(Mock('de', text=unicode(de1, 'iso-8859-15')), 1)
-        # this raises an exception because the index does not know about 'fr' or 'en'
-        self.assertRaises(ValueError, I.index_object, Mock('fr', text=unicode(fr1, 'iso-8859-15')), 4)
-        self.assertRaises(ValueError, I.index_object, Mock('en', text=unicode(en1, 'iso-8859-15')), 5)
+        # this raises an exception because the index does not know about 'fr'
+        # or 'en'
+        self.assertRaises(ValueError, I.index_object, Mock(
+            'fr', text=unicode(fr1, 'iso-8859-15')), 4)
+        self.assertRaises(ValueError, I.index_object, Mock(
+            'en', text=unicode(en1, 'iso-8859-15')), 5)
 
     def testSingleLanguageDependentSearches(self):
         I = Index(fields=('text',), languages=('de', 'fr', 'en'))
@@ -265,21 +292,26 @@ class MultilingualTests(TextIndexNGTestCase):
         self._test(I, u'"an sich"', 'de', (3, ))
         self._test(I, u'"an sich"', 'fr', ())
         self._test(I, u'"YXXX YYY"', 'de', ())
-        self._test(I, u'emanzipation ', 'de', (2,3))
+        self._test(I, u'emanzipation ', 'de', (2, 3))
         self._test(I, u'"denken zur emanzipation" not selbsterhaltung', 'de', ())
-        self._test(I, u'"conceptualist"', 'en', (7,9,))
+        self._test(I, u'"conceptualist"', 'en', (7, 9,))
         self._test(I, u'emanzipation -denken', 'de', (3,))
         self._test(I, u'emanzipation not denken', 'de', (3,))
         self._test(I, u'emanzipation and not denken', 'de', (3,))
         self._test(I, u'not denken and emanzipation ', 'de', (3,))
-        self._test(I, u'"that we have to choose between postpatriarchial conceptualist theory textual and objectivism"', 'en', ())
-        self._test(I, u'"that we have to choose between postpatriarchial conceptualist theory and textual objectivism"', 'en', (9,))
+        self._test(
+            I, u'"that we have to choose between postpatriarchial conceptualist theory textual and objectivism"', 'en', ())
+        self._test(
+            I, u'"that we have to choose between postpatriarchial conceptualist theory and textual objectivism"', 'en', (9,))
 
     def testMultipleFieldsMultipleLanguages(self):
-        I = Index(fields=('text','author'), languages=('de', 'fr', 'en'))
-        I.index_object(Mock('de', text=unicode(de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
-        I.index_object(Mock('de', text=unicode(de2, 'iso-8859-15'), author=u'Andrea Jung'), 2)
-        I.index_object(Mock('de', text=unicode(de3, 'iso-8859-15'), author=u'der Nasbär'), 3)
+        I = Index(fields=('text', 'author'), languages=('de', 'fr', 'en'))
+        I.index_object(Mock('de', text=unicode(
+            de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
+        I.index_object(Mock('de', text=unicode(
+            de2, 'iso-8859-15'), author=u'Andrea Jung'), 2)
+        I.index_object(Mock('de', text=unicode(
+            de3, 'iso-8859-15'), author=u'der Nasbär'), 3)
         self._test(I, u'andreas jung', 'en', ())
         self._test(I, u'andreas jung', 'de', ())
         self._test(I, u'andreas jung', 'de', (1,), 'author')
@@ -291,11 +323,13 @@ class MultilingualTests(TextIndexNGTestCase):
         self._test(I, u'na*', 'de', (3,), 'author')
 
     def testWithAndWithoutStopwords(self):
-        I = Index(fields=('text',), languages=('de', 'fr', 'en'), use_stopwords=False)
+        I = Index(fields=('text',), languages=(
+            'de', 'fr', 'en'), use_stopwords=False)
         self.setupIndex(I)
         self._test(I, u'das opfer wird uns frei machen', 'de', (1,))
 
-        I = Index(fields=('text',), languages=('de', 'fr', 'en'), use_stopwords=True)
+        I = Index(fields=('text',), languages=(
+            'de', 'fr', 'en'), use_stopwords=True)
         self.setupIndex(I)
         # This should give a hit since 'das' should be filtered from the query
         self._test(I, u'das opfer wird uns frei machen', 'de', (1,))
@@ -304,23 +338,27 @@ class MultilingualTests(TextIndexNGTestCase):
         self._test(I, u'413 sur les pantalons pour homme', 'fr', (5,))
 
     def testIndexAndUnindex(self):
-        I = Index(fields=('text','author'), languages=('de', 'fr', 'en'))
-        I.index_object(Mock('de', text=unicode(de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
-        I.index_object(Mock('de', text=unicode(de2, 'iso-8859-15'), author=u'Andrea Jung'), 2)
-        I.index_object(Mock('de', text=unicode(de3, 'iso-8859-15'), author=u'der Nasbär'), 3)
+        I = Index(fields=('text', 'author'), languages=('de', 'fr', 'en'))
+        I.index_object(Mock('de', text=unicode(
+            de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
+        I.index_object(Mock('de', text=unicode(
+            de2, 'iso-8859-15'), author=u'Andrea Jung'), 2)
+        I.index_object(Mock('de', text=unicode(
+            de3, 'iso-8859-15'), author=u'der Nasbär'), 3)
         self._test(I, u'andreas jung', 'de', (1,), 'author')
         I.unindex_object(1)
         I.unindex_object(2)
         I.unindex_object(3)
         I.unindex_object(9999)
         self._test(I, u'andreas jung', 'de', (), 'author')
-        I.index_object(Mock('de', text=unicode(de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
+        I.index_object(Mock('de', text=unicode(
+            de1, 'iso-8859-15'), author=u'Andreas Jung'), 1)
         self._test(I, u'andreas jung', 'de', (1,), 'author')
         self._test(I, u'andreas jung', 'de', (), 'text')
         self._test(I, u'das opfer wird', 'de', (1,), 'text')
-        I.index_object(Mock('de', text=unicode(de2, 'iso-8859-15'), author=u'Andrea Jung'), 1)
+        I.index_object(Mock('de', text=unicode(
+            de2, 'iso-8859-15'), author=u'Andrea Jung'), 1)
         self._test(I, u'andrea jung', 'de', (1,), 'author')
-
 
     def testReindex2(self):
         I = Index(fields=('text',), languages=('de',))
@@ -351,10 +389,10 @@ class MultilingualTests(TextIndexNGTestCase):
     def testSplitterOnQueryWithDefaultSplitter(self):
         from zopyx.txng3.core.splitter import SplitterFactory
         provideUtility(SplitterFactory, zope.component.interfaces.IFactory,
-            name='txng.splitters.default')
+                       name='txng.splitters.default')
         I = Index(fields=('text',), languages=('en',),
-                 splitter_additional_chars='-',
-                 splitter='txng.splitters.default')
+                  splitter_additional_chars='-',
+                  splitter='txng.splitters.default')
         I.index_object(Mock('en', text=u'asdf abc.de-Efgh bla bla fasel'), 1)
         I.index_object(Mock('en', text=u'asdf abc de-Efgh bla bla fasel'), 2)
         I.index_object(Mock('en', text=u'asdf abc'), 3)
@@ -367,7 +405,6 @@ class MultilingualTests(TextIndexNGTestCase):
 
 
 class FunctionalTest(TextIndexNGTestCase):
-
 
     def check_storage(self, index):
         """ check als doc ids referenced by a wid
@@ -388,15 +425,15 @@ class FunctionalTest(TextIndexNGTestCase):
 
         dirname = os.path.join(os.path.dirname(__file__), 'data', 'texts')
         fullname = os.path.join(dirname, '%04d.txt' % num)
-        text= unicode(open(fullname).read(), 'iso-8859-15')
+        text = unicode(open(fullname).read(), 'iso-8859-15')
         index.index_object(Mock('de', text=text), num)
-
 
     def testUnindex(self):
         """ check storage consistency with random document removals
         """
 
-        index = Index(fields=('text', ), languages=('en',), splitter_additional_chars='.-+')
+        index = Index(fields=('text', ), languages=(
+            'en',), splitter_additional_chars='.-+')
         for i in range(1, 200):
             self._addDoc(index, i)
 
@@ -412,12 +449,11 @@ class FunctionalTest(TextIndexNGTestCase):
             self.assertEqual(result, True)
             lst.remove(num)
 
-
     def testUnindex2(self):
         """ now with random adding removal """
 
-
-        index = Index(fields=('text', ), languages=('en',), splitter_additional_chars='.-+')
+        index = Index(fields=('text', ), languages=(
+            'en',), splitter_additional_chars='.-+')
         for i in range(1, 200):
             self._addDoc(index, i)
 
@@ -449,6 +485,7 @@ class RankingTest(TextIndexNGTestCase):
     def test_ranking_method(self):
         result = []
         called = []
+
         def ranking(*args):
             called.append(args)
             return result
@@ -482,17 +519,20 @@ def test_suite():
     s.addTest(unittest.makeSuite(RankingTest))
     return s
 
+
 def main():
     unittest.TextTestRunner().run(test_suite())
 
+
 def debug():
     test_suite().debug()
+
 
 def pdebug():
     import pdb
     pdb.run('debug()')
 
-if __name__=='__main__':
+if __name__ == '__main__':
     if len(sys.argv) > 1:
         globals()[sys.argv[1]]()
     else:

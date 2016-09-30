@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -25,11 +25,14 @@ from zopyx.txng3.core.interfaces import ISplitter, ILexicon, IStorage, IParser
 def SplitterVocabulary(context):
     return UtilityNames(ISplitter)
 
+
 def LexiconVocabulary(context):
     return UtilityNames(ILexicon)
 
+
 def StorageVocabulary(context):
     return UtilityNames(IStorage)
+
 
 def ParserVocabulary(context):
     return UtilityNames(IParser)

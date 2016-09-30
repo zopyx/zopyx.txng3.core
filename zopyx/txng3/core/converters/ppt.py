@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -22,15 +22,15 @@ from .stripogram import html2text
 
 class Converter(BaseConverter):
 
-    content_type = ('application/mspowerpoint', 'application/ms-powerpoint', 
-                'application/vnd.ms-powerpoint')
+    content_type = ('application/mspowerpoint', 'application/ms-powerpoint',
+                    'application/vnd.ms-powerpoint')
     content_description = "Microsoft PowerPoint"
     depends_on = 'ppthtml'
 
     def convert(self, doc, encoding, mimetype,
                 logError=False, raiseException=False):
         """Convert PowerPoint document to raw text"""
-        
+
         tmp_name = self.saveFile(doc)
         err = TmpFile('')
         if sys.platform == 'win32':
@@ -39,7 +39,7 @@ class Converter(BaseConverter):
         else:
             html = self.execute('ppthtml "%s" 2> "%s"' % (
                 tmp_name, str(err)))
-        
+
         try:
             errors = open(str(err), 'r+').read()
         except OSError:
@@ -49,7 +49,7 @@ class Converter(BaseConverter):
                 LOG.warn('Converter %s experienced an error %s' % (
                     self.content_description, errors)
                 )
-            
+
             if raiseException:
                 raise ConversionError(errors)
 

@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -13,6 +13,7 @@ $Id: pdf.py 2055 2009-03-14 10:13:45Z ajung $
 """
 
 from zopyx.txng3.core.baseconverter import BaseConverter
+
 
 class Converter(BaseConverter):
 

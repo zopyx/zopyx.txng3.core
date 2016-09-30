@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -29,11 +29,12 @@ class Splitter:
 
 
 class SplitterFactory:
-    
+
     implements(IFactory)
 
     def __call__(self, maxlen=64, singlechar=True, casefolding=True, separator='+'):
-        splitter = Splitter(maxlen=maxlen, singlechar=singlechar, casefolding=casefolding, separator=separator)
+        splitter = Splitter(maxlen=maxlen, singlechar=singlechar,
+                            casefolding=casefolding, separator=separator)
         return splitter
 
     def getInterfaces(self):
@@ -54,10 +55,10 @@ class SimpleSplitter:
 
     implements(ISplitter)
 
-    def __init__(self, 
-                 casefolding=1, 
-                 split_at=SPLIT_AT, 
-                 punctuation=PUNCTUATION, 
+    def __init__(self,
+                 casefolding=1,
+                 split_at=SPLIT_AT,
+                 punctuation=PUNCTUATION,
                  additional_chars=ADDITIONAL_CHARS,
                  *args, **kw):
         """ 'split_at' -- a regular expression that is used to split strings.
@@ -75,7 +76,8 @@ class SimpleSplitter:
         """
         if self.casefolding:
             content = content.lower()
-        terms = [t.strip(self.punctuation) for t in self.splitter.split(content)]
+        terms = [t.strip(self.punctuation)
+                 for t in self.splitter.split(content)]
         terms = [t.replace('_', '') for t in terms]
         terms = [''.join(self.regex.findall(t)) for t in terms]
         terms = [t for t in terms if t]
@@ -83,7 +85,7 @@ class SimpleSplitter:
 
 
 class SimpleSplitterFactory:
-    
+
     implements(IFactory)
 
     def __call__(self, split_at=SPLIT_AT, punctuation=PUNCTUATION, *args, **kw):

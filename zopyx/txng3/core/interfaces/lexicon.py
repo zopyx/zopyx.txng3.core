@@ -8,6 +8,7 @@
 
 from zope.interface import Interface
 
+
 class ILexicon(Interface):
     """ Interface for Lexicon objects. A TextIndexNG3 lexicon act as a storage
         for multilingual content. Words are stored per-language. 
@@ -46,13 +47,13 @@ class ILexicon(Interface):
     def getWordsForRightTruncation(prefix, language='en'):
         """ return a sequence of words with a given prefix """
 
-    def getWordsForLeftTruncation(suffix , language='en'):
+    def getWordsForLeftTruncation(suffix, language='en'):
         """ return a sequence of words with a given suffix"""
 
     def getWordsForPattern(pattern, language='en'):
         """ return a sequence of words that match 'pattern'.  'pattern' is a
             sequence of characters including the wildcards '?' and '*'.
-        """         
+        """
 
     def getWordsInRange(w1, w2, language='en'):
         """ return a sorted list of words where w1 <= w(x) <= w2  """
@@ -62,4 +63,3 @@ class ILexicon(Interface):
 
     def getWordsForSubstring(sub, language='en'):
         """ return all words that match the given substring """
-

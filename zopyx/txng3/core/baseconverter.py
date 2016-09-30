@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -19,7 +19,7 @@ class TmpFile:
 
     def __init__(self, data):
         self.fname = tempfile.mktemp()
-        out = open(self.fname,'w+b')
+        out = open(self.fname, 'w+b')
         if isinstance(data, str):
             out.write(data)
             out.flush()
@@ -44,10 +44,10 @@ def findOnWin32Path(fname):
     lookat = os.getenv("PATH", '').split(';')
     executables = os.getenv("PATHEXT", '.EXE;.COM;.BAT;.CMD').split(';')
     for dir in lookat:
-        if os.path.exists(os.path.join(dir,fname)):
+        if os.path.exists(os.path.join(dir, fname)):
             return True
         for exe in executables:
-            if os.path.exists(os.path.join(dir,fname+exe)):
+            if os.path.exists(os.path.join(dir, fname + exe)):
                 return True
     return False
 
@@ -58,7 +58,6 @@ class BaseConverter(object):
 
     content_type = None
     content_description = None
-
 
     def __init__(self):
         if not self.content_type:
@@ -77,18 +76,18 @@ class BaseConverter(object):
     def saveFile(self, data):
         return TmpFile(data)
 
-    def getDescription(self):   
+    def getDescription(self):
         return self.content_description
 
-    def getType(self):          
+    def getType(self):
         return self.content_type
 
-    def getDependency(self):    
+    def getDependency(self):
         return getattr(self, 'depends_on', None)
 
-    def __call__(self, s):      
+    def __call__(self, s):
         return self.convert(s)
-   
+
     def isAvailable(self):
         depends_on = self.getDependency()
         if depends_on:

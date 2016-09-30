@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3 
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -8,10 +8,11 @@
 
 from zope.interface import Interface
 
+
 class IParser(Interface):
     """ interface for TextIndexNG query parsers """
 
-    def getLanguage():       
+    def getLanguage():
         """ return language handled by the parser """
 
     def parse(query):

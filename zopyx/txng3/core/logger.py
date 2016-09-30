@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -12,7 +12,7 @@ try:
     from zLOG import LOG as zLOG
     have_z2 = True
 except:
-    import logging 
+    import logging
     have_z2 = False
 
 ident = 'txng'
@@ -27,14 +27,14 @@ def PyLogger():
     hdlr = logging.FileHandler(LOGGER_FILE)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     hdlr.setFormatter(formatter)
-    logger.addHandler(hdlr) 
+    logger.addHandler(hdlr)
     logger.setLevel(logging.DEBUG)
     return logger
 
 
 class Z2Logger:
     """ Logger using zLOG """
-    
+
     def debug(self, text, exc_info=None):
         zLOG(ident, BLATHER, text, error=exc_info)
 
@@ -50,13 +50,14 @@ class Z2Logger:
     def __call__(self, text):
         self.info(text)
 
+
 def Logger():
     """ Logger factory """
-    
+
     if have_z2:
         return Z2Logger()
     else:
-        return PyLogger()        
+        return PyLogger()
 
 
 LOG = Logger()

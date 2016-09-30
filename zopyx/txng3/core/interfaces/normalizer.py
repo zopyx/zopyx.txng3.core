@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -8,13 +8,14 @@
 
 from zope.interface import Interface
 
+
 class INormalizer(Interface):
     """ interface for normalizers"""
 
-    def availableLanguages():    
+    def availableLanguages():
         """ return a list of languages supported by the normalizer """
 
-    def process(words, language):   
+    def process(words, language):
         """ Normalize a word or a sequence of words. Returned the normalized word
             or a sequence of normalized words. If there is no normalizer available
             for a language then the data is returned unchanged.

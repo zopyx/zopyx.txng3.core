@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -9,16 +9,17 @@
 
 from .german import GermanParser
 
+
 class FrenchParser(GermanParser):
 
     def __init__(self):
         self._parser = GermanParser('fr')
         self.map = {
-                'et' : 'AND',
-                'ou' : 'OR',
-                'pres' : 'NEAR',
-                'sauf' : 'NOT',
-            }
+            'et': 'AND',
+            'ou': 'OR',
+            'pres': 'NEAR',
+            'sauf': 'NOT',
+        }
 
         self.map_keys = list(self.map.keys())
 

@@ -20,60 +20,62 @@ DEFAULT_RANKING = 'txng.ranking.cosine'
 LOGGER_FILE = os.environ.get('TXNG3_LOGFILE', 'textindexng3.log')
 
 defaults = {
-    # use a per-field storage for the word -> doc mapping (allowing per-field searches)
-    'dedicated_storage' : True,
+    # use a per-field storage for the word -> doc mapping (allowing per-field
+    # searches)
+    'dedicated_storage': True,
 
     # fields to be indexed by the indexer
-    'fields' : [],
+    'fields': [],
 
     # supported languages
-    'languages' : (DEFAULT_LANGUAGE,),
+    'languages': (DEFAULT_LANGUAGE,),
 
     # splitter to be used
-    'splitter' : DEFAULT_SPLITTER,
+    'splitter': DEFAULT_SPLITTER,
 
     # make searches case-insensitive
-    'splitter_casefolding' : True,
+    'splitter_casefolding': True,
 
     # characters recognized as alphanum characters
-    'splitter_additional_chars' : DEFAULT_ADDITIONAL_CHARS,
+    'splitter_additional_chars': DEFAULT_ADDITIONAL_CHARS,
 
     # no idea what this was for :-)
-    'splitter_max_length' : 30,
+    'splitter_max_length': 30,
 
     # filter out language dependent stopword
-    'use_stopwords' : False,
+    'use_stopwords': False,
 
-    # convert words with language dependent transformers (accents to non-accents)
-    'use_normalizer' : False,
+    # convert words with language dependent transformers (accents to
+    # non-accents)
+    'use_normalizer': False,
 
     # default autoexpansion mode
-    'autoexpand' : 'off',
+    'autoexpand': 'off',
 
     # minimum size of query words to allow autoexpansion
-    'autoexpand_limit' : 4,
+    'autoexpand_limit': 4,
 
     # default query parser to be used
-    'query_parser' : DEFAULT_PARSER,
+    'query_parser': DEFAULT_PARSER,
 
     # storage to be used
-    'storage' : DEFAULT_STORAGE,
+    'storage': DEFAULT_STORAGE,
 
     # lexicon to be used
-    'lexicon' : DEFAULT_LEXICON,
+    'lexicon': DEFAULT_LEXICON,
 
     # index documents with an unknown language under the first
     # configured language of the index
-    'index_unknown_languages' : True,
+    'index_unknown_languages': True,
 
     # default encoding (only used for encoding non-unicode queries
-    'default_encoding' : DEFAULT_ENCODING,
+    'default_encoding': DEFAULT_ENCODING,
 
     # stemming enabled?
-    'use_stemmer' : False,
+    'use_stemmer': False,
 
     # don't support ranking by default
-    'ranking' : False,
+    'ranking': False,
 
     # Ranking method to use
     'ranking_method': DEFAULT_RANKING,

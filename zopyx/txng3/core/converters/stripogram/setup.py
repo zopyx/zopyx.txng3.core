@@ -6,6 +6,6 @@ setup(name="stripogram",
       author="Chris Withers",
       author_email="chrisw@nipltd.com",
       url="http://www.zope.org/Members/chrisw/StripOGram",
-      package_dir = {"stripogram": "."},
+      package_dir={"stripogram": "."},
       packages=['stripogram']
-     )
+      )

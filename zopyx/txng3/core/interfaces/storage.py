@@ -1,5 +1,5 @@
 ###########################################################################
-# TextIndexNG V 3                
+# TextIndexNG V 3
 # The next generation TextIndex for Zope
 #
 # This software is governed by a license. See
@@ -7,6 +7,7 @@
 ###########################################################################
 
 from zope.interface import Interface
+
 
 class IStorage(Interface):
     """ interface for storages to keep the mapping wordId to sequence
@@ -20,10 +21,10 @@ class IStorage(Interface):
     def removeDocument(docid):
         """ remove a document and all its words from the storage """
 
-    def numberDocuments(): 
+    def numberDocuments():
         """ return number of documents """
-    
-    def getDocIds(): 
+
+    def getDocIds():
         """ return all document Ids as DocidList instance"""
 
     def getDocumentsForWordId(wordid):
