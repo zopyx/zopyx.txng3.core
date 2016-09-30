@@ -8,7 +8,6 @@
 
 import sys
 import unittest
-from sets import Set
 from random import randint
 
 from zope.interface.verify import verifyClass
@@ -134,7 +133,7 @@ class StorageBaseTests(unittest.TestCase):
 
             S.insertDocument(1, wids)
 
-            for wid in Set(wids):
+            for wid in set(wids):
                 positions = S.getPositions(1, wid)
                 for pos in positions:
                     self.assertEqual(wids[pos], wid)
