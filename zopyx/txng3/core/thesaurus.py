@@ -30,7 +30,7 @@ def readThesaurus(language, casefolding=True, filename=None):
     if not os.path.exists(filename):
         raise ValueError('No thesaurus file for "%s" found' % language)
 
-    for idx, l in enumerate(open(filename)):
+    for idx, l in enumerate(open(filename, 'r', encoding='iso-8859-15')):
         if not l.strip():
             continue
 
@@ -44,8 +44,8 @@ def readThesaurus(language, casefolding=True, filename=None):
 
         term, words = l.split(' ', 1)
         if encoding:
-            term = str(term.strip(), encoding)
-            words = [str(w.strip(), encoding) for w in words.split(',')]
+            term = term.strip()
+            words = [w.strip() for w in words.split(',')]
             if casefolding:
                 term = term.lower()
                 words = [w.lower() for w in words]
