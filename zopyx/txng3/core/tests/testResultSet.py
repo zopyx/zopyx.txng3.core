@@ -19,7 +19,7 @@ from zopyx.txng3.core.interfaces import IResultSet
 from zopyx.txng3.core.index import Index
 from zopyx.txng3.core import config
 
-from TextIndexNGTestCase import TextIndexNGTestCase
+from .TextIndexNGTestCase import TextIndexNGTestCase
 
 
 class ResultSetTests(unittest.TestCase):
