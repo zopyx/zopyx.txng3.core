@@ -30,7 +30,7 @@ from zopyx.txng3.core.exceptions import LexiconError
 from .config import DEFAULT_LANGUAGE
 
 try:
-    from zopyx.txng3.ext.levenshtein import ratio
+    from Levenshtein import ratio
     have_lv = True
 except ImportError:
     have_lv = False
