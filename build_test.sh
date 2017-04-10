@@ -17,5 +17,5 @@ fi
 virtualenv-$python_version .
 bin/python bootstrap.py
 bin/buildout
-bin/test-jenkins --xml
+make test
 
