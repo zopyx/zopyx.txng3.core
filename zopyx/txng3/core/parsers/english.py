@@ -65,7 +65,7 @@ class ParserBase:
 
         lex.lex(module=self, debug=False)
         self.p = yacc.yacc(module=self,
-                           debug=0,
+                           debug=1,
                            outputdir=outputdir,
                            debugfile=self.debugfile,
                            tabmodule=self.tabmodule,)
@@ -104,6 +104,7 @@ class ParserBase:
             data string.
         """
 
+        import pdb; pdb.set_trace() 
         lex.input(data)
         tokens = []
         while 1:
@@ -411,7 +412,7 @@ if __name__ == '__main__':
     ):
         print('-' * 80)
         print('>>', query)
-
+        import pdb; pdb.set_trace() 
         print(EnglishQueryParser.lexer(query))
         print(EnglishQueryParser.parse(query))
 
