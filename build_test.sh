@@ -4,7 +4,7 @@ export PATH=\
 /opt/buildout.python/bin:\
 $PATH:
 
-virtualenv
+virtualenv .
 bin/python bootstrap.py
 bin/buildout
 make test
