@@ -1,10 +1,5 @@
 #!/bin/bash
 
-export PATH=\
-/opt/buildout.python/bin:\
-$PATH:
-
-virtualenv  --clear .
 pip install zc.buildout
 buildout bootstrap
 buildout
