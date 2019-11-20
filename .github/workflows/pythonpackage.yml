@@ -24,8 +24,7 @@ jobs:
     - name: Test with pytest
       run: |
         virtualenv .
-        ./bin/pip install zc.buildout
-        ./bin/buildout bootstrap
+        ./bin/pip -r requirements.txt
         ./bin/buildout
         ./bin/test -vv
 
