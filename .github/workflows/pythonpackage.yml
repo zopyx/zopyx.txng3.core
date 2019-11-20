@@ -24,7 +24,7 @@ jobs:
     - name: Test with pytest
       run: |
         virtualenv .
-        ./bin/pip -r requirements.txt
+        ./bin/pip install -r requirements.txt
         ./bin/buildout
         ./bin/test -vv
 
