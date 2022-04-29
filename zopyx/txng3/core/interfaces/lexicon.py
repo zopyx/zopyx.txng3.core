@@ -16,50 +16,50 @@ class ILexicon(Interface):
     def getLanguages():
         """ return a list of languages handled by the lexicon """
 
-    def addLanguage(language):
+    def addLanguage(self):
         """ prepare lexicon to store words in a new language """
 
-    def hasLanguage(language):
+    def hasLanguage(self):
         """ check if the lexicon is configured for a language """
 
-    def insertWords(words, language):
+    def insertWords(self, language):
         """ Insert a sequence of words for a given language.  Return a sequence of wordids. """
 
-    def insertWord(word, language):
+    def insertWord(self, language):
         """ Insert a word for a given language. Return a wordid. """
 
-    def getWord(wordid):
+    def getWord(self):
         """ return the word for the given wordid """
 
-    def getWordId(word, language='xx'):
+    def getWordId(self, language='xx'):
         """ return the word id for a given word """
 
-    def getWordIds(words, language='xx'):
+    def getWordIds(self, language='xx'):
         """ return a list of wordid for a list for words """
 
-    def getWordsForLanguage(language):
+    def getWordsForLanguage(self):
         """ return all words for a given language """
 
-    def getWordAndLanguage(wordid):
+    def getWordAndLanguage(self):
         """ return the (word, language) tuple  for the given wordid """
 
-    def getWordsForRightTruncation(prefix, language='en'):
+    def getWordsForRightTruncation(self, language='en'):
         """ return a sequence of words with a given prefix """
 
-    def getWordsForLeftTruncation(suffix , language='en'):
+    def getWordsForLeftTruncation(self, language='en'):
         """ return a sequence of words with a given suffix"""
 
-    def getWordsForPattern(pattern, language='en'):
+    def getWordsForPattern(self, language='en'):
         """ return a sequence of words that match 'pattern'.  'pattern' is a
             sequence of characters including the wildcards '?' and '*'.
         """         
 
-    def getWordsInRange(w1, w2, language='en'):
+    def getWordsInRange(self, w2, language='en'):
         """ return a sorted list of words where w1 <= w(x) <= w2  """
 
-    def getSimiliarWords(term, threshold, language='en'):
+    def getSimiliarWords(self, threshold, language='en'):
         """ return a list of that are similar based on a similarity measure"""
 
-    def getWordsForSubstring(sub, language='en'):
+    def getWordsForSubstring(self, language='en'):
         """ return all words that match the given substring """
 

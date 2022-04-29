@@ -31,10 +31,7 @@ class Converter(BaseConverter):
         if not isinstance(doc, unicode):
             if not encoding:
                 mo = charset_reg.search(doc)
-                if mo is not None:
-                    encoding = mo.group(1)
-                else:
-                    encoding = 'ascii' # guess
+                encoding = mo.group(1) if mo is not None else 'ascii'
             doc = unicode(doc, encoding, 'replace')
         doc = convert_entities(doc)
         result = html2text(doc)

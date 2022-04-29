@@ -41,10 +41,8 @@ class Index(Persistent, object):
 
     def __init__(self, **kw):
 
-        # perform argument check first
-        illegal_args = [k for k in kw.keys() if not k in defaults.keys()]
-        if illegal_args:
-            raise ValueError('Unknown parameters: %s' % ', '.join(illegal_args))
+        if illegal_args := [k for k in kw.keys() if k not in defaults.keys()]:
+            raise ValueError(f"Unknown parameters: {', '.join(illegal_args)}")
 
         # setup preferences using default args (preferences are stored as
         # attributes of the index instance
@@ -84,22 +82,18 @@ class Index(Persistent, object):
     def getStorage(self, field):
         """ return the storage """
 
-        if self.dedicated_storage:
-            try:
-                return self._storage[field]
-            except KeyError:
-                raise ValueError("No such storage for field '%s'" % field)
-        else:
+        if not self.dedicated_storage:
             return self._storage
+        try:
+            return self._storage[field]
+        except KeyError:
+            raise ValueError("No such storage for field '%s'" % field)
 
 
     def getSettings(self):
         """ returns a mapping contains the indexes preferences """
         from copy import copy
-        d = {}
-        for k in defaults.keys():
-            d[k] = copy(getattr(self, k))
-        return d
+        return {k: copy(getattr(self, k)) for k in defaults.keys()}
 
 
     def index_object(self, obj, docid):
@@ -139,7 +133,7 @@ class Index(Persistent, object):
                 content = info['content']
 
                 if not isinstance(content, unicode):
-                    raise ValueError('Content must be unicode: %s' % repr(content))
+                    raise ValueError(f'Content must be unicode: {repr(content)}')
 
                 # If a document has an unknown language (other than the ones configured
                 # for the index), an exception will be raised or the content is
@@ -147,11 +141,14 @@ class Index(Persistent, object):
 
                 language = info['language']
 
-                if not language in self.languages:
+                if language not in self.languages:
                     if self.index_unknown_languages:
                         language = self.languages[0]
                     else:
-                        raise ValueError('Unsupported language: %s (allowed: %s)' % (language, ', '.join(self.languages)))
+                        raise ValueError(
+                            f"Unsupported language: {language} (allowed: {', '.join(self.languages)})"
+                        )
+
 
                 # run content through the pipline (splitter, stopword remover, normalizer etc)
                 words = self._process_words(content, language)
@@ -216,8 +213,7 @@ class Index(Persistent, object):
         # Stem words if required. If no stemmer for 'language' is available
         # then do not stem
         if self.use_stemmer:
-            S = getStemmer(language)
-            if S:
+            if S := getStemmer(language):
                 words = S.stem(words)
 
         return words
@@ -271,16 +267,22 @@ class Index(Persistent, object):
 
         # First check query options
         for k in kw.keys():
-            if not k in self.query_options:
-                raise ValueError('Unknown option: %s (supported query options: %s)' % (k, ', '.join(self.query_options)))
+            if k not in self.query_options:
+                raise ValueError(
+                    f"Unknown option: {k} (supported query options: {', '.join(self.query_options)})"
+                )
+
 
         # obtain parser ID (which is the name of named utility implementing IParser)
         parser_id = kw.get('parser', self.query_parser)
 
         # determine query language
         language = kw.get('language', self.languages[0])
-        if not language in self.languages:
-            raise ValueError('Unsupported language: %s (supported languages: %s)' % (language, ', '.join(self.languages)))
+        if language not in self.languages:
+            raise ValueError(
+                f"Unsupported language: {language} (supported languages: {', '.join(self.languages)})"
+            )
+
 
         # check if field is known to the index
         field = kw.get('field')
@@ -297,8 +299,10 @@ class Index(Persistent, object):
             if not field:
                 field = self.fields[0]
             if field not in self.fields:
-                raise ValueError('Unknown field: %s (known fields: %s)' % (
-                    field, ', '.join(self.fields)))
+                raise ValueError(
+                    f"Unknown field: {field} (known fields: {', '.join(self.fields)})"
+                )
+
             search_fields = [field]
 
         # perform optional cosine ranking after searching
@@ -318,7 +322,7 @@ class Index(Persistent, object):
         # 'always' -- expand always
         # 'on_miss' -- expand only for not-found terms in the query string
         autoexpand = kw.get('autoexpand', self.autoexpand)
-        if not autoexpand in ('off', 'always', 'on_miss'):
+        if autoexpand not in ('off', 'always', 'on_miss'):
             raise ValueError('"autoexpand" must either be "off", "always" or "on_miss"')
 
         # Use a sequence of configured thesauri (identified by their configured name)
@@ -353,9 +357,7 @@ class Index(Persistent, object):
 
         if self.use_stopwords:
             sw_utility = getUtility(IStopwords)
-            stopwords = sw_utility.stopwordsForLanguage(language)
-
-            if stopwords:
+            if stopwords := sw_utility.stopwordsForLanguage(language):
                 # The stopword remover removes WordNodes representing
                 # a stopword *in-place*
                 stopword_remover(parsed_query, stopwords)
@@ -402,7 +404,7 @@ class Index(Persistent, object):
     ############################################################
 
     def _setUse_stemmer(self, value):
-        if not value in (True, False, 0, 1):
+        if value not in (True, False, 0, 1):
             raise ValueError('"use_stemmer" must be either True or False')
         self._use_stemmer= bool(value)
 
@@ -430,7 +432,7 @@ class Index(Persistent, object):
     lexicon = property(_getLexicon, _setLexicon)
 
     def _setDedicated_storage(self, value):
-        if not value in (True, False):
+        if value not in (True, False):
             raise ValueError('"dedicated_storage" must be True or False')
         self._dedicated_storage = value
 
@@ -460,7 +462,7 @@ class Index(Persistent, object):
 
     def _setUse_normalizer(self, value):
 
-        if not value in (True, False):
+        if value not in (True, False):
             raise ValueError('"use_normalizer" must be True or False')
         self._use_normalizer = value
 
@@ -525,7 +527,7 @@ class Index(Persistent, object):
 
     def _setSplitter_casefolding(self, value):
 
-        if not value in (True, False):
+        if value not in (True, False):
             raise ValueError('"splitter_casefolding" must be True or False')
 
         self._splitter_casefolding = value
@@ -574,7 +576,7 @@ class Index(Persistent, object):
 
     def _setUse_stopwords(self, value):
 
-        if not value in (True, False):
+        if value not in (True, False):
             raise ValueError('"use_stopwords" must be True or False')
 
         self._use_stopwords = value
@@ -611,10 +613,10 @@ class Index(Persistent, object):
 
 
     def __repr__(self):
-        return '%s[%s]' % (self.__class__.__name__, ', '.join(['%s=%s' % (k, repr(getattr(self, k, None))) for k in defaults.keys()]))
+        return f"{self.__class__.__name__}[{', '.join([f'{k}={repr(getattr(self, k, None))}' for k in defaults.keys()])}]"
 
     def __len__(self):
         if self.dedicated_storage:
-            return sum([len(s) for s in self._storage.values()])
+            return sum(len(s) for s in self._storage.values())
         else:
             return len(self._storage)

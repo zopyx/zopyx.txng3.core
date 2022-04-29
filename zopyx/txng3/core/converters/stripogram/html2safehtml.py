@@ -21,43 +21,39 @@ class HTML2SafeHTML(HTMLParser):
         self.openTags = []
         
     def end_tag(self,tag):
-        self.result = "%s</%s>" % (self.result, tag)
+        self.result = f"{self.result}</{tag}>"
             
     def handle_data(self, data):
         if data:
             self.result = self.result + data
 
     def handle_charref(self, name):
-        self.result = "%s&#%s;" % (self.result, name)
+        self.result = f"{self.result}&#{name};"
         
     from htmlentitydefs import entitydefs # our entity defs list to use
     
     def handle_entityref(self, name):
         # this quotes non-standard entities
-        if self.entitydefs.has_key(name): 
-            amp = '&'
-        else:
-            amp = '&amp;'
-        self.result = "%s%s%s;" % (self.result, amp, name)
+        amp = '&' if self.entitydefs.has_key(name) else '&amp;'
+        self.result = f"{self.result}{amp}{name};"
 
     def handle_starttag(self, tag, attrs):
         """ Delete all tags except for legal ones """
 
-        if tag in self.valid_tags:
-            
-            self.result = self.result + '<' + tag
-            
-            for k, v in attrs:
-                if v is None:
-                    self.result += ' ' + k
-                else:
-                    if lower(k[0:2]) != 'on' and lower(v[0:10]) != 'javascript':
-                        self.result += ' %s="%s"' % (k, v)
-                    
-            if tag not in self.never_close:
-                self.openTags.append(tag)
-                
-            self.result = self.result + '>'
+        if tag not in self.valid_tags:
+            return
+        self.result = f'{self.result}<{tag}'
+
+        for k, v in attrs:
+            if v is None:
+                self.result += f' {k}'
+            elif lower(k[:2]) != 'on' and lower(v[:10]) != 'javascript':
+                self.result += ' %s="%s"' % (k, v)
+
+        if tag not in self.never_close:
+            self.openTags.append(tag)
+
+        self.result = f'{self.result}>'
                 
     def handle_endtag(self, tag):
 
@@ -101,22 +97,22 @@ class HTML2SafeHTML(HTMLParser):
 
         # fix incomplete entity and char refs        
         rawdata = self.rawdata
-        
+
         i = 0
         n = len(rawdata)
         newdata=''
-        
+
         while i < n:
             j = find(rawdata,'&',i)
             if j==-1:
                 break
             newdata = newdata + rawdata[i:j]
             if charref.match(rawdata, j) or entityref.match(rawdata, j):
-                newdata = newdata + '&'
+                newdata = f'{newdata}&'
             else:
-                newdata = newdata + '&amp;'
+                newdata = f'{newdata}&amp;'
             i = j+1
-            
+
         self.rawdata = newdata + rawdata[i:]
 
         # do normal parsing

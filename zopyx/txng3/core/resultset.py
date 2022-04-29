@@ -33,7 +33,7 @@ class ResultSet:
         self.ranked_results = None
 
     def __repr__(self):
-        return '%s(%s), %s' % (self.__class__.__name__, self.docids, [ (w,f) for w,f in self.words])
+        return f'{self.__class__.__name__}({self.docids}), {list(self.words)}'
 
     def getWords(self):
         return self.words
@@ -65,10 +65,7 @@ class ResultSet:
         if self.ranked_results:
             max = self.ranked_results[0][1]
             for k,v in self.ranked_results:
-                if max == 0:
-                    d[k] = 0
-                else:
-                    d[k] = int(v / max * 1024.0)
+                d[k] = 0 if max == 0 else int(v / max * 1024.0)
         return d
 
 

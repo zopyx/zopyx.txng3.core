@@ -53,10 +53,7 @@ class Z2Logger:
 def Logger():
     """ Logger factory """
     
-    if have_z2:
-        return Z2Logger()
-    else:
-        return PyLogger()        
+    return Z2Logger() if have_z2 else PyLogger()        
 
 
 LOG = Logger()

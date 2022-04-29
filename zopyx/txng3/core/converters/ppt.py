@@ -33,23 +33,16 @@ class Converter(BaseConverter):
         
         tmp_name = self.saveFile(doc)
         err = TmpFile('')
-        if sys.platform == 'win32':
-            html = self.execute('ppthtml "%s" 2> "%s"' % (
-                tmp_name, str(err)))
-        else:
-            html = self.execute('ppthtml "%s" 2> "%s"' % (
-                tmp_name, str(err)))
-        
+        html = self.execute('ppthtml "%s" 2> "%s"' % (
+            tmp_name, str(err)))
         try:
             errors = open(str(err), 'r+').read()
         except OSError:
             errors = ""
         if errors:
             if logError:
-                LOG.warn('Converter %s experienced an error %s' % (
-                    self.content_description, errors)
-                )
-            
+                LOG.warn(f'Converter {self.content_description} experienced an error {errors}')
+
             if raiseException:
                 raise ConversionError(errors)
 

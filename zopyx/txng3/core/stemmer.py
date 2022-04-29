@@ -38,7 +38,7 @@ def getStemmer(language):
     """
 
     original_language = language
-    if not language in availableStemmers:
+    if language not in availableStemmers:
         language = country_codes.get(language)
     if language:
         return stemmer.Stemmer(language)

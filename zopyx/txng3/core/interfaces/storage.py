@@ -13,11 +13,11 @@ class IStorage(Interface):
         of document ids and vis-versa.
     """
 
-    def insertDocument(docid, WidList):
+    def insertDocument(self, WidList):
         """ Inserts or replaces a list of wordids (WidList instance)
             for a given document id
         """
-    def removeDocument(docid):
+    def removeDocument(self):
         """ remove a document and all its words from the storage """
 
     def numberDocuments(): 
@@ -26,32 +26,32 @@ class IStorage(Interface):
     def getDocIds(): 
         """ return all document Ids as DocidList instance"""
 
-    def getDocumentsForWordId(wordid):
+    def getDocumentsForWordId(self):
         """ return a sequence of document is as an instance of DocidList.
         """
 
-    def getDocumentsForWordIds(wordidlist):
+    def getDocumentsForWordIds(self):
         """ return a sequence of document is as an instance of DocidList for
             a given list of wordids.
         """
 
-    def getWordIdsForDocId(docid):
+    def getWordIdsForDocId(self):
         """ return a sequence of word ids as WidList instance for a given
             document id
         """
 
-    def hasContigousWordids(docid, wordids):
+    def hasContigousWordids(self, wordids):
         """ check if a document given by its docid has given sequence of 
             wordids as contigous list.
         """
 
-    def getPositions(docid, wordid):
+    def getPositions(self, wordid):
         """ Return all positions of the a word given by its 'wordid'
             in a document given by its 'docid'. The position list is
             returned a sequence of ordered integers.
         """
 
-    def numberWordsInDocument(docid):
+    def numberWordsInDocument(self):
         """ Return the total number of words within a document """
 
 

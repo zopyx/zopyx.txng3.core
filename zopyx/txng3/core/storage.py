@@ -80,9 +80,8 @@ class Storage(Persistent):
             count += 1
             if not tree_has(wid):
                 tree[wid] = DocidList([docid])
-            else:
-                if not docid in tree[wid]:   
-                    tree[wid].insert(docid)
+            elif docid not in tree[wid]:   
+                tree[wid].insert(docid)
 
         for wid in removed_wordids:
             if tree_has(wid):
@@ -172,31 +171,26 @@ class Storage(Persistent):
 
         while 1:
             pos = encoded_document[offset:].find(encoded_wids)
-            
+
             if pos == -1: # end of string?
                 break
 
-            if pos != -1: # found something
-
-                if offset+pos+encoded_wids_len < encoded_document_len:
-                    # check if the next token represents a new word (with
-                    # 7th bit set)
-                    next_c = encoded_document[offset+pos+encoded_wids_len]
-                    if ord(next_c) > 127:
-                        # start of a new word -> we *really* found a word
-                        found = True
-                        break
-                else:
-                    # we found a word and we are the end of the complete string                    
+            if offset+pos+encoded_wids_len < encoded_document_len:
+                # check if the next token represents a new word (with
+                # 7th bit set)
+                next_c = encoded_document[offset+pos+encoded_wids_len]
+                if ord(next_c) > 127:
+                    # start of a new word -> we *really* found a word
                     found = True
                     break
+            else:
+                # we found a word and we are the end of the complete string                    
+                found = True
+                break
 
             offset = offset + pos + 1
 
         return found
-
-
-        return encoded_wids in encoded_document
     def getPositions(self, docid, wordid):
         """ return a sequence of positions of occurrences of wordid within
             a document given by its docid.

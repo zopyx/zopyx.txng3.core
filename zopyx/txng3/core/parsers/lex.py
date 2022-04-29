@@ -92,81 +92,76 @@ class Lexer:
         self.lexoptimize = 0          # Optimized mode
 
     def clone(self,object=None):
-        c = Lexer()
-        c.lexstatere = self.lexstatere
-        c.lexstateinfo = self.lexstateinfo
-        c.lexstateretext = self.lexstateretext
-        c.lexstate = self.lexstate
-        c.lexstatestack = self.lexstatestack
-        c.lexstateignore = self.lexstateignore
-        c.lexstateerrorf = self.lexstateerrorf
-        c.lexreflags = self.lexreflags
-        c.lexdata = self.lexdata
-        c.lexpos = self.lexpos
-        c.lexlen = self.lexlen
-        c.lextokens = self.lextokens
-        c.lexdebug = self.lexdebug
-        c.lineno = self.lineno
-        c.lexoptimize = self.lexoptimize
-        c.lexliterals = self.lexliterals
-        c.lexmodule   = self.lexmodule
+       c = Lexer()
+       c.lexstatere = self.lexstatere
+       c.lexstateinfo = self.lexstateinfo
+       c.lexstateretext = self.lexstateretext
+       c.lexstate = self.lexstate
+       c.lexstatestack = self.lexstatestack
+       c.lexstateignore = self.lexstateignore
+       c.lexstateerrorf = self.lexstateerrorf
+       c.lexreflags = self.lexreflags
+       c.lexdata = self.lexdata
+       c.lexpos = self.lexpos
+       c.lexlen = self.lexlen
+       c.lextokens = self.lextokens
+       c.lexdebug = self.lexdebug
+       c.lineno = self.lineno
+       c.lexoptimize = self.lexoptimize
+       c.lexliterals = self.lexliterals
+       c.lexmodule   = self.lexmodule
 
         # If the object parameter has been supplied, it means we are attaching the
         # lexer to a new object.  In this case, we have to rebind all methods in
         # the lexstatere and lexstateerrorf tables.
 
-        if object:
-            newtab = { }
-            for key, ritem in self.lexstatere.items():
-                newre = []
-                for cre, findex in ritem:
-                     newfindex = []
-                     for f in findex:
-                         if not f or not f[0]:
-                             newfindex.append(f)
-                             continue
-                         newfindex.append((getattr(object,f[0].__name__),f[1]))
-                newre.append((cre,newfindex))
-                newtab[key] = newre
-            c.lexstatere = newtab
-            c.lexstateerrorf = { }
-            for key, ef in self.lexstateerrorf.items():
-                c.lexstateerrorf[key] = getattr(object,ef.__name__)
-            c.lexmodule = object
+       if object:
+          newtab = { }
+          for key, ritem in self.lexstatere.items():
+             for cre, findex in ritem:
+                  newfindex = []
+                  for f in findex:
+                      if not f or not f[0]:
+                          newfindex.append(f)
+                          continue
+                      newfindex.append((getattr(object,f[0].__name__),f[1]))
+             newre = [(cre, newfindex)]
+             newtab[key] = newre
+          c.lexstatere = newtab
+          c.lexstateerrorf = { }
+          for key, ef in self.lexstateerrorf.items():
+              c.lexstateerrorf[key] = getattr(object,ef.__name__)
+          c.lexmodule = object
 
-        # Set up other attributes
-        c.begin(c.lexstate)
-        return c
+       # Set up other attributes
+       c.begin(c.lexstate)
+       return c
 
     # ------------------------------------------------------------
     # writetab() - Write lexer information to a table file
     # ------------------------------------------------------------
     def writetab(self,tabfile):
-        tf = open(tabfile+".py","w")
-        tf.write("# %s.py. This file automatically created by PLY (version %s). Don't edit!\n" % (tabfile,__version__))
-        tf.write("_lextokens    = %s\n" % repr(self.lextokens))
-        tf.write("_lexreflags   = %s\n" % repr(self.lexreflags))
-        tf.write("_lexliterals  = %s\n" % repr(self.lexliterals))
-        tf.write("_lexstateinfo = %s\n" % repr(self.lexstateinfo))
-        
-        tabre = { }
-        for key, lre in self.lexstatere.items():
-             titem = []
-             for i in range(len(lre)):
-                  titem.append((self.lexstateretext[key][i],_funcs_to_names(lre[i][1])))
+       with open(f"{tabfile}.py", "w") as tf:
+          tf.write("# %s.py. This file automatically created by PLY (version %s). Don't edit!\n" % (tabfile,__version__))
+          tf.write("_lextokens    = %s\n" % repr(self.lextokens))
+          tf.write("_lexreflags   = %s\n" % repr(self.lexreflags))
+          tf.write("_lexliterals  = %s\n" % repr(self.lexliterals))
+          tf.write("_lexstateinfo = %s\n" % repr(self.lexstateinfo))
+
+          tabre = { }
+          for key, lre in self.lexstatere.items():
+             titem = [(self.lexstateretext[key][i], _funcs_to_names(lre[i][1]))
+                      for i in range(len(lre))]
              tabre[key] = titem
 
-        tf.write("_lexstatere   = %s\n" % repr(tabre))
-        tf.write("_lexstateignore = %s\n" % repr(self.lexstateignore))
+          tf.write("_lexstatere   = %s\n" % repr(tabre))
+          tf.write("_lexstateignore = %s\n" % repr(self.lexstateignore))
 
-        taberr = { }
-        for key, ef in self.lexstateerrorf.items():
-             if ef:
-                  taberr[key] = ef.__name__
-             else:
-                  taberr[key] = None
-        tf.write("_lexstateerrorf = %s\n" % repr(taberr))
-        tf.close()
+          taberr = {
+              key: ef.__name__ if ef else None
+              for key, ef in self.lexstateerrorf.items()
+          }
+          tf.write("_lexstateerrorf = %s\n" % repr(taberr))
 
     # ------------------------------------------------------------
     # readtab() - Read lexer information from a tab file
@@ -351,36 +346,29 @@ class Lexer:
 # -----------------------------------------------------------------------------
 
 def _validate_file(filename):
-    import os.path
-    base,ext = os.path.splitext(filename)
-    if ext != '.py': return 1        # No idea what the file is. Return OK
+   import os.path
+   base,ext = os.path.splitext(filename)
+   if ext != '.py': return 1        # No idea what the file is. Return OK
 
-    try:
-        f = open(filename)
-        lines = f.readlines()
-        f.close()
-    except IOError:
-        return 1                       # Oh well
+   try:
+      with open(filename) as f:
+         lines = f.readlines()
+   except IOError:
+       return 1                       # Oh well
 
-    fre = re.compile(r'\s*def\s+(t_[a-zA-Z_0-9]*)\(')
-    sre = re.compile(r'\s*(t_[a-zA-Z_0-9]*)\s*=')
-    counthash = { }
-    linen = 1
-    noerror = 1
-    for l in lines:
-        m = fre.match(l)
-        if not m:
-            m = sre.match(l)
-        if m:
-            name = m.group(1)
-            prev = counthash.get(name)
-            if not prev:
-                counthash[name] = linen
-            else:
-                print >>sys.stderr, "%s:%d: Rule %s redefined. Previously defined on line %d" % (filename,linen,name,prev)
-                noerror = 0
-        linen += 1
-    return noerror
+   fre = re.compile(r'\s*def\s+(t_[a-zA-Z_0-9]*)\(')
+   sre = re.compile(r'\s*(t_[a-zA-Z_0-9]*)\s*=')
+   noerror = 1
+   counthash = { }
+   for linen, l in enumerate(lines, start=1):
+      if m := fre.match(l) or sre.match(l):
+         name = m.group(1)
+         if prev := counthash.get(name):
+            print >>sys.stderr, "%s:%d: Rule %s redefined. Previously defined on line %d" % (filename,linen,name,prev)
+            noerror = 0
+         else:
+            counthash[name] = linen
+   return noerror
 
 # -----------------------------------------------------------------------------
 # _funcs_to_names()
@@ -460,20 +448,16 @@ def _form_master_re(relist,reflags,ldict,toknames):
 # -----------------------------------------------------------------------------
 
 def _statetoken(s,names):
-    nonstate = 1
-    parts = s.split("_")
-    for i in range(1,len(parts)):
-         if not names.has_key(parts[i]) and parts[i] != 'ANY': break
-    if i > 1:
-       states = tuple(parts[1:i])
-    else:
-       states = ('INITIAL',)
+   nonstate = 1
+   parts = s.split("_")
+   for i in range(1,len(parts)):
+        if not names.has_key(parts[i]) and parts[i] != 'ANY': break
+   states = tuple(parts[1:i]) if i > 1 else ('INITIAL', )
+   if 'ANY' in states:
+      states = tuple(names.keys())
 
-    if 'ANY' in states:
-       states = tuple(names.keys())
-      
-    tokenname = "_".join(parts[i:])
-    return (states,tokenname)
+   tokenname = "_".join(parts[i:])
+   return (states,tokenname)
 
 # -----------------------------------------------------------------------------
 # lex(module)

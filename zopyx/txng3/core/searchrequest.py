@@ -18,5 +18,5 @@ class SearchRequest:
         return self.index
 
     def __repr__(self):
-        return '%s (%s)' % (self.__class__.__name__, ', '.join(['%s=%s' % (k,v) for k,v in self.__dict__.items()]))
+        return f"{self.__class__.__name__} ({', '.join([f'{k}={v}' for k,v in self.__dict__.items()])})"
 

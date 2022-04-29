@@ -200,10 +200,8 @@ class StemmerTests(TextIndexNGTestCase):
 
     def _test(self, index, query, language, expected, field='text'):
         res = index.search(query, language=language, field=field)
-        docids = list(res.getDocids())
-        docids.sort()
-        expected = list(expected)
-        expected.sort()
+        docids = sorted(res.getDocids())
+        expected = sorted(expected)
         if docids != expected:
             raise AssertionError('Query failed (%s/%s): %s\nGot:     %s\nExpected: %s' % (field, language, query, docids, expected))
 
@@ -239,10 +237,8 @@ class MultilingualTests(TextIndexNGTestCase):
 
     def _test(self, index, query, language, expected, field='text'):
         res = index.search(query, language=language, field=field)
-        docids = list(res.getDocids())
-        docids.sort()
-        expected = list(expected)
-        expected.sort()
+        docids = sorted(res.getDocids())
+        expected = sorted(expected)
         if docids != expected:
             raise AssertionError('Query failed (%s/%s): %s\nGot:     %s\nExpected: %s' % (field, language, query, docids, expected))
 
@@ -379,7 +375,7 @@ class FunctionalTest(TextIndexNGTestCase):
         for wid in storage._wid2doc:
             docids = storage._wid2doc[wid]
             for id in docids:
-                if not id in keys:
+                if id not in keys:
                     return False
 
         return True
@@ -421,8 +417,7 @@ class FunctionalTest(TextIndexNGTestCase):
         for i in range(1, 200):
             self._addDoc(index, i)
 
-        for iterations in range(100):
-
+        for _ in range(100):
             num = random.choice(range(1, 200))
             if random.randint(0, 1) == 0:
                 index.unindex_object(num)

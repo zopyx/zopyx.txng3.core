@@ -124,8 +124,7 @@ class YaccProduction:
         self.pbstack = []
         self.stack = stack
     def __getitem__(self,n):
-        if n >= 0: return self.slice[n].value
-        else: return self.stack[n].value
+        return self.slice[n].value if n >= 0 else self.stack[n].value
 
     def __setitem__(self,n,v):
         self.slice[n].value = v
@@ -443,39 +442,34 @@ def validate_file(filename):
     if ext != '.py': return 1          # No idea. Assume it's okay.
 
     try:
-        f = open(filename)
-        lines = f.readlines()
-        f.close()
+        with open(filename) as f:
+            lines = f.readlines()
     except IOError:
         return 1                       # Oh well
 
     # Match def p_funcname(
     fre = re.compile(r'\s*def\s+(p_[a-zA-Z_0-9]*)\(')
-    counthash = { }
-    linen = 1
     noerror = 1
-    for l in lines:
-        m = fre.match(l)
-        if m:
-            name = m.group(1)
-            prev = counthash.get(name)
-            if not prev:
-                counthash[name] = linen
-            else:
+    counthash = { }
+    for linen, l in enumerate(lines, start=1):
+        if m := fre.match(l):
+            name = m[1]
+            if prev := counthash.get(name):
                 sys.stderr.write("%s:%d: Function %s redefined. Previously defined on line %d\n" % (filename,linen,name,prev))
                 noerror = 0
-        linen += 1
+            else:
+                counthash[name] = linen
     return noerror
 
 # This function looks for functions that might be grammar rules, but which don't have the proper p_suffix.
 def validate_dict(d):
     for n,v in d.items(): 
-        if n[0:2] == 'p_' and type(v) in (types.FunctionType, types.MethodType): continue
-        if n[0:2] == 't_': continue
+        if n[:2] == 'p_' and type(v) in (types.FunctionType, types.MethodType): continue
+        if n[:2] == 't_': continue
 
-        if n[0:2] == 'p_':
+        if n[:2] == 'p_':
             sys.stderr.write("yacc: Warning. '%s' not defined as a function\n" % n)
-        if 1 and isinstance(v,types.FunctionType) and v.func_code.co_argcount == 1:
+        if isinstance(v, types.FunctionType) and v.func_code.co_argcount == 1:
             try:
                 doc = v.__doc__.split(" ")
                 if doc[1] == ':':
@@ -492,46 +486,27 @@ def validate_dict(d):
 
 # Initialize all of the global variables used during grammar construction
 def initialize_vars():
-    global Productions, Prodnames, Prodmap, Terminals 
+    global Productions, Prodnames, Prodmap, Terminals
     global Nonterminals, First, Follow, Precedence, LRitems
     global Errorfunc, Signature, Requires
 
     Productions  = [None]  # A list of all of the productions.  The first
-                           # entry is always reserved for the purpose of
-                           # building an augmented grammar
-                        
     Prodnames    = { }     # A dictionary mapping the names of nonterminals to a list of all
-                           # productions of that nonterminal.
-                        
     Prodmap      = { }     # A dictionary that is only used to detect duplicate
-                           # productions.
-
     Terminals    = { }     # A dictionary mapping the names of terminal symbols to a
-                           # list of the rules where they are used.
-
     Nonterminals = { }     # A dictionary mapping names of nonterminals to a list
-                           # of rule numbers where they are used.
-
     First        = { }     # A dictionary of precomputed FIRST(x) symbols
-    
+
     Follow       = { }     # A dictionary of precomputed FOLLOW(x) symbols
 
     Precedence   = { }     # Precedence rules for each terminal. Contains tuples of the
-                           # form ('right',level) or ('nonassoc', level) or ('left',level)
-
     LRitems      = [ ]     # A list of all LR items for the grammar.  These are the
-                           # productions with the "dot" like E -> E . PLUS E
-
     Errorfunc    = None    # User defined error handler
 
     # Digital signature of the grammar rules, precedence
     # and other information.  Used to determined when a
     # parsing table needs to be regenerated.
-    if have_hashlib:
-        Signature    = hashlib.md5()   
-    else:
-        Signature    = md5.new()
-
+    Signature = hashlib.md5() if have_hashlib else md5.new()
     Requires     = { }     # Requires list
 
     # File objects used when creating the parser.out debugging file
@@ -576,11 +551,11 @@ class Production:
         self.setnumbers = [ ]
         
     def __str__(self):
-        if self.prod:
-            s = "%s -> %s" % (self.name," ".join(self.prod))
-        else:
-            s = "%s -> <empty>" % self.name
-        return s
+        return (
+            f'{self.name} -> {" ".join(self.prod)}'
+            if self.prod
+            else f"{self.name} -> <empty>"
+        )
 
     def __repr__(self):
         return str(self)
@@ -643,7 +618,7 @@ def add_production(f,file,line,prodname,syms):
     if prodname == 'error':
         sys.stderr.write("%s:%d: Illegal rule name '%s'. error is a reserved word.\n" % (file,line,prodname))
         return -1
-                
+
     if not _is_identifier.match(prodname):
         sys.stderr.write("%s:%d: Illegal rule name '%s'\n" % (file,line,prodname))
         return -1
@@ -667,7 +642,7 @@ def add_production(f,file,line,prodname,syms):
             return -1
 
     # See if the rule is already in the rulemap
-    map = "%s -> %s" % (prodname,syms)
+    map = f"{prodname} -> {syms}"
     if Prodmap.has_key(map):
         m = Prodmap[map]
         sys.stderr.write("%s:%d: Duplicate rule %s.\n" % (file,line, m))
@@ -682,12 +657,12 @@ def add_production(f,file,line,prodname,syms):
     p.func = f
     p.number = len(Productions)
 
-            
+
     Productions.append(p)
     Prodmap[map] = p
     if not Nonterminals.has_key(prodname):
         Nonterminals[prodname] = [ ]
-    
+
     # Add all terminals to Terminals
     i = 0
     while i < len(p.prod):
@@ -699,12 +674,11 @@ def add_production(f,file,line,prodname,syms):
                 sys.stderr.write("%s:%d: Syntax error. Nothing follows %%prec.\n" % (p.file,p.line))
                 return -1
 
-            prec = Precedence.get(precname,None)
-            if not prec:
+            if prec := Precedence.get(precname, None):
+                p.prec = prec
+            else:
                 sys.stderr.write("%s:%d: Nothing known about the precedence of '%s'\n" % (p.file,p.line,precname))
                 return -1
-            else:
-                p.prec = prec
             del p.prod[i]
             del p.prod[i]
             continue
@@ -722,17 +696,13 @@ def add_production(f,file,line,prodname,syms):
 
     if not hasattr(p,"prec"):
         p.prec = ('right',0)
-        
+
     # Set final length of productions
     p.len  = len(p.prod)
     p.prod = tuple(p.prod)
 
     # Calculate unique syms in the production
-    p.usyms = [ ]
-    for s in p.prod:
-        if s not in p.usyms:
-            p.usyms.append(s)
-    
+    p.usyms = [s for s in p.prod if s not in p.usyms]
     # Add to the global productions list
     try:
         Prodnames[p.name].append(p)
@@ -748,11 +718,7 @@ def add_function(f):
     file = f.func_code.co_filename
     error = 0
 
-    if isinstance(f,types.MethodType):
-        reqdargs = 2
-    else:
-        reqdargs = 1
-        
+    reqdargs = 2 if isinstance(f,types.MethodType) else 1
     if f.func_code.co_argcount > reqdargs:
         sys.stderr.write("%s:%d: Rule '%s' has too many arguments.\n" % (file,line,f.__name__))
         return -1
@@ -760,7 +726,7 @@ def add_function(f):
     if f.func_code.co_argcount < reqdargs:
         sys.stderr.write("%s:%d: Rule '%s' requires an argument.\n" % (file,line,f.__name__))
         return -1
-          
+
     if f.__doc__:
         # Split the doc string into lines
         pstrings = f.__doc__.splitlines()
@@ -777,27 +743,21 @@ def add_function(f):
                         sys.stderr.write("%s:%d: Misplaced '|'.\n" % (file,dline))
                         return -1
                     prodname = lastp
-                    if len(p) > 1:
-                        syms = p[1:]
-                    else:
-                        syms = [ ]
+                    syms = p[1:] if len(p) > 1 else [ ]
                 else:
                     prodname = p[0]
                     lastp = prodname
                     assign = p[1]
-                    if len(p) > 2:
-                        syms = p[2:]
-                    else:
-                        syms = [ ]
-                    if assign != ':' and assign != '::=':
+                    syms = p[2:] if len(p) > 2 else [ ]
+                    if assign not in [':', '::=']:
                         sys.stderr.write("%s:%d: Syntax error. Expected ':'\n" % (file,dline))
                         return -1
-                         
- 
+
+
                 e = add_production(f,file,dline,prodname,syms)
                 error += e
 
-                
+
             except StandardError:
                 sys.stderr.write("%s:%d: Syntax error in rule '%s'\n" % (file,dline,ps))
                 error -= 1
@@ -814,10 +774,7 @@ def compute_reachable():
     Print a warning for any nonterminals that can't be reached.
     (Unused terminals have already had their warning.)
     '''
-    Reachable = { }
-    for s in Terminals.keys() + Nonterminals.keys():
-        Reachable[s] = 0
-
+    Reachable = {s: 0 for s in Terminals.keys() + Nonterminals.keys()}
     mark_reachable_from( Productions[0].prod[0], Reachable )
 
     for s in Nonterminals.keys():
@@ -847,11 +804,7 @@ def compute_terminates():
     '''
     Raise an error for any symbols that don't terminate.
     '''
-    Terminates = {}
-
-    # Terminals:
-    for t in Terminals.keys():
-        Terminates[t] = 1
+    Terminates = {t: 1 for t in Terminals.keys()}
 
     Terminates['$end'] = 1
 
@@ -867,20 +820,9 @@ def compute_terminates():
         for (n,pl) in Prodnames.items():
             # Nonterminal n terminates iff any of its productions terminates.
             for p in pl:
-                # Production p terminates iff all of its rhs symbols terminate.
-                for s in p.prod:
-                    if not Terminates[s]:
-                        # The symbol s does not terminate,
-                        # so production p does not terminate.
-                        p_terminates = 0
-                        break
-                else:
-                    # didn't break from the loop,
-                    # so every symbol s terminates
-                    # so production p terminates.
-                    p_terminates = 1
-
-                if p_terminates:
+                if p_terminates := next(
+                    (0 for s in p.prod if not Terminates[s]), 1
+                ):
                     # symbol n terminates!
                     if not Terminates[n]:
                         Terminates[n] = 1
@@ -893,14 +835,11 @@ def compute_terminates():
 
     some_error = 0
     for (s,terminates) in Terminates.items():
-        if not terminates:
-            if not Prodnames.has_key(s) and not Terminals.has_key(s) and s != 'error':
-                # s is used-but-not-defined, and we've already warned of that,
-                # so it would be overkill to say that it's also non-terminating.
-                pass
-            else:
-                sys.stderr.write("yacc: Infinite recursion detected for symbol '%s'.\n" % s)
-                some_error = 1
+        if not terminates and (
+            Prodnames.has_key(s) or Terminals.has_key(s) or s == 'error'
+        ):
+            sys.stderr.write("yacc: Infinite recursion detected for symbol '%s'.\n" % s)
+            some_error = 1
 
     return some_error
 
@@ -1014,14 +953,12 @@ def build_lritems():
 # -----------------------------------------------------------------------------
 
 def add_precedence(plist):
-    plevel = 0
     error = 0
-    for p in plist:
-        plevel += 1
+    for plevel, p in enumerate(plist, start=1):
         try:
             prec = p[0]
             terms = p[1:]
-            if prec != 'left' and prec != 'right' and prec != 'nonassoc':
+            if prec not in ['left', 'right', 'nonassoc']:
                 sys.stderr.write("yacc: Invalid precedence '%s'\n" % prec)
                 return -1
             for t in terms:
@@ -1070,14 +1007,8 @@ def first(beta):
         for f in First[x]:
             if f == '<empty>':
                 x_produces_empty = 1
-            else:
-                if f not in result: result.append(f)
-
-        if x_produces_empty:
-            # We have to consider the next x in beta,
-            # i.e. stay in the loop.
-            pass
-        else:
+            elif f not in result: result.append(f)
+        if not x_produces_empty:
             # We don't have to consider any further symbols in beta.
             break
     else:
@@ -1100,9 +1031,9 @@ def compute_follow(start=None):
 
     if not start:
         start = Productions[1].name
-        
+
     Follow[start] = [ '$end' ]
-        
+
     while 1:
         didadd = 0
         for p in Productions[1:]:
@@ -1126,11 +1057,6 @@ def compute_follow(start=None):
                                 Follow[B].append(f)
                                 didadd = 1
         if not didadd: break
-
-    if 0 and yaccdebug:
-        _vf.write('\nFollow:\n')
-        for k in Nonterminals.keys():
-            _vf.write("%-20s : %s\n" % (k, " ".join([str(s) for s in Follow[k]])))
 
 # -------------------------------------------------------------------------
 # compute_first1()
@@ -1163,12 +1089,6 @@ def compute_first1():
                         some_change = 1
         if not some_change:
             break
-
-    if 0 and yaccdebug:
-        _vf.write('\nFirst:\n')
-        for k in Nonterminals.keys():
-            _vf.write("%-20s : %s\n" %
-                (k, " ".join([str(s) for s in First[k]])))
 
 # -----------------------------------------------------------------------------
 #                           === SLR Generation ===
@@ -1278,13 +1198,13 @@ def lr0_items():
             for s in ii.usyms:
                 asyms[s] = None
 
-        for x in asyms.keys():
+        for x in asyms:
             g = lr0_goto(I,x)
             if not g:  continue
             if _lr0_cidhash.has_key(id(g)): continue
             _lr0_cidhash[id(g)] = len(C)            
             C.append(g)
-            
+
     return C
 
 # -----------------------------------------------------------------------------
@@ -1346,15 +1266,15 @@ def compute_nullable_nonterminals():
 # -----------------------------------------------------------------------------
 
 def find_nonterminal_transitions(C):
-     trans = []
-     for state in range(len(C)):
-         for p in C[state]:
-             if p.lr_index < p.len - 1:
-                  t = (state,p.prod[p.lr_index+1])
-                  if Nonterminals.has_key(t[1]):
-                        if t not in trans: trans.append(t)
-         state = state + 1
-     return trans
+    trans = []
+    for state in range(len(C)):
+        for p in C[state]:
+            if p.lr_index < p.len - 1:
+                t = (state,p.prod[p.lr_index+1])
+                if Nonterminals.has_key(t[1]) and t not in trans:
+                    trans.append(t)
+        state = state + 1
+    return trans
 
 # -----------------------------------------------------------------------------
 # dr_relation()
@@ -1372,15 +1292,14 @@ def dr_relation(C,trans,nullable):
 
     g = lr0_goto(C[state],N)
     for p in g:
-       if p.lr_index < p.len - 1:
-           a = p.prod[p.lr_index+1]
-           if Terminals.has_key(a):
-               if a not in terms: terms.append(a)
-
+        if p.lr_index < p.len - 1:
+            a = p.prod[p.lr_index+1]
+            if Terminals.has_key(a) and a not in terms:
+                terms.append(a)
     # This extra bit is to handle the start state
     if state == 0 and N == Productions[0].prod[0]:
        terms.append('$end')
- 
+
     return terms
 
 # -----------------------------------------------------------------------------
@@ -1438,17 +1357,14 @@ def compute_lookback_includes(C,trans,nullable):
     includedict = {}       # Dictionary of include relations
 
     # Make a dictionary of non-terminal transitions
-    dtrans = {}
-    for t in trans:
-        dtrans[t] = 1
-    
+    dtrans = {t: 1 for t in trans}
     # Loop over all transitions and compute lookbacks and includes
     for state,N in trans:
         lookb = []
         includes = []
         for p in C[state]:
             if p.name != N: continue
-        
+
             # Okay, we have a name match.  We now follow the production all the way
             # through the state machine until we get the . on the right hand side
 
@@ -1475,18 +1391,18 @@ def compute_lookback_includes(C,trans,nullable):
 
                  g = lr0_goto(C[j],t)               # Go to next set             
                  j = _lr0_cidhash.get(id(g),-1)     # Go to next state
-             
+
             # When we get here, j is the final state, now we have to locate the production
             for r in C[j]:
-                 if r.name != p.name: continue
-                 if r.len != p.len:   continue
-                 i = 0
+                if r.name != p.name: continue
+                if r.len != p.len:   continue
+                i = 0
                  # This look is comparing a production ". A B C" with "A B C ."
-                 while i < r.lr_index:
-                      if r.prod[i] != p.prod[i+1]: break
-                      i = i + 1
-                 else:
-                      lookb.append((j,r))
+                while i < r.lr_index:
+                    if r.prod[i] != p.prod[i+1]: break
+                    i += 1
+                else:
+                    lookb.append((j,r))
         for i in includes:
              if not includedict.has_key(i): includedict[i] = []
              includedict[i].append((state,N))
@@ -1512,9 +1428,7 @@ def compute_lookback_includes(C,trans,nullable):
 # ------------------------------------------------------------------------------
 
 def digraph(X,R,FP):
-    N = { }
-    for x in X:
-       N[x] = 0
+    N = {x: 0 for x in X}
     stack = []
     F = { }
     for x in X:
@@ -1558,8 +1472,7 @@ def traverse(x,N,stack,F,X,R,FP):
 def compute_read_sets(C, ntrans, nullable):
     FP = lambda x: dr_relation(C,x,nullable)
     R =  lambda x: reads_relation(C,x,nullable)
-    F = digraph(ntrans,R,FP)
-    return F
+    return digraph(ntrans,R,FP)
 
 # -----------------------------------------------------------------------------
 # compute_follow_sets()
@@ -1578,10 +1491,9 @@ def compute_read_sets(C, ntrans, nullable):
 # -----------------------------------------------------------------------------
 
 def compute_follow_sets(ntrans,readsets,inclsets):
-     FP = lambda x: readsets[x]
-     R  = lambda x: inclsets.get(x,[])
-     F = digraph(ntrans,R,FP)
-     return F
+    FP = lambda x: readsets[x]
+    R  = lambda x: inclsets.get(x,[])
+    return digraph(ntrans,R,FP)
 
 # -----------------------------------------------------------------------------
 # add_lookaheads()

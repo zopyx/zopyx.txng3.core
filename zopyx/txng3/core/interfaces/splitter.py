@@ -12,7 +12,7 @@ class ISplitter(Interface):
     """ interface class for TextIndexNG3 splitters """
 
 
-    def split(some_string):
+    def split(self):
         """ splits a unicode 'some_string' string into a sequence of unicode
             strings.
         """

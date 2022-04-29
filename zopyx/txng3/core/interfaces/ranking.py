@@ -12,9 +12,7 @@ import zopyx.txng3.core.config
 
 class IRanking(zope.interface.Interface):
 
-    def __call__(index, resultset,
-                 language=zopyx.txng3.core.config.DEFAULT_LANGUAGE,
-                 max=50):
+    def __call__(self, resultset, language=zopyx.txng3.core.config.DEFAULT_LANGUAGE, max=50):
         """Rank given result set.
 
         return sequence of tuples (result, score)

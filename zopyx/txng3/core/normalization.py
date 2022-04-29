@@ -46,7 +46,7 @@ class Normalizer:
         return readNormalizer(language)
 
     def __repr__(self):
-        return "%s (%s)" % (self.__class__.__name__, self.availableLanguages()) 
+        return f"{self.__class__.__name__} ({self.availableLanguages()})" 
 
 
 enc_reg = re.compile('#\s*encoding\s*=\s*([\w\-]+)')
@@ -59,7 +59,7 @@ def readNormalizer(language):
 
     encoding = None
 
-    fname = os.path.join(nm_dir, '%s.txt' % language) 
+    fname = os.path.join(nm_dir, f'{language}.txt')
     if not os.path.exists(fname):
         return []
 
@@ -67,8 +67,7 @@ def readNormalizer(language):
     for l in open(fname): 
         if not l.strip(): continue
 
-        mo = enc_reg.match(l)
-        if mo:
+        if mo := enc_reg.match(l):
             encoding= mo.group(1)
             continue
 
@@ -78,7 +77,7 @@ def readNormalizer(language):
         if len(fields) == 1:
             fields = (fields[0], '')  # replace XX with ''
 
-        k = unicode(fields[0], encoding) 
+        k = unicode(fields[0], encoding)
         v = unicode(fields[1], encoding) 
 
         lst.append((k, v))

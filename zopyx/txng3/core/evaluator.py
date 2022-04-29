@@ -33,12 +33,11 @@ class Evaluator:
 
         # if not look at the first parent node
         if not field:
-            parent = node._parent
-            if parent:
+            if parent := node._parent:
                 field = parent.getField()
-   
+
         # we got something, now check if the index is configured for this field
-        if field and not field in self.fields:
+        if field and field not in self.fields:
             raise ValueError("Index not configured for field '%s'" % field) 
 
         # return the default fieldname as given through the query options
@@ -138,9 +137,7 @@ def lookup_word(SR, word, field):
     lexicon = index.getLexicon()
 
     if index.use_stemmer:
-        # Stemmer support only works with disabled autoexpansion
-        S = getStemmer(SR.language)
-        if S:
+        if S := getStemmer(SR.language):
             word = S.stem([word])[0]
 
         wordid = lexicon.getWordId(word, SR.language)
@@ -184,8 +181,7 @@ def lookup_word(SR, word, field):
                 if TH is None:
                     raise ValueError('No thesaurus "%s" configured' % id)
 
-                related_terms = TH.getTermsFor(word)
-                if related_terms:
+                if related_terms := TH.getTermsFor(word):
                     _words.extend(related_terms)
                     wids = lexicon.getWordIds(related_terms, SR.language)
                     _wids.extend(wids)
@@ -252,8 +248,7 @@ def lookup_by_phrase(SR, docids, words, field):
     storage = index.getStorage(field)
 
     if index.use_stemmer:
-        S = getStemmer(SR.language)
-        if S:
+        if S := getStemmer(SR.language):
             words = S.stem(words)
 
     wids = lexicon.getWordIds(words, SR.language)

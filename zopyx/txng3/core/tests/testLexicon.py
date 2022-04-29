@@ -53,7 +53,7 @@ class LexiconTests(unittest.TestCase):
         assert len(self._lexicon.getLanguages()) == 2
         langs = self._lexicon.getLanguages()
         assert 'en' in langs
-        assert not 'fr' in langs
+        assert 'fr' not in langs
         assert self._lexicon.hasLanguage('en')
         assert self._lexicon.hasLanguage('de')
         assert not self._lexicon.hasLanguage('fr')
@@ -69,10 +69,7 @@ class LexiconTests(unittest.TestCase):
         words = text_de.split(' ')
         self._lexicon.addLanguage('de')
 
-        d = {}
-        for word, wid in zip(words, self._lexicon.insertWords(words, 'de')):
-            d[word] = wid
-
+        d = dict(zip(words, self._lexicon.insertWords(words, 'de')))
         for word, wid in d.items():
             self.assertEqual(self._lexicon.getWordAndLanguage(wid), (word, 'de'))
             self.assertEqual(self._lexicon.getWord(wid), word)
@@ -96,18 +93,16 @@ class LexiconTests(unittest.TestCase):
         gw = self._lexicon.getWordId
         assert gw('the', 'en') != None
         assert gw('the', 'de') != None
-        assert gw('einen', 'en') == None
+        assert gw('einen', 'en') is None
         assert gw('einen', 'de') != None
         assert gw('the', 'en') != gw('the', 'de') 
 
     def testRightTruncation(self):
 
         def _check(term, expected, language='en'):
-            r1 = list(M(term, language))
-            r1.sort()
-            r2 = list(expected)
-            r2.sort()
-            self.assertEqual(r1, r2, 'got: %s, expected %s' % (repr(r1), repr(r2)))
+            r1 = sorted(M(term, language))
+            r2 = sorted(expected)
+            self.assertEqual(r1, r2, f'got: {repr(r1)}, expected {repr(r2)}')
 
         self._populateLexicon()
         M = self._lexicon.getWordsForRightTruncation
@@ -122,11 +117,9 @@ class LexiconTests(unittest.TestCase):
     def testLeftTruncation(self):
 
         def _check(term, expected, language='en'):
-            r1 = list(M(term, language))
-            r1.sort()
-            r2 = list(expected)
-            r2.sort()
-            self.assertEqual(r1, r2, 'got: %s, expected %s' % (repr(r1), repr(r2)))
+            r1 = sorted(M(term, language))
+            r2 = sorted(expected)
+            self.assertEqual(r1, r2, f'got: {repr(r1)}, expected {repr(r2)}')
 
         self._populateLexicon()
         M = self._lexicon.getWordsForLeftTruncation
@@ -142,11 +135,9 @@ class LexiconTests(unittest.TestCase):
     def testPatternMatching(self):
 
         def _check(term, expected, language='en'):
-            r1 = list(M(term, language))
-            r1.sort()
-            r2 = list(expected)
-            r2.sort()
-            self.assertEqual(r1, r2, 'got: %s, expected %s' % (repr(r1), repr(r2)))
+            r1 = sorted(M(term, language))
+            r2 = sorted(expected)
+            self.assertEqual(r1, r2, f'got: {repr(r1)}, expected {repr(r2)}')
 
         self._populateLexicon()
         M = self._lexicon.getWordsForPattern
@@ -170,11 +161,10 @@ class LexiconTests(unittest.TestCase):
     def testSimilaritySearch(self):
 
         def _check(term, expected, language='en'):
-            r1 = list([term for term,ratio in M(term, 0.5, language=language)])
+            r1 = [term for term,ratio in M(term, 0.5, language=language)]
             r1.sort()
-            r2 = list(expected)
-            r2.sort()
-            self.assertEqual(r1, r2, 'got: %s, expected %s' % (repr(r1), repr(r2)))
+            r2 = sorted(expected)
+            self.assertEqual(r1, r2, f'got: {repr(r1)}, expected {repr(r2)}')
 
         self._populateLexicon()
         M = self._lexicon.getSimiliarWords

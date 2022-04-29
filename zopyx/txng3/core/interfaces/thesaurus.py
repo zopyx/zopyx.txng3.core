@@ -12,7 +12,7 @@ from zope.interface import Interface
 class IThesaurus(Interface):
     """ interface for a multilingual thesaurus"""
 
-    def getTermsFor(word):
+    def getTermsFor(self):
         """ Returns a sequence of similar terms for 'word'.  If there are no
             matching terms then the thesaurus *must* return None.
         """    

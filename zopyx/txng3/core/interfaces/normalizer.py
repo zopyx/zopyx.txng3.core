@@ -14,13 +14,13 @@ class INormalizer(Interface):
     def availableLanguages():    
         """ return a list of languages supported by the normalizer """
 
-    def process(words, language):   
+    def process(self, language):
         """ Normalize a word or a sequence of words. Returned the normalized word
             or a sequence of normalized words. If there is no normalizer available
             for a language then the data is returned unchanged.
         """
 
-    def translationTable(language):
+    def translationTable(self):
         """ return the translation table for a given language where the 
             translation table is represented as list of tuples (from_str, repl_str)
         """

@@ -55,15 +55,14 @@ def readStopwords(language):
     words = {}    # words -> None 
     encoding = None
 
-    fname = os.path.join(sw_dir, '%s.txt' % language) 
+    fname = os.path.join(sw_dir, f'{language}.txt')
     if not os.path.exists(fname):
         return {}
 
     for l in open(fname): 
         if not l.strip(): continue
 
-        mo = enc_reg.match(l)
-        if mo:
+        if mo := enc_reg.match(l):
             encoding= mo.group(1)
             continue
 

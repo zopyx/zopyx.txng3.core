@@ -24,37 +24,35 @@ def readThesaurus(language, casefolding=True, filename=None):
     encoding = None
 
     if filename is None:
-        filename = os.path.join(th_dir, '%s.txt' % language)
-         
+        filename = os.path.join(th_dir, f'{language}.txt')
+
     if not os.path.exists(filename):
         raise ValueError('No thesaurus file for "%s" found'% language)
 
     for idx,l in enumerate(open(filename)):
         if not l.strip(): continue
 
-        mo = enc_reg.match(l)
-        if mo:
+        if mo := enc_reg.match(l):
             encoding= mo.group(1)
             continue
 
         if l.startswith('#'): continue
 
         term, words = l.split(' ', 1)
-        if encoding:
-            term = unicode(term.strip(), encoding)
-            words = [unicode(w.strip(), encoding) for w in words.split(',')]
-            if casefolding:
-                term = term.lower()
-                words = [w.lower() for w in words]
-            synonyms[idx] = [term] + words
-            for t in synonyms[idx]:
-                if terms.has_key(t):
-                    terms[t].append(idx)
-                else:
-                    terms[t]=[idx]
-              
-        else:
+        if not encoding:
             raise ValueError("Thesaurus file %s has no 'encoding' parameter specified" % filename)
+
+        term = unicode(term.strip(), encoding)
+        words = [unicode(w.strip(), encoding) for w in words.split(',')]
+        if casefolding:
+            term = term.lower()
+            words = [w.lower() for w in words]
+        synonyms[idx] = [term] + words
+        for t in synonyms[idx]:
+            if terms.has_key(t):
+                terms[t].append(idx)
+            else:
+                terms[t]=[idx]
 
     return synonyms, terms
 

@@ -90,20 +90,19 @@ class BaseConverter(object):
         return self.convert(s)
    
     def isAvailable(self):
-        depends_on = self.getDependency()
-        if depends_on:
-            if os.name == 'posix':
-                out = subprocess.Popen(['which', depends_on],
-                                       stdout=subprocess.PIPE).communicate()[0]
-                if out.find('no %s' % depends_on) > - 1 or out.lower().find('not found') > -1 or len(out.strip()) == 0:
-                    return 'no'
-                return 'yes'
-            elif os.name == 'nt':
-                if findOnWin32Path(depends_on):
-                    return 'yes'
-                else:
-                    return 'no'
-            else:
-                return 'unknown'
-        else:
+        if not (depends_on := self.getDependency()):
             return 'always'
+        if os.name == 'nt':
+            return 'yes' if findOnWin32Path(depends_on) else 'no'
+        elif os.name == 'posix':
+            out = subprocess.Popen(['which', depends_on],
+                                   stdout=subprocess.PIPE).communicate()[0]
+            if (
+                out.find(f'no {depends_on}') > -1
+                or out.lower().find('not found') > -1
+                or len(out.strip()) == 0
+            ):
+                return 'no'
+            return 'yes'
+        else:
+            return 'unknown'

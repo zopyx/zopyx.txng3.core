@@ -30,14 +30,10 @@ class DumbOrParser:
     
     def _parse(self, query):
         words = [w.strip() for w in query.split(' ')]
-        return tuple([WordNode(w) for w in words if w])
+        return tuple(WordNode(w) for w in words if w)
 
     def parse(self, query):
-        res = self._parse(query)
-        if res:
-            return OrNode(res)
-        else:
-            return None
+        return OrNode(res) if (res := self._parse(query)) else None
 
 
 
@@ -46,12 +42,7 @@ class DumbAndParser(DumbOrParser):
     implements(IParser)
 
     def parse(self, query):
-        res = self._parse(query)
-        if res:
-            return AndNode(res)
-        else:
-            return None
-        return AndNode(self._parse(query))
+        return AndNode(res) if (res := self._parse(query)) else None
 
 
 DumbAndQueryParser = DumbAndParser()    

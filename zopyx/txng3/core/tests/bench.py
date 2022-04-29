@@ -14,7 +14,7 @@ from BTrees.IIBTree import IISet, union, intersection, difference
 
 def make_choice(data, per):
     data_len = len(data)
-    return [choice(data) for i in range(0, data_len*float(per)/100.0)]
+    return [choice(data) for _ in range(data_len*float(per)/100.0)]
 
 
 for max in (500, 2500, 5000, 10000, 25000, 50000, 100000):

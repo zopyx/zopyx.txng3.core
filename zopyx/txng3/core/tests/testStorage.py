@@ -29,7 +29,7 @@ class StorageBaseTests(unittest.TestCase):
         S.insertDocument(1, (1,2,3,4,5))
         S.insertDocument(2, (3,4,5,6,7))
         self.assertEqual(len(S), 2)
-        self.assertEqual(list(S.getDocIds()), list((1,2)))
+        self.assertEqual(list(S.getDocIds()), [1, 2])
         S.removeDocument(9999)
         S.removeDocument(2)
         S.removeDocument(1)
@@ -43,17 +43,14 @@ class StorageBaseTests(unittest.TestCase):
         S.insertDocument(3, (3,4,22,32))
         self.assertEqual(len(S), 3)
         self.assertEqual(S.numberDocuments(), 3)
-        self.assertEqual(list(S.getDocIds()), list((1,2,3)))
+        self.assertEqual(list(S.getDocIds()), [1, 2, 3])
         S.insertDocument(3, (20,21,23))
         self.assertEqual(S.numberDocuments(), 3)
-        self.assertEqual(list(S.getDocIds()), list((1,2,3)))
+        self.assertEqual(list(S.getDocIds()), [1, 2, 3])
 
-        self.assertEqual(list(S.getWordIdsForDocId(1)),
-                         list( (1,2,3,4,5)))        
-        self.assertEqual(list(S.getWordIdsForDocId(2)),
-                         list( (3,4,5,6,7)))        
-        self.assertEqual(list(S.getWordIdsForDocId(3)),
-                         list( (20,21,23)))        
+        self.assertEqual(list(S.getWordIdsForDocId(1)), [1, 2, 3, 4, 5])
+        self.assertEqual(list(S.getWordIdsForDocId(2)), [3, 4, 5, 6, 7])
+        self.assertEqual(list(S.getWordIdsForDocId(3)), [20, 21, 23])        
 
     def testReindex2(self):
         S = self._storage
@@ -72,8 +69,8 @@ class StorageBaseTests(unittest.TestCase):
         S = self._storage
         S.insertDocument(1, (1,2,2,3,3,5))
         S.insertDocument(2, (5,5,2,2,1))
-        self.assertEqual(list(S.getWordIdsForDocId(1)), list( (1,2,2,3,3,5)))        
-        self.assertEqual(list(S.getWordIdsForDocId(2)), list( (5,5,2,2,1)))        
+        self.assertEqual(list(S.getWordIdsForDocId(1)), [1, 2, 2, 3, 3, 5])
+        self.assertEqual(list(S.getWordIdsForDocId(2)), [5, 5, 2, 2, 1])
         self.assertEqual(S.numberWordsInDocument(1), 6)
         self.assertEqual(S.numberWordsInDocument(2), 5)
         S.removeDocument(2)
@@ -85,12 +82,12 @@ class StorageBaseTests(unittest.TestCase):
         S.insertDocument(1, (1,2,3,4,5))
         S.insertDocument(2, (3,4,5,6,7))
         S.insertDocument(3, (3,4,22,32))
-        self.assertEqual(list(S.getDocumentsForWordId(5)), list( (1,2)))
-        self.assertEqual(list(S.getDocumentsForWordId(3)), list( (1,2,3)))
-        self.assertEqual(list(S.getDocumentsForWordId(32)), list( (3,)))
+        self.assertEqual(list(S.getDocumentsForWordId(5)), [1, 2])
+        self.assertEqual(list(S.getDocumentsForWordId(3)), [1, 2, 3])
+        self.assertEqual(list(S.getDocumentsForWordId(32)), [3])
         self.assertEqual(list(S.getDocumentsForWordId(987)), list())
-        self.assertEqual(list(S.getDocumentsForWordIds((3,4))), list((1,2,3)))
-        self.assertEqual(list(S.getDocumentsForWordIds((5,))), list((1,2)))
+        self.assertEqual(list(S.getDocumentsForWordIds((3,4))), [1, 2, 3])
+        self.assertEqual(list(S.getDocumentsForWordIds((5,))), [1, 2])
         self.assertEqual(list(S.getDocumentsForWordIds(())), list())
 
     def testContigousWordids(self):
@@ -123,11 +120,8 @@ class StorageBaseTests(unittest.TestCase):
     def testGetPositionsRandom(self):
         S = self._storage
 
-        for i in range(100):
-            wids = []
-            for j in range(200):
-                wids.append(randint(0, 200))
-
+        for _ in range(100):
+            wids = [randint(0, 200) for _ in range(200)]
             S.insertDocument(1, wids)
 
             for wid in Set(wids):

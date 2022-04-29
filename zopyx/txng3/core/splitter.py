@@ -33,8 +33,12 @@ class SplitterFactory:
     implements(IFactory)
 
     def __call__(self, maxlen=64, singlechar=True, casefolding=True, separator='+'):
-        splitter = Splitter(maxlen=maxlen, singlechar=singlechar, casefolding=casefolding, separator=separator)
-        return splitter
+        return Splitter(
+            maxlen=maxlen,
+            singlechar=singlechar,
+            casefolding=casefolding,
+            separator=separator,
+        )
 
     def getInterfaces(self):
         return implementedBy(Splitter)

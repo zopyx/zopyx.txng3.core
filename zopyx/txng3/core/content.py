@@ -45,10 +45,10 @@ class IndexContentCollector:
         try:
             converter = getUtility(IConverter, mimetype)
         except ComponentLookupError:
-            LOG.warn('No converter registered for %s' % mimetype)
+            LOG.warn(f'No converter registered for {mimetype}')
             return
 
-        
+
 
         text, encoding = converter.convert(data, encoding, mimetype,
                                            logError, raiseException)
@@ -74,7 +74,7 @@ class IndexContentCollector:
         return len(self._d) > 0 
 
 
-def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_language=DEFAULT_LANGUAGE):   
+def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_language=DEFAULT_LANGUAGE):
     """ This helper methods tries to extract indexable content from a content 
         object in different ways. First we try to check for ITextIndexable
         interface or ITextIndexableRaw interfaces which are the preferred 
@@ -86,8 +86,7 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
         the content-type implementation itself or through an adapter.
     """
 
-    adapter = IIndexableContent(obj, None)
-    if adapter:
+    if adapter := IIndexableContent(obj, None):
         # the official TXNG3 indexer API
 
         icc = adapter.indexableContent(fields)
@@ -99,7 +98,7 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
                       ' Use IndexContentCollector implementation instead' % obj.__class__.__name__, 
                        DeprecationWarning, 
                        stacklevel=2)
-          
+
         result = obj.txng_get(fields)
         if result is None:
             return None
@@ -110,7 +109,6 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
         icc.addBinary(fields[0], source, mimetype, encoding, default_language)
 
     else:
-
         # old Zope 2 behaviour: look up value either as attribute of the object
         # or as method providing a return value as indexable content
 
@@ -119,7 +117,7 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
         icc = IndexContentCollector()
 
         for f in fields:
-            
+
             v = getattr(obj, f, None)
             if not v: continue
             if callable(v):
@@ -131,7 +129,7 @@ def extract_content(fields, obj, default_encoding=DEFAULT_ENCODING, default_lang
 
             if isinstance(v, str):
                 v = unicode(v, default_encoding, 'ignore')
-        
+
             icc.addContent(f, v, default_language)
 
     return icc or None

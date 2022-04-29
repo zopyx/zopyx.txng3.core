@@ -119,10 +119,10 @@ if version is None and not options.accept_buildout_test_releases:
     _final_parts = '*final-', '*final'
 
     def _final_version(parsed_version):
-        for part in parsed_version:
-            if (part[:1] == '*') and (part not in _final_parts):
-                return False
-        return True
+        return not any(
+            (part[:1] == '*') and (part not in _final_parts)
+            for part in parsed_version
+        )
     index = setuptools.package_index.PackageIndex(
         search_path=[setuptools_path])
     if find_links:

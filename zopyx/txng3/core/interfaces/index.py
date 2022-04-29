@@ -13,13 +13,13 @@ from zope.interface import Interface
 class IIndex(Interface):
     """ interface class for Index"""
 
-    def index_object(obj, docid):
+    def index_object(self, docid):
         """ indexes the object under the given 'docid' """
 
-    def unindex_object(docid):
+    def unindex_object(self):
         """ remove the object from the index """
 
-    def search(query, **kw): 
+    def search(self, **kw):
         """ Perform a search 'query' is the query string and **kw are optional 
             parameters specific to the index.
         """

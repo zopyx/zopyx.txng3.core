@@ -20,12 +20,12 @@ class IIndexContentCollector(Interface):
         objects to the index.
     """
 
-    def addContent(field, text, language=None):
+    def addContent(self, text, language=None):
         """ Add unicode string 'text' as indexable content for 'field'.
             'language' specifies the language if available.
         """
 
-    def addBinary(field, data, mimetype, encoding=None, language=None):
+    def addBinary(self, data, mimetype, encoding=None, language=None):
         """ Add some binary 'data' that needs to be converted as indexable 
             content for 'field'. 
         """
@@ -33,7 +33,7 @@ class IIndexContentCollector(Interface):
     def getFields():
         """ return a list of index fields """
 
-    def getFieldData(field):
+    def getFieldData(self):
         """Get indexed data for a particular field.
 
         Returns a sequence of dictionaries.
@@ -42,5 +42,5 @@ class IIndexContentCollector(Interface):
 
 class IIndexableContent(Interface):
 
-    def indexableContent(fields):
+    def indexableContent(self):
         """ returns an instance implementing IIndexContentCollector """

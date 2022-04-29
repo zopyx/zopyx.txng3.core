@@ -43,7 +43,7 @@ class StopwordTests(unittest.TestCase):
         lst = Stopwords().availableLanguages()
         assert 'en' in lst
         assert 'fr' in lst
-        assert not 'xx' in lst
+        assert 'xx' not in lst
 
     def testStopwordReader(self):
         SW = Stopwords()

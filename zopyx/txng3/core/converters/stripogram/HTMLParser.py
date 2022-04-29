@@ -138,8 +138,7 @@ class HTMLParser:
         if i >= j:
             return j
         rawdata = self.rawdata
-        nlines = string.count(rawdata, "\n", i, j)
-        if nlines:
+        if nlines := string.count(rawdata, "\n", i, j):
             self.lineno = self.lineno + nlines
             pos = string.rindex(rawdata, "\n", i, j) # Should not fail
             self.offset = j-(pos+1)
@@ -350,8 +349,7 @@ class HTMLParser:
     # or -1 if incomplete.
     def check_for_whole_start_tag(self, i):
         rawdata = self.rawdata
-        m = locatestarttagend.match(rawdata, i)
-        if m:
+        if m := locatestarttagend.match(rawdata, i):
             j = m.end()
             next = rawdata[j:j+1]
             if next == ">":

@@ -40,28 +40,20 @@ class Converter(BaseConverter):
         
         tmp_name = self.saveFile(doc)
         err = TmpFile('')
-        if sys.platform == 'win32':
-            result = (self.execute(
-                '%s -c utf-8 --nographics -x "%s" "%s" 2> "%s"' % (
-                    self.depends_on, wvConf_file, tmp_name, str(err))), 'utf-8')
-        else:
-            result = (self.execute(
-                '%s -c utf-8 --nographics -x "%s" "%s" 2> "%s"' % (
-                    self.depends_on, wvConf_file, tmp_name, str(err))), 'utf-8')
-        
+        result = (self.execute(
+            '%s -c utf-8 --nographics -x "%s" "%s" 2> "%s"' % (
+                self.depends_on, wvConf_file, tmp_name, str(err))), 'utf-8')
         try:
             errors = open(str(err), 'r+').read()
         except OSError:
             errors = ""
         if errors:
             if logError:
-                LOG.warn('Converter %s experienced an error %s' % (
-                    self.content_description, errors)
-                )
-            
+                LOG.warn(f'Converter {self.content_description} experienced an error {errors}')
+
             if raiseException:
                 raise ConversionError(errors)
-        
+
         return result
 
 DocConverter = Converter()

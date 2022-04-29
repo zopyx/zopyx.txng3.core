@@ -23,10 +23,7 @@ class IResultSet(Interface):
             document ids from a particular subquery
         """
 
-    def ranking(ranking_function,
-                index,
-                language=zopyx.txng3.core.config.DEFAULT_LANGUAGE,
-                nbest=50):
+    def ranking(self, index, language=zopyx.txng3.core.config.DEFAULT_LANGUAGE, nbest=50):
         """ Apply the ranking_function (IRanking) to the result set and keep
             the 'nbest' hits (highest score).
 

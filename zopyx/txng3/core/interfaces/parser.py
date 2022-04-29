@@ -14,7 +14,7 @@ class IParser(Interface):
     def getLanguage():       
         """ return language handled by the parser """
 
-    def parse(query):
+    def parse(self):
         """ Translate the 'query' into a parsetree structure. A parser should return
             None for empty queries and raise a QueryParserError exception for parser
             errors.

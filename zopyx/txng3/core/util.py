@@ -17,9 +17,9 @@ def handle_exc(text, obj, exc_info):
     
     # Add some addition object info iff available.
     # XXX: this should be replaced with a more elegant solution
-    
+
     try:
-        text = text + ' (%s)' % obj.absolute_url(1)
+        text = text + f' ({obj.absolute_url(1)})'
     except:
         pass
 

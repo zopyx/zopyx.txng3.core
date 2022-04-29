@@ -39,19 +39,17 @@ class Converter(BaseConverter):
         else:
             result = (self.execute('xls2csv -d 8859-1 -q 0 "%s" 2> %s' % (
                 tmp_name, str(err))), 'iso-8859-15')
-        
+
         try:
             errors = open(str(err), 'r+').read()
         except OSError:
             errors = ""
         if errors:
             if logError:
-                LOG.warn('Converter %s experienced an error %s' % (
-                    self.content_description, errors)
-                )
+                LOG.warn(f'Converter {self.content_description} experienced an error {errors}')
             if raiseException:
                 raise ConversionError(errors)
-        
+
         return result
 
 XLSConverter = Converter()

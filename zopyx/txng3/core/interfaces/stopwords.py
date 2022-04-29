@@ -11,11 +11,11 @@ from zope.interface import Interface
 class IStopwords(Interface):
     """ interface for a stopword utility"""
 
-    def stopwordsForLanguage(language):    
+    def stopwordsForLanguage(self):
         """ return all stopwords for a given language (by country code) as list
         """
 
-    def process(words, language):   
+    def process(self, language):
         """ filter out all stopwords for a given language from a sequence of words """
 
     def availableLanguages():

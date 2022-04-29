@@ -44,12 +44,7 @@ def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
         TF = len(docids)   # term frequency
 
         # calculate the inverse document frequency
-        if TF == 0:
-            IDF[word] = 0
-        else:
-            IDF[word] = log(1.0 + N / TF)
-
-
+        IDF[word] = 0 if TF == 0 else log(1.0 + N / TF)
     # now rank all documents
     for docid in resultset.getDocids():
 
@@ -67,11 +62,7 @@ def cosine_ranking(index, resultset, language=DEFAULT_LANGUAGE, max=50):
                 DTF = 0
 
             # document term weight
-            if DTF == 0:
-                DTW = 0.0
-            else:
-                DTW = ((1.0 + log(DTF)) * IDF[word])
-
+            DTW = 0.0 if DTF == 0 else ((1.0 + log(DTF)) * IDF[word])
             # query term frequency and query max frequency are set to 1
             QTF = QMF = 1.0
 

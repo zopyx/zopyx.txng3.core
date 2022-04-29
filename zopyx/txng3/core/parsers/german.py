@@ -38,21 +38,18 @@ class GermanParser:
         for w in words:
 
             if '"' in w:
-                if inside_quotes:
-                    inside_quotes = False
-                else:
-                    inside_quotes = True
-
-            if not inside_quotes:
-                if w.lower() in self.map_keys:
+                inside_quotes = not inside_quotes
+            if w.lower() in self.map_keys:
+                if not inside_quotes:
                     w = self.map[w.lower()]
-                elif '::' in w:
+            elif '::' in w:
+                if not inside_quotes:
 
-                    for  k,v in self.map.items():
-                        x = '::' + k
+                    for k,v in self.map.items():
+                        x = f'::{k}'
                         if x.lower() in w.lower():
-                            w = w.replace(x, '::' + v)
-                            w = w.replace(x.upper(), '::' + v)
+                            w = w.replace(x, f'::{v}')
+                            w = w.replace(x.upper(), f'::{v}')
                             break
 
             lst.append(w)

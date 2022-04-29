@@ -27,14 +27,10 @@ class ResultSetTests(unittest.TestCase):
         verifyClass(IResultSet, ResultSet)
 
     def _check(self, rs, docids, words):
-        rs_docids = list(rs.getDocids())
-        rs_docids.sort()
-        rs_words = list(rs.getWords())
-        rs_words.sort()
-        docids = list(docids)
-        docids.sort()
-        words = list(words)
-        words.sort()
+        rs_docids = sorted(rs.getDocids())
+        rs_words = sorted(rs.getWords())
+        docids = sorted(docids)
+        words = sorted(words)
         self.assertEqual(rs_docids, docids)
         self.assertEqual(rs_words, words)
 

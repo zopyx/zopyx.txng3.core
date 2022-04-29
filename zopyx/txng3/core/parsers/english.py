@@ -49,11 +49,12 @@ class ParserBase:
         self.lock = Lock()
 
         try:
-            modname = os.path.split(os.path.splitext(__file__)[0])[1] + "_" + self.__class__.__name__
+            modname = f"{os.path.split(os.path.splitext(__file__)[0])[1]}_{self.__class__.__name__}"
+
         except:
             modname = "parser"+"_"+self.__class__.__name__
-        self.debugfile = modname + ".dbg"
-        self.tabmodule = modname + "_" + "parsetab"
+        self.debugfile = f"{modname}.dbg"
+        self.tabmodule = f"{modname}_parsetab"
 
         lex.lex(module=self, debug=False)
         self.p = yacc.yacc(module=self,
@@ -89,7 +90,7 @@ class ParserBase:
             self.lock.release()
 #            import traceback
 #            traceback.print_exc()
-            raise QueryParserError('Unable to parse query: %s' % query)
+            raise QueryParserError(f'Unable to parse query: {query}')
 
 
     def lexer(self, data):
@@ -353,14 +354,13 @@ class EnglishParser(ParserBase):
                 t[0] = WordNode(*(value, field))
             else:
                 t[0] = WordNode(v)
-            
+
         elif sim_regex.match(v): t[0] = SimNode(v[1:] )
         elif sub_regex.match(v): t[0] = SubstringNode(v[1:-1] )
         elif rt_regex.match(v):  t[0] = TruncNode(v[:-1] )
         elif lt_regex.match(v):  t[0] = LTruncNode(v[1:] )
-        else:             
-            if not (v.lower().strip() in ('and', 'or', 'not', 'near')):
-                t[0] = GlobNode(t[1])
+        elif v.lower().strip() not in ('and', 'or', 'not', 'near'):
+            t[0] = GlobNode(t[1])
 
     def t_STRING(self, t):
         r'[^()\s"]+' 

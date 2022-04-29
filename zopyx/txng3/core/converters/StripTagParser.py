@@ -26,6 +26,5 @@ class StripTagParser(SGMLParser):
     self.data.append(data)
 
   def __str__(self):
-    if self.data is None: return ''
-    return ' '.join(self.data)
+    return '' if self.data is None else ' '.join(self.data)
 

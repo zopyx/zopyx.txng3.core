@@ -27,7 +27,7 @@ class IConverter(Interface):
             external converter tools. Return 'yes', 'no' or 'unknown'.
         """
 
-    def convert(doc, encoding, mimetype):
+    def convert(self, encoding, mimetype):
         """ Perform a transformation of 'doc' to (converted_text,
             new_encoding). 'encoding' and 'mimetype' can be used by
             the converter to adjust the conversion process.

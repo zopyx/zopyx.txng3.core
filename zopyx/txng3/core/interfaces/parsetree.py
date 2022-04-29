@@ -19,7 +19,7 @@ class IParseTreeNode(Interface):
     def getValue():
         """ return value of node """
 
-    def setValue(value):
+    def setValue(self):
         """ set the value of a node """
 
     def getField():

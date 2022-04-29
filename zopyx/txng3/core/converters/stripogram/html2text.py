@@ -65,8 +65,7 @@ class HTML2Text(sgmllib.SGMLParser):
 
     def mod_indent(self,i):
         self.indent = self.indent + i
-        if self.indent < 0:
-            self.indent = 0
+        self.indent = max(self.indent, 0)
         
     def handle_data(self, data):
         if data:
@@ -75,38 +74,38 @@ class HTML2Text(sgmllib.SGMLParser):
     def unknown_starttag(self, tag, attrs):
         """ Convert HTML to something meaningful in plain text """
         tag = lower(tag)
-        
+
         if tag not in self.ignore_tags:
             if tag[0]=='h' or tag in ['br','pre','p','hr']:
                 # insert a blank line
                 self.add_break()
-            
+
             elif tag =='img':
                 # newline, text, newline
                 src = ''
-            
+
                 for k, v in attrs:
                     if lower(k) == 'src':
                         src = v
-                    
+
                 self.add_break()
-                self.add_text('Image: ' + src)
-            
+                self.add_text(f'Image: {src}')
+
             elif tag =='li':
                 self.add_break()
                 if self.ol_number:
                     # num - text
-                    self.add_text(str(self.ol_number) + ' - ')
+                    self.add_text(f'{str(self.ol_number)} - ')
                     self.ol_number = self.ol_number + 1
                 else:
                     # - text
                     self.add_text('- ')
-            
+
             elif tag in ['dd','dt']:
                 self.add_break()
                 # increase indent
                 self.mod_indent(+1)
-            
+
             elif tag in ['ul','dl','ol']:
                 # blank line
                 # increase indent

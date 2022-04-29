@@ -48,7 +48,7 @@ class BaseNode:
         self._value = value
 
     def sameAs(self, node):
-        return bool(self.getType()==node.getType() and  self.getValue()==node.getValue())
+        return self.getType()==node.getType() and self.getValue()==node.getValue()
 
     def __repr__(self):
         if self._field:

@@ -37,14 +37,12 @@ class Converter(BaseConverter):
     def convert(self, doc, encoding, mimetype,
                 logError=False, raiseException=False):
 
-        # Use encoding from XML preamble if present
-        mo = encoding_reg.search(doc)
-        if mo:
+        if mo := encoding_reg.search(doc):
             encoding = mo.group(1)
 
         if not encoding:
             encoding = default_encoding
-        
+
         if not isinstance(doc, unicode):
             doc = unicode(doc, encoding, 'replace')
         doc = convert_entities(doc)

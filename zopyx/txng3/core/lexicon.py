@@ -49,7 +49,7 @@ class Lexicon(Persistent):
             self.addLanguage(l)
 
     def __len__(self):
-        return sum([len(tree) for tree in self._words.values()])
+        return sum(len(tree) for tree in self._words.values())
 
     def addLanguage(self, language):
         """ prepare lexicon for a new language """
@@ -69,7 +69,7 @@ class Lexicon(Persistent):
         try:
             return self._words[language]
         except KeyError:
-            raise LexiconError('Unsupported language: %s' % language)
+            raise LexiconError(f'Unsupported language: {language}')
 
     def insertWord(self, word, language=DEFAULT_LANGUAGE):
         """ insert a word and return the corresponding wordid """
@@ -85,7 +85,7 @@ class Lexicon(Persistent):
         for word in words:
 
             if not isinstance(word, unicode):
-                raise LexiconError('Only unicode string can be indexed (%s)' % repr(word))
+                raise LexiconError(f'Only unicode string can be indexed ({repr(word)})')
 
             try:
                 wids.append(tree[word])
@@ -95,7 +95,7 @@ class Lexicon(Persistent):
                 tree[word] = wid
                 self._wids[wid] = (word, language)
                 wids.append(wid)
-        
+
         return wids
 
     def getWordId(self, word, language=DEFAULT_LANGUAGE):
@@ -132,36 +132,36 @@ class Lexicon(Persistent):
         """ Return a sequence of words with a common prefix """
         
         if not isinstance(prefix, unicode):
-            raise LexiconError('Prefix must be unicode (%s)' % prefix)
-        tree = self._getTree(language)            
+            raise LexiconError(f'Prefix must be unicode ({prefix})')
+        tree = self._getTree(language)
         return  tree.keys(prefix, prefix + u'\uffff') 
 
     def getWordsInRange(self, w1, w2, language=DEFAULT_LANGUAGE):
         """ return all words within w1...w2 """
         if not isinstance(w1, unicode):
-            raise LexiconError('1. argument must be unicode (%s)' % w1)
+            raise LexiconError(f'1. argument must be unicode ({w1})')
         if not isinstance(w2, unicode):
-            raise LexiconError('2. argument must be unicode (%s)' % w2)
+            raise LexiconError(f'2. argument must be unicode ({w2})')
         tree = self._getTree(language)
         return tree.keys(w1, w2)
 
     def getWordsForSubstring(self, sub, language=DEFAULT_LANGUAGE):
         """ return all words that match *sub* """
         if not isinstance(sub, unicode):
-            raise LexiconError('Substring must be unicode (%s)' % sub)
+            raise LexiconError(f'Substring must be unicode ({sub})')
         tree = self._getTree(language)
         return [word for word in tree.keys() if sub in word]
 
     def getWordsForLeftTruncation(self, suffix, language=DEFAULT_LANGUAGE):
         """ return all words with a common suffix """
         if not isinstance(suffix, unicode):
-            raise LexiconError('Suffix must be unicode (%s)' % suffix)
+            raise LexiconError(f'Suffix must be unicode ({suffix})')
         tree = self._getTree(language)
         return [word for word in tree.keys() if word.endswith(suffix)]
 
     def _createRegex(self, pattern):
         """Translate a 'pattern into a regular expression """
-        return '%s$' % pattern.replace( '*', '.*').replace( '?', '.')
+        return f"{pattern.replace( '*', '.*').replace('?', '.')}$"
 
     def getSimiliarWords(self, term, threshold=0.75, language=DEFAULT_LANGUAGE, common_length=-1): 
         """ return a list of similar words based on the levenshtein distance """
